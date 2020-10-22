@@ -30,7 +30,7 @@ Throughout a game, after each iteration, each Agent is trained using a fixed amo
 
 A machine learning Gradient Boosting Regressor is used to approximate a function from the set of stored features to the set of stored labels. In order to predict the best action, the Agent evaluates this function according to the state of the game and the entire set of possible actions. The action which is evaluated to the maximum expected value of return is chosen. The Artificial Intelligence Agents are this way trained repeatedly with the final objective of generating interesting and viable poker winning strategies.  
 
-Since with No Limit Texas Hold’em Poker there are 10^71 possible game states, we will also be implementing a poker hand evaluation library, which will have to be lightweight and fast. This evaluation library will handle 5, 6 and 7 card hand lookups. All lookups will be done with bit arithmetic and dictionary accesses.  
+Since with No Limit Texas Hold’em Poker there are 10<sup>71</sup> possible game states, we will also be implementing a poker hand evaluation library, which will have to be lightweight and fast. This evaluation library will handle 5, 6 and 7 card hand lookups. All lookups will be done with bit arithmetic and dictionary accesses.  
 
 Python 3 will be the programming language used to deal with all the calculations involving the machine learning algorithm and data manipulation.  
 
