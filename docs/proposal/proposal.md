@@ -26,9 +26,9 @@ Our project will tackle such challenges with Reinforcement Machine Learning, wit
 
 The Texas Hold'em Poker application will be based on Artificial Intelligence Agents which learn from their opponents’ behaviours and implement strategies to counteract their actions in order to maximise their own winnings.  
 
-Throughout a game, after each iteration, each Agent is trained using a fixed amount of selected features and labels while the remainder of features and labels from the beginning of the Agent's “career” are discarded. The reason for this discarding is that the expected return of an Agent’s action is a function of the Agent's future actions in any hand, so older samples become inaccurate as an Agent evolves.  
+Throughout a game, after each iteration, each Agent is trained using a set number of selected features and labels while the remaining features and labels from the beginning of the Agent's “career” are discarded. The motivation for this discarding is that the expected return of an Agent’s action is a function of the Agent's future actions in any hand, so older hands become inaccurate as an Agent improves.  
 
-A machine learning Gradient Boosting Regressor is used to approximate a function from the set of stored features to the set of stored labels. In order to predict the best action, the Agent evaluates this function according to the state of the game and the entire set of possible actions. The one that is evaluated to the maximum expected return value is chosen. The Artificial Intelligence Agents are this way trained repeatedly with the final objective of generating interesting and viable poker winning strategies.  
+A machine learning Gradient Boosting Regressor is used to estimate a function from the set of saved features to the set of saved labels. In order to predict the best action, the Agent executes this function according to the state of the game and the entire set of possible actions. The one that is estimated to be the maximum expected return value is picked. The Artificial Intelligence Agents are this way trained repeatedly with the final objective of generating interesting and viable poker winning strategies.  
 
 Since with No Limit Texas Hold’em Poker there are 10<sup>71</sup> possible game states, we will also be implementing a poker hand evaluation library, which will have to be lightweight and fast. This evaluation library will handle 5, 6 and 7 card hand lookups. All lookups will be done with bit arithmetic and dictionary accesses.  
 
@@ -41,6 +41,7 @@ TypeScript will be the programming language used to develop the front-end of the
 The web application will also include a sign up/login functionality which will allow users to keep track of their game statistics (e.g. winning percentage). Users which do not want avail of this functionality will have the option to play games as guests, which will not involve any statistics recording.  
 
 MariaDB will be the RDBMS used to store the data.  
+
 
 
 ### Background
