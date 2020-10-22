@@ -112,7 +112,7 @@ No non-standard hardware components which will be required for this project.
 
 * **Machine learning in games with imperfect information and non-determinism**
 
-Undoubtedly, one of the most challenging aspects of this project will be tackling the machine learning features of the AI Agents against which users will be playing. As a No-Limit Texas Hold'em Poker game can be in one out of 10^71 possible game states, creating a model which allows our AI Agents to both perform within certain time restrictions and in a competent manner, while adapting their style of play to the opponents’ will not be a simple task. It will be our first time tackling machine learning in games with imperfect information and non-determinism. It will be our first time tackling Reinforcement Machine Learning.
+Undoubtedly, one of the most challenging aspects of this project will be tackling the machine learning features of the AI Agents against which users will be playing. As a No-Limit Texas Hold'em Poker game can be in one out of 10<sup>71</sup> possible game states, creating a model which allows our AI Agents to both perform within certain time restrictions and in a competent manner, while adapting their style of play to the opponents’ will not be a simple task. It will be our first time tackling machine learning in games with imperfect information and non-determinism. It will be our first time tackling Reinforcement Machine Learning.
 
 * **TypeScript/Angular**
 
