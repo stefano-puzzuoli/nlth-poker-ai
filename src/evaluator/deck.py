@@ -1,5 +1,5 @@
 from random import shuffle
-from evaluator.card import Card
+from card import Card
 
 class Deck:
     complete_deck = []
