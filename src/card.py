@@ -14,7 +14,7 @@ class Card:
         elif type(card_num) == str:
             if card_num.upper() not in self.n_enumerator: raise Exception("Card letter must be \'T\', \'J\', \'Q\', \'K\', or \'A\'.")
             self._card_num = card_num.upper()
-        else: 
+        else: raise Exception('Card number/letter must be number or string.')
 
         if suit.lower() not in self.suits: raise Exception("Invalid suit. Valid suits are \'c\', \'d\', \'s\', and \'h\'.")
         self._suit = suit.lower()
