@@ -19,3 +19,5 @@ class GameState:
         self.cards = []                              
         
         self.actor = None                             
+
+        self.num_raises = [0 for p in players]
