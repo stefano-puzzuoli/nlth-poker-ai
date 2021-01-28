@@ -140,6 +140,8 @@ class Player:
 
     def take_hole_cards(self, cards): self._cards = cards
 
+    def stop_training(self): self.train = False
+
     def start_training(self): self.train = True
 
     def show(self): return self._cards
