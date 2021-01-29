@@ -28,7 +28,10 @@ class Table:
         self.big_blind = big_blind
         self.max_buy_in = max_buy_in
 
-    
+    def add_player(self, player):
+
+        self.sit_out.append(player)
+        self.players.append(player)
 
     def play_hand(self, vocal=False):
 
