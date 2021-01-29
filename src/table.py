@@ -144,7 +144,68 @@ class Table:
         self.open_betting(vocal)
         if self.vocal: print()
 
-    
+    def pay_winners(self):
+
+        """ This method distributes the pot to the winner(s). """
+
+        board = [card.to_int() for card in self.state.cards]
+        
+        #evaluate rank of hand for each player
+        ranks = {}
+        for player in self.playing:
+            if not board: rank = -1    #all players but one have folded before flop
+            else: rank = self.eval.evaluate(board, [player.show()[0].to_int(), player.show()[1].to_int()])
+            ranks[player] = rank
+
+        n = 0
+        while sum(self.state.bets) > 0:    #to handle n side pots
+
+            #get rank of best hand and bet of each player who is eligible to win sub pot
+            min_live_bet = None    #bet that any eligible player has in current sub pot
+            min_rank = None
+            eligible_winners = []
+            for i in range(self.state.num_players):
+                if not i in self.state.folded and self.state.bets[i] != 0:    #if player hasnt folded and has stake in current sub pot
+                    if min_live_bet == None: min_live_bet = self.state.bets[i]
+                    else: min_live_bet = min(min_live_bet, self.state.bets[i])
+                    player = self.playing[i]
+                    eligible_winners.append(player)
+                    if min_rank == None: min_rank = ranks[player]
+                    else: min_rank = min(min_rank, ranks[player])
+
+            #create sub pot by adding contributions of its members
+            winners = [player for player in eligible_winners if ranks[player] == min_rank]
+            sub_pot = 0
+            for i in range(self.state.num_players):
+                contribution = min(min_live_bet, self.state.bets[i])
+                self.state.bets[i] -= contribution
+                sub_pot += contribution
+
+
+            #pay winners
+            winnings = int(float(sub_pot) / len(winners))
+            for winner in winners:
+                winner.add_chips(winnings)
+                sub_pot -= winnings
+                if self.vocal:
+                    if min_rank == -1:    #everyone else folded
+                        print(winner.get_name(), 'wins', winnings)
+                    else:   
+                        if n == 0: print(winner.get_name(), 'wins', winnings, 'from main pot')
+                        if n > 0: print(winner.get_name(), 'wins', winnings, 'from side pot')
+
+            #give odd chips to player in earliest position
+            if sub_pot > 0:
+                actor = (self.dealer + 1) % self.state.num_players
+                while sub_pot > 0:
+                    player = self.playing[actor]
+                    if player in winners:
+                        player.add_chips(sub_pot)
+                        if self.vocal: print(player.get_name(), 'wins', sub_pot, 'odd chips')
+                        sub_pot = 0
+                    actor = (actor + 1) % self.state.num_players
+
+            n += 1
 
     def open_betting(self, vocal=False): 
 
