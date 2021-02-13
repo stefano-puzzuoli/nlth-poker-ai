@@ -42,5 +42,6 @@
   },
   "devDependencies": {
     "@babel/runtime-corejs3": "^7.12.5"
-  }
+  },
+  "proxy": "http://127.0.0.1:5000/"
 }
