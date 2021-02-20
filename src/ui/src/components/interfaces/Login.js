@@ -1,10 +1,14 @@
 import React, { useRef, useState } from "react"
 import { Form, Button, Card, Container, Alert } from "react-bootstrap"
-import { useAuth } from "../contexts/AuthContext"
+import { useAuth } from "../../contexts/AuthContext"
 import { Link, useHistory } from "react-router-dom"
-import Logo from './Logo';
-import '../Poker.css';
+import Logo from '../helpers/Logo';
+import '../../Game.css';
 
+/**
+ * Login component to allow users to 
+ * login to their accounts and play.
+ */
 export default function Login() {
   const emailRef = useRef()
   const passwordRef = useRef()
@@ -78,7 +82,7 @@ export default function Login() {
               </div>
             </Card.Body>
           </Card>
-          <div className="w-100 text-center mt-2">
+          <div className="toSignUp text-center mt-2">
             Don't have an account? <Link to="/signup">Sign Up</Link>
           </div>
         </div>
