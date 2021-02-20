@@ -1,10 +1,15 @@
 import React, { useRef, useState } from "react"
 import { Form, Button, Card, Container, Alert } from "react-bootstrap"
-import { useAuth } from "../contexts/AuthContext"
+import { useAuth } from "../../contexts/AuthContext"
 import { Link, useHistory } from "react-router-dom"
-import Logo from './Logo';
-import '../Poker.css';
+import Logo from '../helpers/Logo';
+import '../../Game.css';
 
+/**
+ * Signup component to allow users to sign up
+ * to the Poker App and create an account
+ * for storing their game statistics.
+ */
 export default function Signup() {
   const emailRef = useRef()
   const passwordRef = useRef()
