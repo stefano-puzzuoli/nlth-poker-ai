@@ -17,7 +17,9 @@ import Statistics from "./components/interfaces/Statistics";
 import { AuthProvider } from "./contexts/AuthContext";
 import './Game.css';
 
-
+/**
+ * Main Application Component
+ */
 class App extends Component {
 
   render() {
