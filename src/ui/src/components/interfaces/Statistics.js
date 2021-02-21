@@ -6,6 +6,10 @@ import firebaseDb from "../../firebase"
 import Logo from '../helpers/Logo';
 import '../../Game.css';
 
+/**
+ * UserStatistics component to allow users view
+ * their individual game statistics.
+ */
 function UserStatistics({ userStatistics }) {
 
     const history = useHistory()
