@@ -384,14 +384,14 @@ class Game extends Component {
     const { highBet, players, activePlayerIndex, phase } = this.state;
     return (
       <div className='app-background'>
-        <div className="title-logo">
+        <div className="poker-table-div">
+          <div className="title-logo">
           <img src={"./assets/logo.svg"}></img>
           <h3>No-Limit Texas Hold'em Poker</h3>
           <DropdownButton id="dropdown-basic-button" title="">
             <Dropdown.Item href="#"> <Link to="/dashboard">Return to Dashboard</Link></Dropdown.Item>
             <Dropdown.Item href="#"> <Link to="/login">Logout</Link></Dropdown.Item>
           </DropdownButton>
-        <div className="poker-table-div">
           </div>
           <img className="poker-table-image" src={"./assets/table.svg"} alt="Poker Table" />
           {this.renderTable()}
