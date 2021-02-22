@@ -38,6 +38,10 @@ import Player from "../players/Player";
 import PlayerShowdown from "../players/PlayerShowdown";
 import PlayerWin from './PlayerWin';
 
+/**
+ * Game component to allow user to play Poker against
+ * Ai Agents at a table until there is a winner.
+ */
 class Game extends Component {
   state = {
     loading: true,
@@ -120,6 +124,7 @@ class Game extends Component {
     imageLoaderRequest.send();
 
     this.setState(prevState => ({
+      // loading: false,
       players: playersBoughtIn,
       numPlayersActive: players.length,
       numPlayersFolded: 0,
@@ -213,6 +218,7 @@ class Game extends Component {
     this.setState({ clearCards: true })
     const newState = startNextRound(cloneDeep(this.state))
     var winner;
+    // Check win condition
     if (checkWin(newState.players)) {
       const players = newState.players
       players.forEach(element => {
@@ -259,6 +265,7 @@ class Game extends Component {
       phase,
       playerAnimationSwitchboard
     } = this.state;
+    // Reverse Players Array for the sake of taking turns counter-clockwise.
     const reversedPlayers = players.reduce((result, player, index) => {
 
       const isActive = (index === activePlayerIndex);
@@ -366,6 +373,7 @@ class Game extends Component {
           <div className='showdown-player-besthand-cards' style={{ alignItems: 'center' }}>
             {
               bestHand.map((card, index) => {
+                // Reset Animation Delay
                 const cardData = { ...card, animationDelay: 0 }
                 return <Card key={index} cardData={cardData} />
               })
@@ -384,6 +392,7 @@ class Game extends Component {
     const { highBet, players, activePlayerIndex, phase } = this.state;
     return (
       <div className='app-background'>
+        <div className="title-text" style={{ maxWidth: "400px" }}></div>
         <div className="poker-table-div">
           <div className="title-logo">
           <img src={"./assets/logo.svg"}></img>
@@ -392,14 +401,14 @@ class Game extends Component {
             <Dropdown.Item href="#"> <Link to="/dashboard">Return to Dashboard</Link></Dropdown.Item>
             <Dropdown.Item href="#"> <Link to="/login">Logout</Link></Dropdown.Item>
           </DropdownButton>
-          </div>
+        </div>
           <img className="poker-table-image" src={"./assets/table.svg"} alt="Poker Table" />
           {this.renderTable()}
           <div className='community-hand-div' >
             {this.renderTableCommunityCards()}
           </div>
           <div className='pot-div'>
-            <img src={'./assets/pot.svg'} alt="Pot Value" />
+            <img style={{ height: 55, width: 55 }} src={'./assets/pot.svg'} alt="Pot Value" />
             <h5> {`${this.state.pot}`} </h5>
           </div>
         </div>
