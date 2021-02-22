@@ -435,6 +435,9 @@ class Game extends Component {
             (this.state.loading) ? <SpinnerLoading /> :
               (this.state.winnerFound) ? <PlayerWin winner={this.state.winner} /> :
                 this.renderGame()
+
+            // to test Player Wins page
+            // <PlayerWin winner={this.state.winner} difficulty=""/>
           }
 
         </div>
