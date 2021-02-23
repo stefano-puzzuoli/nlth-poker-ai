@@ -2,8 +2,7 @@ from ai_poker.table import Table
 from ai_poker.templates import simulate, BasicPlayer
 from sklearn.ensemble import GradientBoostingRegressor
 
-if __name__ == '__main__':
-
+def main():
     t = Table(small_bind=1, big_blind=2, max_buy_in=200)
 
     players = []
@@ -47,4 +46,9 @@ if __name__ == '__main__':
         simulate(t, n_hands=100000, first_train=2000, n_train=1000, n_buy_in=10)
     
     simulate(t, n_hands=10000, n_buy_in=10000000, vocal=True)
+
+
+if __name__ == '__main__':
+    main()
+
     
