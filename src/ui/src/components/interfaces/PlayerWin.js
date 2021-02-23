@@ -40,7 +40,38 @@ export default function PlayerWin(props) {
                     "num_ultimate_games": 0, "num_ultimate_wins": 0,
                 }
             }
-        }
+            
+            if (difficulty == "beginner") {
+                userStatistics["num_beginner_games"] = userStatistics["num_beginner_games"] + 1
+                if (props.winner.name == "User") 
+                    userStatistics["num_beginner_wins"] = userStatistics["num_beginner_wins"] + 1
+            }
+            else if (difficulty == "intermediate") {
+                userStatistics["num_intermediate_games"] = userStatistics["num_intermediate_games"] + 1
+                if (props.winner.name == "User")
+                    userStatistics["num_intermediate_wins"] = userStatistics["num_intermediate_wins"] + 1
+            }
+            else if (difficulty == "expert") {
+                userStatistics["num_expert_games"] = userStatistics["num_expert_games"] + 1
+                if (props.winner.name == "User") 
+                    userStatistics["num_expert_wins"] = userStatistics["num_expert_wins"] + 1
+            }
+            else if (difficulty == "ultimate") {
+                userStatistics["num_ultimate_games"] = userStatistics["num_ultimate_games"] + 1
+                if (props.winner.name == "User") 
+                    userStatistics["num_ultimate_wins"] = userStatistics["num_ultimate_wins"] + 1
+            }
+
+            firebaseDb.database().ref().child(currentUser.uid).set({
+                "num_beginner_games": userStatistics["num_beginner_games"], "num_beginner_wins": userStatistics["num_beginner_wins"],
+                "num_intermediate_games": userStatistics["num_intermediate_games"], "num_intermediate_wins": userStatistics["num_intermediate_wins"],
+                "num_expert_games": userStatistics["num_expert_games"], "num_expert_wins": userStatistics["num_expert_wins"],
+                "num_ultimate_games": userStatistics["num_ultimate_games"], "num_ultimate_wins": userStatistics["num_ultimate_wins"],
+            })
+
+        }, function (error) {
+            console.log("Error reading player statistics from DB")
+        });
     }
 
     async function handleReturnToDashboard(e) {
