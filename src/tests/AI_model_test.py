@@ -2,8 +2,8 @@ import unittest
 from pandas.testing import assert_frame_equal     # for testing dataframes
 from pandas.testing import assert_series_equal    # for testing series
 import sys
-sys.path.append("..")
-from table import Table
+sys.path.append("..")                             # allows imports from parent directories
+from ai_poker.table import Table
 
 
 class AI_model_test(unittest.TestCase):

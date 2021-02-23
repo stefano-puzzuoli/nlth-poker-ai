@@ -1,8 +1,8 @@
-from ai_poker.player import Player
 from random import shuffle
-from ai_poker.card import Card
-from ai_poker.evaluator.evaluator import Evaluator
-from ai_poker.gamestate import GameState
+from .player import Player
+from .card import Card
+from .evaluator.evaluator import Evaluator
+from .gamestate import GameState
 
 class Table:
 
