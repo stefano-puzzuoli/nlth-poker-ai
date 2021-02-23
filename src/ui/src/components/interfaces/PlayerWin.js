@@ -4,6 +4,10 @@ import { useHistory, useLocation } from "react-router-dom"
 import { useAuth } from "../../contexts/AuthContext"
 import firebaseDb from "../../firebase"
 
+/**
+ * PlayerWin component to display Winning player
+ * name and record user statistics.
+ */
 export default function PlayerWin(props) {
     const { currentUser } = useAuth()
     const history = useHistory()
@@ -16,6 +20,7 @@ export default function PlayerWin(props) {
         recordUserStatistics()
     });
 
+    // Increase games played and/or wins for difficulty played
     async function recordUserStatistics(e) {
         var userStatistics = new Object();
         firebaseDb.database().ref().child(currentUser.uid).once("value").then(function (snapshot) {
@@ -41,24 +46,25 @@ export default function PlayerWin(props) {
                 }
             }
             
+            // Add results to DB
             if (difficulty == "beginner") {
                 userStatistics["num_beginner_games"] = userStatistics["num_beginner_games"] + 1
-                if (props.winner.name == "User") 
+                if (props.winner.name == "User")  // props.winner.name == currentUser.name??
                     userStatistics["num_beginner_wins"] = userStatistics["num_beginner_wins"] + 1
             }
             else if (difficulty == "intermediate") {
                 userStatistics["num_intermediate_games"] = userStatistics["num_intermediate_games"] + 1
-                if (props.winner.name == "User")
+                if (props.winner.name == "User")  // props.winner.name == currentUser.name??
                     userStatistics["num_intermediate_wins"] = userStatistics["num_intermediate_wins"] + 1
             }
             else if (difficulty == "expert") {
                 userStatistics["num_expert_games"] = userStatistics["num_expert_games"] + 1
-                if (props.winner.name == "User") 
+                if (props.winner.name == "User") // props.winner.name == currentUser.name??
                     userStatistics["num_expert_wins"] = userStatistics["num_expert_wins"] + 1
             }
             else if (difficulty == "ultimate") {
                 userStatistics["num_ultimate_games"] = userStatistics["num_ultimate_games"] + 1
-                if (props.winner.name == "User") 
+                if (props.winner.name == "User") // props.winner.name == currentUser.name??
                     userStatistics["num_ultimate_wins"] = userStatistics["num_ultimate_wins"] + 1
             }
 
