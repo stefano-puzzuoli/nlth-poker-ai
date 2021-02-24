@@ -2,7 +2,6 @@
 
 import unittest
 import sys
-from sklearn.ensemble import GradientBoostingRegressor
 sys.path.append("..")                                   # allows imports from parent directories
 from ai_poker.card import Card
 
