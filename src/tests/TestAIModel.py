@@ -1,27 +1,33 @@
 import unittest
-from pandas.testing import assert_frame_equal     # for testing dataframes
-from pandas.testing import assert_series_equal    # for testing series
 import sys
 sys.path.append("..")                             # allows imports from parent directories
 from ai_poker.table import Table
 
 
-class AI_model_test(unittest.TestCase):
+class TestAIModel(unittest.TestCase):
     ''' Class for running unittests on functionalities of game.py '''
 
     def setUp(self):
-        ''' SetUp dataframe '''
+        ''' SetUp Table object '''
         try:
             table = Table(small_bind=10, big_blind=20, max_buy_in=20000)
+            self.assertNotEqual(table, None)
         except IOError:
-            print("Cannot create Poker Table")
+            print("Error: Cannot create Poker Table")
+
+    def test_dataFrame_constructed_as_expected(self):
+        ''' Test that the dataframe read in as expected'''
+        return
+
+
+    ## TEST EACH INDIVIDUAL COMPONENT
 
     
 
 
 def main():
-    df = AI_model_test()
-    df.setUp()
+    test = TestAIModel()
+    test.setUp()
 
 if __name__ == "__main__":
     main()
