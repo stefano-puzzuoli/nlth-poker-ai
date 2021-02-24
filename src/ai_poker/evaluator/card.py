@@ -1,4 +1,6 @@
-class Card ():
+#!/usr/bin/env python3
+
+class Card(object):
     string_ranks = '23456789TJQKA'
     int_ranks = range(13)
     prime_nums = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41]
