@@ -1,7 +1,7 @@
 from random import shuffle
 from ai_poker.evaluator.card import Card
 
-class Deck:
+class Deck(object):
     complete_deck = []
 
     def __init__(self):
