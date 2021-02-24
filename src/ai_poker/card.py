@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
-from ai_poker.evaluator.card import Card as ECard
-
+from ai_poker.evaluator.card_service import CardService 
 class Card:
     n_enumerator = {'T':10, 'J':11, 'Q':12, 'K':13, 'A':14}
     suits = ['c', 'd', 's', 'h']
@@ -27,7 +26,7 @@ class Card:
 
     def get_suit(self): return self._suit
 
-    def to_int(self): return ECard.new(str(self)) #returns int compatible with deuces library
+    def to_int(self): return CardService.new(str(self)) #returns int compatible with deuces library
 
     def __lt__(self, other): return self.get_card_num() < other.get_card_num()
 

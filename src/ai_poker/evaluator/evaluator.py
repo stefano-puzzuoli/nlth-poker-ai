@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import itertools
-from ai_poker.evaluator.card import Card
+from ai_poker.evaluator.card_service import CardService
 from ai_poker.evaluator.deck import Deck
 from ai_poker.evaluator.lookup import LookupTable
 
@@ -24,11 +24,11 @@ class Evaluator(object):
     def five(self, cards):
         if cards[0] & cards[1] & cards[2] & cards[3] & cards[4] & 0xF000:
             handOR = (cards[0] | cards[1] | cards[2] | cards[3] | cards[4]) >> 16
-            prime = Card.prime_product_from_rbits(handOR)
+            prime = CardService.prime_product_from_rbits(handOR)
             return self.table.lookup_flush[prime]
 
         else:
-            prime = Card.prime_product_from_hand(cards)
+            prime = CardService.prime_product_from_hand(cards)
             return self.table.lookup_unsuited[prime]
 
     def six(self, cards):

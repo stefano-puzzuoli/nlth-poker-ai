@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from random import shuffle
-from ai_poker.evaluator.card import Card
+from ai_poker.evaluator.card_service import CardService
 
 class Deck(object):
     complete_deck = []
@@ -24,7 +24,7 @@ class Deck(object):
         return cards
 
     def __str__(self):
-        return Card.print_unicode_cards(self.cards)
+        return CardService.print_unicode_cards(self.cards)
 
     @staticmethod
     def getCompleteDeck():
@@ -32,8 +32,8 @@ class Deck(object):
             return list(Deck.complete_deck)
 
         # create the standard 52 card deck
-        for rank in Card.string_ranks:
+        for rank in CardService.string_ranks:
             for suit,val in Card.char_to_int_rank_suit.items():
-                Deck.complete_deck.append(Card.new(rank + suit))
+                Deck.complete_deck.append(CardService.new(rank + suit))
 
         return list(Deck.complete_deck)

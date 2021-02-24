@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-class Card(object):
+class CardService(object):
     string_ranks = '23456789TJQKA'
     int_ranks = range(13)
     prime_nums = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41]
@@ -30,9 +30,9 @@ class Card(object):
     def new(string):
         r_char = string[0]
         suit_char = string[1]
-        r_int = Card.char_to_int_rank[r_char]
-        suit_int = Card.char_to_int_rank_suit[suit_char]
-        r_prime = Card.prime_nums[r_int]
+        r_int = CardService.char_to_int_rank[r_char]
+        suit_int = CardService.char_to_int_rank_suit[suit_char]
+        r_prime = CardService.prime_nums[r_int]
 
         bitrank = 1 << r_int << 16
         suit = suit_int << 12
@@ -42,12 +42,12 @@ class Card(object):
 
     @staticmethod
     def str_from_int(n):
-        r_int = Card.get_r_int(n)
+        r_int = CardService.get_rank_int(n)
         suit_int = Card.get_suit_int(n)
-        return Card.string_ranks[r_int] + Card.int_to_char_suit[suit_int]
+        return CardService.string_ranks[r_int] + CardService.int_to_char_suit[suit_int]
 
     @staticmethod
-    def get_r_int(n):
+    def get_rank_int(n):
         return (n >> 8) & 0xF
 
     @staticmethod
@@ -66,7 +66,7 @@ class Card(object):
     def make_binary(s):
         bhand = []
         for c in s:
-            bhand.append(Card.new(c))
+            bhand.append(CardService.new(c))
         return bhand
 
     @staticmethod
@@ -80,10 +80,10 @@ class Card(object):
     @staticmethod
     def prime_product_from_rbits(rbits):
         product = 1
-        for i in Card.int_ranks:
+        for i in CardService.int_ranks:
             # if the ith bit is set
             if rbits & (1 << i):
-                product *= Card.prime_nums[i]
+                product *= CardService.prime_nums[i]
 
         return product
 
@@ -112,21 +112,21 @@ class Card(object):
             pass
 
         # suit and rank
-        suit_int = Card.get_suit_int(n)
-        r_int = Card.get_r_int(n)
+        suit_int = CardService.get_suit_int(n)
+        r_int = CardService.get_rank_int(n)
 
         # if we need to color red
-        s = Card.unicode_suits[suit_int]
-        if color and suit_int in Card.unicode_reds:
+        s = CardService.unicode_suits[suit_int]
+        if color and suit_int in CardService.unicode_reds:
             s = colored(s, "red")
 
-        r = Card.string_ranks[r_int]
+        r = CardService.string_ranks[r_int]
 
         return " [ " +r+ " " + s + " ] "
 
     @staticmethod
     def print_unicode(n):
-        print(Card.int_to_unicode(n))
+        print(CardService.int_to_unicode(n))
 
     @staticmethod
     def print_unicode_cards(n):
@@ -134,8 +134,8 @@ class Card(object):
         for i in range(len(n)):
             c = n[i]
             if i != len(n) - 1:
-                output += Card.int_to_unicode(c) + ","
+                output += CardService.int_to_unicode(c) + ","
             else:
-                output += Card.int_to_unicode(c) + " "
+                output += CardService.int_to_unicode(c) + " "
     
         print(output)
