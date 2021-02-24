@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 
 import unittest
-import sys
 from sklearn.ensemble import GradientBoostingRegressor
-sys.path.append("..")                                   # allows imports from parent directories
+import sys
+sys.path.append("..")                                   	# allows imports from parent directories
 from ai_poker.templates import BasicPlayer, simulate
 
 
