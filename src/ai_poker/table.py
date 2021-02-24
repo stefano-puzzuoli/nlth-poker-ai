@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from random import shuffle
 from .player import Player
 from .card import Card

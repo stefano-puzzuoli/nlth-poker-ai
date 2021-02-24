@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from ai_poker.evaluator.card import Card as ECard
 
 class Card:

@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from random import shuffle
 from ai_poker.evaluator.card import Card
 
