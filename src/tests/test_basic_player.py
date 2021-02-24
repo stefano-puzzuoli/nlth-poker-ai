@@ -4,18 +4,31 @@ import unittest
 from sklearn.ensemble import GradientBoostingRegressor
 import sys
 sys.path.append("..")                                   	# allows imports from parent directories
-from ai_poker.templates import simulate
-from ai_poker.player import Player
+from ai_poker.templates import BasicPlayer, simulate
+from ai_poker.gamestate import GameState
 
-
-class TestPlayer(unittest.TestCase):
-	''' Class for running unittests on functionalities of player.py '''
+class TestBasicPlayer(unittest.TestCase):
+	''' Class for running unittests on functionalities of BasicPlayer in templates.py '''
 
 	def setUp(self):
-		''' SetUp Player object '''
+		''' SetUp BasicPlayer object '''
 		regressor = GradientBoostingRegressor()
-		player = Player(name="Player", reg=regressor, bankroll=10**6, n_raises=1000, r_factor=0.7, memory=10**5)
-		self.player = player
+		basicPlayer = BasicPlayer(name="BasicPlayer", reg=regressor, bankroll=10**6, n_raises=1000, r_factor=0.7, memory=10**5)
+		self.players = [basicPlayer]
+		self.player = basicPlayer
+		self.gamestate = GameState(self.players)
+
+	def test_gen_action_features(self):
+		''' SetUp BasicPlayer object '''
+		foldAction = ["fold"]
+		self.assertTrue(self.player.gen_action_features(foldAction, self.gamestate))
+
+		checkAction = ["check"]
+		self.assertTrue(self.player.gen_action_features(checkAction, self.gamestate))
+
+		callAction = ["call"]
+		self.assertTrue(self.player.gen_action_features(callAction, self.gamestate))
+
 
 	def test_buy_chips(self):
 		''' Test the player buy chips in game action'''
@@ -53,8 +66,9 @@ class TestPlayer(unittest.TestCase):
 
 
 def main():
-	test = TestPlayer()
+	test = TestBasicPlayer()
 	test.setUp()
+	test.test_gen_action_features()
 	test.test_buy_chips()
 	test.test_cash_out()
 	test.test_remove_chips()
