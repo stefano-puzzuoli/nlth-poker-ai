@@ -16,7 +16,6 @@ class TestAIModel(unittest.TestCase):
         try:
             table = Table(small_bind=10, big_blind=20, max_buy_in=20000)
             self.table = table
-            self.assertNotEqual(table, None)
         except IOError:
             print("Error: Cannot create Poker Table")
 
