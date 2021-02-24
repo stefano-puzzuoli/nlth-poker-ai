@@ -7,7 +7,7 @@ from ai_poker.card import Card
 
 
 class TestCard(unittest.TestCase):
-	''' Class for running unittests on functionalities of Card.py '''
+	''' Class for running unittests on functionalities of card.py '''
 
 	def setUp(self):
 		''' SetUp Card object and a deck of Cards '''

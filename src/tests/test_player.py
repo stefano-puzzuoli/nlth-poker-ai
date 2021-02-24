@@ -8,7 +8,7 @@ from ai_poker.templates import BasicPlayer, simulate
 
 
 class TestPlayer(unittest.TestCase):
-	''' Class for running unittests on functionalities of Player.py '''
+	''' Class for running unittests on functionalities of player.py '''
 
 	def setUp(self):
 		''' SetUp Player object '''
