@@ -1,9 +1,23 @@
-image: "python:3.6"
+image: python:3.6
+
+variables:
+  REPO: gitlab.computing.dcu.ie
+  GROUP: iidele
+  PROJECT: 2021-ca400-idelegi2-puzzuos2
+
+stages:
+  - init
+  - test
+  - build
+
+cache:
+  key: ${CI_COMMIT_SHA}
+  paths:
+    - src/ui/node_modules
 
 before_script:
-    - cd src/tests
-    - pip install -r requirements.txt
-
+  - cd src/ui
+  - npm ci
 
 ai_poker_ci_start:
      tags:
