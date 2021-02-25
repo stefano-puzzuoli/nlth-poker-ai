@@ -1,0 +1,11 @@
+image: "python:3.6"
+
+variables:
+  REPO: gitlab.computing.dcu.ie
+  GROUP: iidele
+  PROJECT: 2021-ca400-idelegi2-puzzuos2
+
+stages:
+  - init
+  - test
+  - build
