@@ -15,7 +15,6 @@ cache:
   paths:
     - src/ui/node_modules
 
-
 ai_poker_ci_start:
      tags:
        - ci
