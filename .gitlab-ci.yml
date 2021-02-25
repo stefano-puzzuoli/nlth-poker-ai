@@ -19,8 +19,8 @@ before_script:
   - cd src/ui
   - npm ci
   - cd ../tests
-  - sudo apt update
-  - sudo apt install python3-pip
+  - apt update
+  - apt install python3-pip
   - pip3 install -r requirements.txt
 
 
