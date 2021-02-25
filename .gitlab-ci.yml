@@ -15,6 +15,10 @@ cache:
   paths:
     - src/ui/node_modules
 
+before_script:
+- cd src/ui
+- "[ -d node_modules ] || npm ci"
+
 ai_poker_ci_start:
      tags:
        - ci
