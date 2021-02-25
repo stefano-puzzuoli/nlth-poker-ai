@@ -33,7 +33,7 @@ class Deck(object):
 
         # create the standard 52 card deck
         for rank in CardService.string_ranks:
-            for suit,val in Card.char_to_int_rank_suit.items():
+            for suit,val in CardService.char_to_int_rank_suit.items():
                 Deck.complete_deck.append(CardService.new(rank + suit))
 
         return list(Deck.complete_deck)
