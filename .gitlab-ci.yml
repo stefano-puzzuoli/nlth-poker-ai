@@ -10,8 +10,14 @@ stages:
   - test
   - build
 
+cache:
+  key: ${CI_COMMIT_SHA}
+  paths:
+    - src/ui/node_modules
+
+
 ai_poker_ci_start:
      tags:
        - ci
      script:
-       - echo poker_ci_start job with test_ai_model.py running
+       - echo ai_poker_ci_start job with test_ai_model.py running
