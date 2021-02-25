@@ -1,5 +1,3 @@
-image: "python:3.6"
-
 variables:
   REPO: gitlab.computing.dcu.ie
   GROUP: iidele
@@ -16,10 +14,12 @@ cache:
     - src/ui/node_modules
 
 before_script:
-  - cd src/ui
-  - npm ci
-  - cd ../tests
-  - pip install -r requirements.txt
+  image: python:3.6
+  script:
+    - cd src/ui
+    - npm ci
+    - cd ../tests
+    - pip install -r requirements.txt
 
 
 ai_poker_ci_start:
