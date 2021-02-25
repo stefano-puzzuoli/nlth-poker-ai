@@ -39,8 +39,6 @@ def main():
 	test = TestCardService()
 	test.test_get_rank_int()
 	test.test_get_suit_int()
-	test.test_prime_product_from_hand()
-
 
 if __name__ == "__main__":
 	main()
