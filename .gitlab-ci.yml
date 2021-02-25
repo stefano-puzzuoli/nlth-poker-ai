@@ -1,22 +1,20 @@
+#
+# https://gitlab.com/gitlab-org/gitlab/tree/master/lib/gitlab/ci/templates/Python.gitlab-ci.yml
+#
 image: python:latest
 
-
+# Change pip's cache directory to be inside the project directory since we can
+# only cache local items.
 variables:
-  REPO: gitlab.computing.dcu.ie
-  GROUP: iidele
-  PROJECT: 2021-ca400-idelegi2-puzzuos2
-  # Change pip's cache directory to be inside the project directory since we can only cache local items.
   PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
 
-stages:
-  - init
-  - test
-  - build
-
+# Pip's cache doesn't store the python packages
+# https://pip.pypa.io/en/stable/reference/pip_install/#caching
+#
+# If you want to also cache the installed packages, you have to install
+# them in a virtualenv and cache it as well.
 cache:
-  key: ${CI_COMMIT_SHA}
   paths:
-    - src/ui/node_modules
     - .cache/pip
     - venv/
 
@@ -25,10 +23,3 @@ before_script:
   - pip install virtualenv
   - virtualenv venv
   - source venv/bin/activate
-
-
-ai_poker_ci_start:
-     tags:
-       - ci
-     script:
-       - echo ai_poker_ci_start job with test_ai_model.py running
