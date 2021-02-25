@@ -1,9 +1,8 @@
-image: python:3.6
-
+image: "python:3.6"
 
 before_script:
-  - cd src/tests
-  - pip install -r requirements.txt
+    - cd src/tests
+    - pip install -r requirements.txt
 
 
 ai_poker_ci_start:
