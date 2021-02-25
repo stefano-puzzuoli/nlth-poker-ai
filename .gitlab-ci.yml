@@ -9,3 +9,9 @@ stages:
   - init
   - test
   - build
+
+ai_poker_ci_start:
+     tags:
+       - ci
+     script:
+       - echo poker_ci_start job with test_ai_model.py running
