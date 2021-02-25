@@ -18,6 +18,9 @@ cache:
 before_script:
   - cd src/ui
   - npm ci
+  - cd ../tests
+  - pip install -r requirements.txt
+
 
 ai_poker_ci_start:
      tags:
