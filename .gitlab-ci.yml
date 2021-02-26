@@ -18,9 +18,16 @@ cache:
 before_script:
   - cd src/ui
   - npm ci
+  - cd ../test/ai_poker_tests
 
 ai_poker_ci_start:
      tags:
        - ci
      script:
        - echo ai_poker_ci_start job with test_ai_model.py running
+
+
+ai_poker_all_tests:
+    stage: test
+    script:
+      - python -m unittest
