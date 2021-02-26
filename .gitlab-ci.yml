@@ -17,7 +17,6 @@ cache:
 
 before_script:
   - cd src/ui
-  - npm ci
   - cd ../test/ai_poker_tests
 
 ai_poker_ci_start:
