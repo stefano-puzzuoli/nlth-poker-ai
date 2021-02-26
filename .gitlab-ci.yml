@@ -17,7 +17,7 @@ cache:
 
 before_script:
   - cd src/ui
-  - cd ../test/ai_poker_tests
+  - cd ../test
 
 ai_poker_ci_start:
      tags:
@@ -29,4 +29,5 @@ ai_poker_ci_start:
 ai_poker_all_tests:
     stage: test
     script:
+      - pip install -r requirements.txt
       - python -m unittest
