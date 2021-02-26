@@ -42,7 +42,10 @@
     ]
   },
   "devDependencies": {
-    "@babel/runtime-corejs3": "^7.12.5"
+    "@babel/core": "^7.13.1",
+    "@babel/preset-env": "^7.13.5",
+    "@babel/runtime-corejs3": "^7.12.5",
+    "babel-jest": "^26.6.3"
   },
   "proxy": "http://127.0.0.1:5000/"
 }
