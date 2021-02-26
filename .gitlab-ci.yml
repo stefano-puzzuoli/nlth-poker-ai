@@ -18,6 +18,16 @@ cache:
 before_script:
   - cd src/test
 
+init:
+  stage: init
+  image: node
+  script: ['']
+  cache:
+    policy: pull-push
+    key: ${CI_COMMIT_SHA}
+    paths: ['src/ui/node_modules']
+
+
 ai_poker_ci_start:
      tags:
        - ci
