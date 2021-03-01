@@ -36,3 +36,7 @@ test('render winner', () => {
     let tree = component.toJSON()
     expect(tree).toMatchSnapshot()
 })
+
+test('check winner', () => {
+    expect("Player 1").toBe(props.winner)
+})
