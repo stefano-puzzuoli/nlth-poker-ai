@@ -7,6 +7,7 @@ class testLogin extends Component {
     emailRef = useRef('test@test.com')
     passwordRef = useRef('password')
 
+
     render = () => {
         return (
             <>
@@ -34,4 +35,9 @@ test('render user login', () => {
     let tree = component.toJSON()
     expect(tree).toMatchSnapshot()
 
+})
+
+test('match credentials', () => {
+    expect(testLogin.emailRef).toBeUndefined()
+    expect(testLogin.passwordRef).toBeUndefined()
 })
