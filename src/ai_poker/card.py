@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from ai_poker.evaluator.card_service import CardService 
-class Card:
+class Card(object):
     n_enumerator = {'T':10, 'J':11, 'Q':12, 'K':13, 'A':14}
     suits = ['c', 'd', 's', 'h']
 

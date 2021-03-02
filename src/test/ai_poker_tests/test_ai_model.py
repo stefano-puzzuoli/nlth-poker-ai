@@ -5,7 +5,9 @@ from sklearn.ensemble import GradientBoostingRegressor
 import sys
 sys.path.append("..")                                   # allows imports from parent directories
 from ai_poker.table import Table
-from ai_poker.templates import BasicPlayer, simulate
+from ai_poker.simulation import simulate
+from ai_poker.player import Player
+
 
 
 class TestAIModel(unittest.TestCase):
@@ -24,12 +26,12 @@ class TestAIModel(unittest.TestCase):
         for i in range(5):
             regressor = GradientBoostingRegressor()
             name = 'Player ' + str(i+1)
-            p = BasicPlayer(name=name, reg=regressor, bankroll=10**6, n_raises=1000, r_factor=0.7, memory=10**5)
+            p = Player(name=name, reg=regressor, bankroll=10**6, n_raises=1000, r_factor=0.7, memory=10**5)
             players.append(p)
 
         regressor = GradientBoostingRegressor()
         name = 'Player ' + str(i+1)
-        p = BasicPlayer(name="User", reg=regressor, bankroll=10**6, n_raises=1000, r_factor=0.7, memory=10**5)
+        p = Player(name="User", reg=regressor, bankroll=10**6, n_raises=1000, r_factor=0.7, memory=10**5)
         players.append(p)
 
         for p in players: self.table.add_player(p)
@@ -60,12 +62,12 @@ class TestAIModel(unittest.TestCase):
         for i in range(5):
             r = GradientBoostingRegressor()
             name = 'Player ' + str(i+1)
-            p = BasicPlayer(name=name, reg=r, bankroll=10**6, n_raises=1000, r_factor=0.7, memory=10**5)
+            p = Player(name=name, reg=r, bankroll=10**6, n_raises=1000, r_factor=0.7, memory=10**5)
             players.append(p)
 
         r = GradientBoostingRegressor()
         name = 'Player ' + str(i+1)
-        p = BasicPlayer(name="User", reg=r, bankroll=10**6, n_raises=1000, r_factor=0.7, memory=10**5)
+        p = Player(name="User", reg=r, bankroll=10**6, n_raises=1000, r_factor=0.7, memory=10**5)
         players.append(p)
 
         for p in players: otherTable.add_player(p)

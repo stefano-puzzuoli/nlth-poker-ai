@@ -6,7 +6,7 @@ from .card import Card
 from .evaluator.evaluator import Evaluator
 from .gamestate import GameState
 
-class Table:
+class Table(object):
 
     """
     This class is primarily responsible for core holdem simulation logic. Basic usage consists of 

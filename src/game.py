@@ -1,5 +1,6 @@
 from ai_poker.table import Table
-from ai_poker.templates import simulate, BasicPlayer
+from ai_poker.simulation import simulate
+from ai_poker.player import Player
 from sklearn.ensemble import GradientBoostingRegressor
 
 def main():
@@ -8,18 +9,18 @@ def main():
     players = []
     for i in range(5):
         
-        #create BasicPlayer that uses GradientBoostingRegressor as machine learning model
+        #create Player that uses GradientBoostingRegressor as machine learning model
         #with wealth of 1 million and 10 discrete choices for raising,
         #with each raise choice .7 times the next largest raise choice
         #Player forgets training samples older than 100,000
         r = GradientBoostingRegressor()
         name = 'Player ' + str(i+1)
-        p = BasicPlayer(name=name, reg=r, bankroll=10**6, n_raises=1000, r_factor=0.7, memory=10**5)
+        p = Player(name=name, reg=r, bankroll=10**6, n_raises=1000, r_factor=0.7, memory=10**5)
         players.append(p)
 
     r = GradientBoostingRegressor()
     name = 'Player ' + str(i+1)
-    p = BasicPlayer(name="User", reg=r, bankroll=10**6, n_raises=1000, r_factor=0.7, memory=10**5)
+    p = Player(name="User", reg=r, bankroll=10**6, n_raises=1000, r_factor=0.7, memory=10**5)
     players.append(p)
 
     for p in players: t.add_player(p)

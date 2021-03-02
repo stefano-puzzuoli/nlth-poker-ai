@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-class GameState:
+class GameState(object):
 
     """This class is responisble for holding all game data that is accessible to Players"""
 

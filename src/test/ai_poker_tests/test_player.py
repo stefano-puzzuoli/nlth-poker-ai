@@ -4,7 +4,7 @@ import unittest
 from sklearn.ensemble import GradientBoostingRegressor
 import sys
 sys.path.append("..")                                   	# allows imports from parent directories
-from ai_poker.templates import simulate
+from ai_poker.simulation import simulate
 from ai_poker.player import Player
 
 
