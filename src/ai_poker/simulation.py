@@ -18,7 +18,8 @@ def simulate(table, num_hands, hands_before_training=0, hands_between_training=0
     narrate_hands - hands are narrated by table when narrate_hands is True (bool)
     """
 
-    print('Beginning simulation of', num_hands, 'hands.')
+    print("Agent training starting...")
+    print(num_hands, 'hands will be simulated between agents.\n')
 
     players = table.get_players()
     # holds chips_amount history of all players
@@ -44,7 +45,7 @@ def simulate(table, num_hands, hands_before_training=0, hands_between_training=0
             print(hand - 1, 'hands simulated.')
 
         if hand == next_train:
-            print('Players are training...')
+            print('Agents are training...')
             for player in players:
                 player.train_player()
             next_train = hand + hands_between_training
@@ -52,7 +53,7 @@ def simulate(table, num_hands, hands_before_training=0, hands_between_training=0
 
         if hand == next_buy_in:
             if narrate_hands:
-                print('Players are cashing out and buying in.')
+                print('Agents are cashing out and buying in.')
             for player in players:
                 player.cash_out()
                 if player.get_stack() < max_buy_in:
@@ -66,7 +67,7 @@ def simulate(table, num_hands, hands_before_training=0, hands_between_training=0
         # Hand failure
         if not played:
             if next_buy_in == hand + hands_between_buyin:  # if players just bought in
-                print('All or all but one players are bankrupt.')
+                print('All or all but one Agent are bankrupt.')
                 break
 
             # buy in and redo hand

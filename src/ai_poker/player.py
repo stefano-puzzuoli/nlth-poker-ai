@@ -1,7 +1,7 @@
 
 import random
 
-import numpy as np
+import numpy
 
 
 class Player(object):
@@ -84,7 +84,7 @@ class Player(object):
                 all_features.append(
                     game_features + self.gen_action_features(a, game_state))
             p_return = self.regressor.predict(all_features)
-            action = all_actions[np.argmax(p_return)]
+            action = all_actions[numpy.argmax(p_return)]
 
         # store action features
         action_features = self.gen_action_features(action, game_state)
@@ -142,9 +142,9 @@ class Player(object):
         """ This method accepts the dictionary game_state and returns the set of all possible actions. """
 
         to_call = game_state.to_call  # amount necessary to call
-        min_raise = game_state.min_raise  # new total bet amount necessary to raise
+        min_raise_amount = game_state.min_raise_amount  # new total bet amount necessary to raise
         current_bets = game_state.current_bets
-        my_current_bet = current_bets[game_state.actor]
+        my_current_bet = current_bets[game_state.currently_active]
         # maximum bet player could have in pot, including chips already in pot
         max_bet = (self.stack + my_current_bet) // 5
 
@@ -155,7 +155,7 @@ class Player(object):
             actions.append(('fold',))
             return actions
 
-        if max_bet < min_raise:  # player has enough chips to call but not to raise
+        if max_bet < min_raise_amount:  # player has enough chips to call but not to raise
             if to_call == 0:
                 actions.append(('check',))
             else:
@@ -167,7 +167,7 @@ class Player(object):
         # raise actions include a raise to amount, not a raise by amount
         for r in self.r_choices:
             amount = int(self.stack * r)
-            if amount >= min_raise and amount <= max_bet:
+            if amount >= min_raise_amount and amount <= max_bet:
                 actions.append(('raise', amount))
 
         # player has enough chips to raise

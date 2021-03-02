@@ -34,12 +34,12 @@ class TestTableState(unittest.TestCase):
 		''' Test that a TableState object is reset as expected (behaviour expected before each hand)'''
 
 		self.assertEqual(self.tablestate.to_call, None)
-		self.assertEqual(self.tablestate.min_raise, None) 
-		self.assertEqual(self.tablestate.num_players, len(self.players)) 
+		self.assertEqual(self.tablestate.min_raise_amount, None) 
+		self.assertEqual(self.tablestate.num_active_players, len(self.players)) 
 		self.assertFalse(self.tablestate.folded) 
 		self.assertFalse(self.tablestate.all_in) 
 		self.assertFalse(self.tablestate.cards) 
-		self.assertFalse(self.tablestate.actor) 
+		self.assertFalse(self.tablestate.currently_active) 
 
 
 def main():
