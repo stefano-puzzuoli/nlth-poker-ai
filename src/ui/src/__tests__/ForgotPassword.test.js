@@ -8,7 +8,6 @@ import { Link } from 'react-router-dom'
  * for testing purposes. This component only 
  * renders the elements necessary for testing.
  */ 
- 
 class testForgotPassword extends Component {
 
     emailRef = useRef('test@test.com')
@@ -55,7 +54,6 @@ class testForgotPassword extends Component {
 Test to verify that the ForgotPassword
 component renders correctly.
 */
-
 test('render forget password form', () => {
     const component = renderer.create(
         <testForgotPassword/>
