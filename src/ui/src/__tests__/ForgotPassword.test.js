@@ -53,4 +53,6 @@ test('render forget password form', () => {
     expect(tree).toMatchSnapshot()
 })
 
-
+test('match credentials', () => {
+    expect(testForgotPassword.emailRef).toBeUndefined()
+})
