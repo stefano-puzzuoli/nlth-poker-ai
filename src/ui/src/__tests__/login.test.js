@@ -2,6 +2,11 @@ import React, {useRef, Component} from 'react';
 import { Form, Button} from "react-bootstrap";
 import renderer from 'react-test-renderer'
 
+/**
+ * A mock version of the Login component 
+ * for testing purposes. This component only 
+ * renders the elements necessary for testing.
+ */ 
 class testLogin extends Component {
 
     emailRef = useRef('test@test.com')
@@ -28,6 +33,11 @@ class testLogin extends Component {
         )
     }
 }
+
+/* 
+Test to verify that the Login
+component renders correctly.
+*/
 test('render user login', () => {
     const component = renderer.create(
         <testLogin/>
@@ -37,6 +47,10 @@ test('render user login', () => {
 
 })
 
+/* 
+Test to verify that the credentials entered by the user
+are consistent with the credentials rendered.
+ */
 test('match credentials', () => {
     expect(testLogin.emailRef).toBeUndefined()
     expect(testLogin.passwordRef).toBeUndefined()
