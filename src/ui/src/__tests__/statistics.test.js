@@ -2,6 +2,11 @@ import React, {Component} from 'react';
 import { Card, Button, Alert} from "react-bootstrap";
 import renderer from 'react-test-renderer'
 
+/**
+ * A mock version of the Statistics component 
+ * for testing purposes. This component only 
+ * renders the elements necessary for testing.
+ */ 
 class testStatistics extends Component {
 
     currentUser = {
@@ -72,6 +77,10 @@ class testStatistics extends Component {
     }
 }
 
+/* 
+Test to verify that the Statistics
+component renders correctly.
+*/
 test('render statistics', () => {
     const component = renderer.create(
         <testStatistics/>
@@ -81,6 +90,10 @@ test('render statistics', () => {
 
 })
 
+/* 
+Test to verify that the credentials entered by the user
+are consistent with the credentials rendered.
+ */
 test('match credentials', () => {
     expect(testStatistics.currentUser).toBeUndefined()
     expect(testStatistics.userStatistics).toBeUndefined()
