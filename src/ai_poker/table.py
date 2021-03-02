@@ -4,7 +4,7 @@ from random import shuffle
 from .player import Player
 from .card import Card
 from .evaluator.evaluator import Evaluator
-from .gamestate import GameState
+from .tablestate import TableState
 
 class Table(object):
 
@@ -55,7 +55,7 @@ class Table(object):
         if len(self.playing) <= 1: return False
             
         #reset table game state before hand
-        self.state = GameState(self.playing)
+        self.state = TableState(self.playing)
     
         #commence simulation
         self.gen_deck()
@@ -273,7 +273,7 @@ class Table(object):
 
         """ 
         This method accepts a tuple of the form (action string, amount) or (action string,) and changes
-        the GameState, self.state, appropriately.
+        the TableState, self.state, appropriately.
         """
         actor = self.state.actor
         player = self.playing[actor]

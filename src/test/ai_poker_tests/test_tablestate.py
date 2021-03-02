@@ -4,15 +4,15 @@ import unittest
 from sklearn.ensemble import GradientBoostingRegressor
 import sys
 sys.path.append("..")                                   # allows imports from parent directories
-from ai_poker.gamestate import GameState
+from ai_poker.tablestate import TableState
 from ai_poker.player import Player
 
 
-class TestGameState(unittest.TestCase):
-	''' Class for running unittests on functionalities of gamestate.py '''
+class TestTableState(unittest.TestCase):
+	''' Class for running unittests on functionalities of tablestate.py '''
 
 	def setUp(self):
-		''' SetUp GameState object '''
+		''' SetUp TableState object '''
 
 		# add players to table
 		players = []
@@ -28,24 +28,24 @@ class TestGameState(unittest.TestCase):
 		players.append(p)
 
 		self.players = players
-		self.gamestate = GameState(players)
+		self.tablestate = TableState(players)
 
-	def test_gamestate_set_up(self):
-		''' Test that a GameState object is reset as expected (behaviour expected before each hand)'''
+	def test_tablestate_set_up(self):
+		''' Test that a TableState object is reset as expected (behaviour expected before each hand)'''
 
-		self.assertEqual(self.gamestate.to_call, None)
-		self.assertEqual(self.gamestate.min_raise, None) 
-		self.assertEqual(self.gamestate.num_players, len(self.players)) 
-		self.assertFalse(self.gamestate.folded) 
-		self.assertFalse(self.gamestate.all_in) 
-		self.assertFalse(self.gamestate.cards) 
-		self.assertFalse(self.gamestate.actor) 
+		self.assertEqual(self.tablestate.to_call, None)
+		self.assertEqual(self.tablestate.min_raise, None) 
+		self.assertEqual(self.tablestate.num_players, len(self.players)) 
+		self.assertFalse(self.tablestate.folded) 
+		self.assertFalse(self.tablestate.all_in) 
+		self.assertFalse(self.tablestate.cards) 
+		self.assertFalse(self.tablestate.actor) 
 
 
 def main():
-	test = TestGameState()
+	test = TestTableState()
 	test.setUp()
-	test.test_gamestate_set_up()
+	test.test_tablestate_set_up()
 
 if __name__ == "__main__":
 	main()

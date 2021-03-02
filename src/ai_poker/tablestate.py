@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
-class GameState(object):
+class TableState(object):
 
-    """This class is responisble for holding all game data that is accessible to Players"""
+    """This class is responisible for holding all game data that is accessible to Players"""
 
     def __init__(self, players):
 

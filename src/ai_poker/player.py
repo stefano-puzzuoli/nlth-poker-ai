@@ -9,7 +9,7 @@ class Player(object):
 
     """
     This class keeps a player's current stack size and bankroll and is primarily responsible for
-    receiving GameStates and returning actions.
+    receiving TableStates and returning actions.
     """
 
     def __init__(self, name, bankroll, n_raises, memory, r_factor=None, reg=None):
