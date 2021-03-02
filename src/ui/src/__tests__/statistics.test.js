@@ -80,3 +80,8 @@ test('render statistics', () => {
     expect(tree).toMatchSnapshot()
 
 })
+
+test('match credentials', () => {
+    expect(testStatistics.currentUser).toBeUndefined()
+    expect(testStatistics.userStatistics).toBeUndefined()
+})
