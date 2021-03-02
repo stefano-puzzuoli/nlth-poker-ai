@@ -2,6 +2,11 @@ import React, {Component} from 'react';
 import { Card, Button, Alert} from "react-bootstrap";
 import renderer from 'react-test-renderer'
 
+/**
+ * A mock version of the Dashboard component 
+ * for testing purposes. This component only 
+ * renders the elements necessary for testing.
+ */ 
 class testDashboard extends Component {
 
     currentUser = {
@@ -40,6 +45,10 @@ class testDashboard extends Component {
     }
 }
 
+/* 
+Test to verify that the Dashboard
+component renders correctly.
+*/
 test('render dashboard', () => {
     const component = renderer.create(
         <testDashboard/>
@@ -49,6 +58,10 @@ test('render dashboard', () => {
 
 })
 
+/* 
+Test to verify that the credentials entered by the user
+are consistent with the credentials rendered.
+ */
 test('match credentials', () => {
     expect(testDashboard.currentUser).toBeUndefined()
 })
