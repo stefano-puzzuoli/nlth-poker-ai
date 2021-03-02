@@ -52,8 +52,8 @@ class testForgotPassword extends Component {
 }
 
 /* 
-This test verifies that the ForgotPassword
-component renderes correctly.
+Test to verify that the ForgotPassword
+component renders correctly.
 */
 
 test('render forget password form', () => {
@@ -65,7 +65,7 @@ test('render forget password form', () => {
 })
 
 /* 
-Test to verify the credentials entered by the user
+Test to verify that the credentials entered by the user
 are consistent with the credentials rendered.
  */
 test('match credentials', () => {
