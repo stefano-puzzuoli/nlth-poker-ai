@@ -48,3 +48,7 @@ test('render dashboard', () => {
     expect(tree).toMatchSnapshot()
 
 })
+
+test('match credentials', () => {
+    expect(testDashboard.currentUser).toBeUndefined()
+})
