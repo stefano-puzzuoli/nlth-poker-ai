@@ -7,14 +7,12 @@ import renderer from 'react-test-renderer'
  * for testing purposes. This component only 
  * renders the elements necessary for testing.
  */ 
-
 class testSignup extends Component {
 
     password = 'password'
     emailRef = useRef('test@test.com')
     passwordRef = useRef(this.password)
     passwordConfirmRef = useRef(this.password)
-
 
     render = () => {
         return (
@@ -45,7 +43,6 @@ class testSignup extends Component {
 Test to verify that the Signup
 component renders correctly.
 */
-
 test('render user signup', () => {
     const component = renderer.create(
         <testSignup/>
