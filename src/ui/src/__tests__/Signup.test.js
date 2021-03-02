@@ -2,6 +2,12 @@ import React, {useRef, Component} from 'react';
 import { Form, Button} from "react-bootstrap";
 import renderer from 'react-test-renderer'
 
+/**
+ * A mock version of the Signup component 
+ * for testing purposes. This component only 
+ * renders the elements necessary for testing.
+ */ 
+
 class testSignup extends Component {
 
     password = 'password'
@@ -35,6 +41,11 @@ class testSignup extends Component {
     }
 }
 
+/* 
+Test to verify that the Signup
+component renders correctly.
+*/
+
 test('render user signup', () => {
     const component = renderer.create(
         <testSignup/>
@@ -44,6 +55,10 @@ test('render user signup', () => {
 
 })
 
+/* 
+Test to verify that the credentials entered by the user
+are consistent with the credentials rendered.
+ */
 test('match credentials', () => {
     expect(testSignup.emailRef).toBeUndefined()
     expect(testSignup.passwordRef).toBeUndefined()
