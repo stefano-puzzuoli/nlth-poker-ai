@@ -3,6 +3,12 @@ import { Card, Button, Alert} from "react-bootstrap";
 import renderer from 'react-test-renderer'
 import { Link } from 'react-router-dom'
 
+/**
+ * A mock version of the ForgotPassword component 
+ * for testing purposes. This component only 
+ * renders the elements necessary for testing.
+ */ 
+ 
 class testForgotPassword extends Component {
 
     emailRef = useRef('test@test.com')
@@ -45,6 +51,11 @@ class testForgotPassword extends Component {
     }
 }
 
+/* 
+This test verifies that the ForgotPassword
+component renderes correctly.
+*/
+
 test('render forget password form', () => {
     const component = renderer.create(
         <testForgotPassword/>
@@ -53,6 +64,10 @@ test('render forget password form', () => {
     expect(tree).toMatchSnapshot()
 })
 
+/* 
+Test to verify the credentials entered by the user
+are consistent with the credentials rendered.
+ */
 test('match credentials', () => {
     expect(testForgotPassword.emailRef).toBeUndefined()
 })
