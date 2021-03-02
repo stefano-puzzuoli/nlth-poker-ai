@@ -43,3 +43,8 @@ test('render user signup', () => {
     expect(tree).toMatchSnapshot()
 
 })
+
+test('match credentials', () => {
+    expect(testSignup.emailRef).toBeUndefined()
+    expect(testSignup.passwordRef).toBeUndefined()
+})
