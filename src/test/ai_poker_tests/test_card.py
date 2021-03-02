@@ -32,7 +32,7 @@ class TestCard(unittest.TestCase):
 			self.assertEqual(self.deck[i]._card_num, otherDeck[i]._card_num)
 			self.assertEqual(self.deck[i]._suit, otherDeck[i]._suit)
 
-	def test_card_value(self):
+	def test_card_num(self):
 		''' Test that card values are assigned as expected'''
 
 		# check 'T' because 10 is converted to 'T'
@@ -48,7 +48,7 @@ def main():
 	test = TestCard()
 	test.setUp()
 	test.test_deck_of_cards()
-	test.test_card_value()
+	test.test_card_num()
 
 if __name__ == "__main__":
 	main()

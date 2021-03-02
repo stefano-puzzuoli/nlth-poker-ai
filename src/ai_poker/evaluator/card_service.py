@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 
 class CardService(object):
     string_ranks = '23456789TJQKA'
@@ -27,7 +26,7 @@ class CardService(object):
     unicode_reds = [2, 4]
 
     @staticmethod
-    def new(string):
+    def createEvaluation(string):
         r_char = string[0]
         suit_char = string[1]
         r_int = CardService.char_to_int_rank[r_char]
@@ -66,7 +65,7 @@ class CardService(object):
     def make_binary(s):
         bhand = []
         for c in s:
-            bhand.append(CardService.new(c))
+            bhand.append(CardService.createEvaluation(c))
         return bhand
 
     @staticmethod

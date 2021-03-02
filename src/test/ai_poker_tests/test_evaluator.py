@@ -34,7 +34,7 @@ class TestEvaluator(unittest.TestCase):
 			#Player forgets training samples older than 100,000
 			r = GradientBoostingRegressor()
 			name = 'Player ' + str(i+1)
-			p = Player(name=name, reg=r, bankroll=10**6, n_raises=1000, r_factor=0.7, memory=10**5)
+			p = Player(name=name, reg=r, chips_amount=10**6, raise_choices=1000, raise_increase=0.7, memory=10**5)
 			players.append(p)
 
 		

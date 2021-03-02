@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 
 from random import shuffle
 from .player import Player
@@ -35,14 +34,14 @@ class Table(object):
         self.sit_out.append(player)
         self.players.append(player)
 
-    def play_hand(self, vocal=False):
+    def play_hand(self, narrate_hands=False):
 
         """ 
-        This method simulates one hand between added players. Narrates hand if vocal is True.
+        This method simulates one hand between added players. Narrates hand if narrate_hands is True.
         Returns False if unable to play hand. 
         """
 
-        self.vocal = vocal
+        self.narrate_hands = narrate_hands
 
         #add players to hand who are eligible to play
         for player in self.sit_out[:]:
@@ -60,10 +59,10 @@ class Table(object):
         #commence simulation
         self.gen_deck()
         self.deal_hole_cards()
-        self.pre_flop(vocal)
-        self.flip(3, vocal)
-        self.flip(1, vocal)
-        self.flip(1, vocal)
+        self.pre_flop(narrate_hands)
+        self.flip(3, narrate_hands)
+        self.flip(1, narrate_hands)
+        self.flip(1, narrate_hands)
         self.pay_winners()
         for player in self.playing: player.end_hand()
 
@@ -83,7 +82,7 @@ class Table(object):
         self.dealer = 0
         while self.playing[self.dealer] != dealer: self.dealer = (self.dealer + 1) % self.state.num_players
 
-        if vocal: print()
+        if narrate_hands: print()
         return True
 
     def gen_deck(self):
@@ -100,11 +99,11 @@ class Table(object):
 
         for player in self.playing:
             player.take_hole_cards((self.deck[0],self.deck[1]))
-            if self.vocal: print(player.get_name() + '(' + str(player.get_stack()) + ')', 'dealt', self.deck[0], 'and', self.deck[1])
+            if self.narrate_hands: print(player.get_name() + '(' + str(player.get_stack()) + ')', 'dealt', self.deck[0], 'and', self.deck[1])
             self.deck = self.deck[2:]
-        if self.vocal: print()
+        if self.narrate_hands: print()
 
-    def pre_flop(self, vocal=False):
+    def pre_flop(self, narrate_hands=False):
 
         """ This method posts the blinds and commences betting. """
 
@@ -123,15 +122,15 @@ class Table(object):
         #post blinds
         self.state.current_bets[sb_position] += self.small_bind
         self.playing[sb_position].remove_chips(self.small_bind)
-        if self.vocal:print(self.playing[sb_position].get_name(), 'posts small blind of', self.small_bind)
+        if self.narrate_hands:print(self.playing[sb_position].get_name(), 'posts small blind of', self.small_bind)
         self.state.current_bets[bb_position] += self.big_blind
         self.playing[bb_position].remove_chips(self.big_blind)
-        if self.vocal: print(self.playing[bb_position].get_name(), 'posts big blind of', self.big_blind)
+        if self.narrate_hands: print(self.playing[bb_position].get_name(), 'posts big blind of', self.big_blind)
 
-        self.open_betting(vocal)
-        if self.vocal: print()
+        self.open_betting(narrate_hands)
+        if self.narrate_hands: print()
 
-    def flip(self, num_cards, vocal=False):  
+    def flip(self, num_cards, narrate_hands=False):  
 
         """ This method flips num_cards cards from deck to be seen by players and then commences betting. """
 
@@ -141,25 +140,25 @@ class Table(object):
 
         #flip num_cards
         self.state.cards += self.deck[:num_cards]
-        if self.vocal: print([str(c) for c in self.state.cards])
+        if self.narrate_hands: print([str(c) for c in self.state.cards])
         self.deck = self.deck[num_cards:]
         
         self.state.actor = (self.dealer + 1) % self.state.num_players    #first actor is player after dealer
         
-        self.open_betting(vocal)
-        if self.vocal: print()
+        self.open_betting(narrate_hands)
+        if self.narrate_hands: print()
 
     def pay_winners(self):
 
         """ This method distributes the pot to the winner(s). """
 
-        board = [card.to_int() for card in self.state.cards]
+        board = [card.to_evaluation_int() for card in self.state.cards]
         
         #evaluate rank of hand for each player
         ranks = {}
         for player in self.playing:
             if not board: rank = -1    #all players but one have folded before flop
-            else: rank = self.eval.evaluate(board, [player.show()[0].to_int(), player.show()[1].to_int()])
+            else: rank = self.eval.evaluate(board, [player.show()[0].to_evaluation_int(), player.show()[1].to_evaluation_int()])
             ranks[player] = rank
 
         n = 0
@@ -192,7 +191,7 @@ class Table(object):
             for winner in winners:
                 winner.add_chips(winnings)
                 sub_pot -= winnings
-                if self.vocal:
+                if self.narrate_hands:
                     if min_rank == -1:    #everyone else folded
                         print(winner.get_name(), 'wins', winnings)
                     else:   
@@ -206,13 +205,13 @@ class Table(object):
                     player = self.playing[actor]
                     if player in winners:
                         player.add_chips(sub_pot)
-                        if self.vocal: print(player.get_name(), 'wins', sub_pot, 'odd chips')
+                        if self.narrate_hands: print(player.get_name(), 'wins', sub_pot, 'odd chips')
                         sub_pot = 0
                     actor = (actor + 1) % self.state.num_players
 
             n += 1
 
-    def open_betting(self, vocal=False): 
+    def open_betting(self, narrate_hands=False): 
 
         """ The method starts a round of betting. """
 
@@ -243,7 +242,7 @@ class Table(object):
             self.state.to_call = max(self.state.current_bets) - self.state.current_bets[actor]    #player must call maximum bet to call
 
             #request player action and parse action
-            action = self.playing[actor].act(self.state, vocal)
+            action = self.playing[actor].act(self.state, narrate_hands)
             self.parse_action(action)
             if action[0] == 'raise': last_to_raise = actor
             
@@ -259,7 +258,7 @@ class Table(object):
                     self.state.current_bets[i] = below_max
                     player = self.playing[i]
                     player.add_chips(max_bet - below_max)
-                    if self.vocal: print(max_bet - below_max, 'uncalled chips return to', player.get_name())
+                    if self.narrate_hands: print(max_bet - below_max, 'uncalled chips return to', player.get_name())
 
         self.state.actor = None    #action has closed
         
@@ -282,11 +281,11 @@ class Table(object):
 
         if action[0] == 'check':
             if current_bet < maximum: raise Exception('Player must call to remain in the pot.')
-            if self.vocal: print(player.get_name(), 'checks.')
+            if self.narrate_hands: print(player.get_name(), 'checks.')
         
         elif action[0] == 'fold': 
             self.state.folded.append(actor)
-            if self.vocal: print(player.get_name(), 'folds.') 
+            if self.narrate_hands: print(player.get_name(), 'folds.') 
         
         elif action[0] == 'call': 
             to_call = self.state.to_call
@@ -295,12 +294,12 @@ class Table(object):
             if stack <= to_call:    #player has all-in called
                 self.state.current_bets[actor] += stack
                 player.remove_chips(stack)
-                if self.vocal: print(player.get_name(), 'all-in calls with', stack)
+                if self.narrate_hands: print(player.get_name(), 'all-in calls with', stack)
                 self.state.all_in.append(actor)
             else:
                 self.state.current_bets[actor] = maximum
                 player.remove_chips(maximum - current_bet)
-                if self.vocal: print(player.get_name(), 'calls', maximum - current_bet)
+                if self.narrate_hands: print(player.get_name(), 'calls', maximum - current_bet)
         
         elif action[0] == 'raise' or action[0] == 'bet':    #raising is interpreted as "raise to" a a new total bet
             raise_to = action[1]    #new total bet of player
@@ -314,7 +313,7 @@ class Table(object):
             self.state.num_raises[actor] += 1
             all_in  = player.get_stack() == 0
             if all_in: self.state.all_in.append(actor)
-            if self.vocal: 
+            if self.narrate_hands: 
                 if not all_in: print(player.get_name(), 'raises', raise_by, 'to', raise_to)
                 else: print(player.get_name(), 'raises all-in', raise_by, 'to', raise_to)
         

@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 
 from random import shuffle
 from ai_poker.evaluator.card_service import CardService
@@ -34,6 +33,6 @@ class Deck(object):
         # create the standard 52 card deck
         for rank in CardService.string_ranks:
             for suit,val in CardService.char_to_int_rank_suit.items():
-                Deck.complete_deck.append(CardService.new(rank + suit))
+                Deck.complete_deck.append(CardService.createEvaluation(rank + suit))
 
         return list(Deck.complete_deck)

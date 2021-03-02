@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 
 import random
 
@@ -8,25 +7,25 @@ import numpy as np
 class Player(object):
 
     """
-    This class keeps a player's current stack size and bankroll and is primarily responsible for
+    This class keeps a player's current stack size and chips_amount and is primarily responsible for
     receiving TableStates and returning actions.
     """
 
-    def __init__(self, name, bankroll, n_raises, memory, r_factor=None, reg=None):
+    def __init__(self, name, chips_amount, raise_choices, memory, raise_increase=None, reg=None):
         """ 
         Parameters
 
         name - player's name (string)
-        bankroll- player's net worth (int)
-        n_raises - number of raise choices player has, all-in always included (int)
+        chips_amount- player's net worth (int)
+        raise_choices - number of raise choices player has, all-in always included (int)
         memory - player forgets oldest stored features/labels that exceed memory in quantity (int)
-        r_factor - each raise choice is r_factor times the next largest raise choice (float)
+        r_raise_increasefactor - each raise choice is raise_increase times the next largest raise choice (float)
         reg - machine learning regressor, must be sklearn or implement 'fit' and 'predict'
         """
 
         self.name = name  # for distinction from other players
         self.fit = False  # True when self.regressor has been fit
-        self.bankroll = bankroll  # total wealth of player
+        self.chips_amount = chips_amount  # total wealth of player
         self.stack = 0  # chips that player has on table
         self.features = []  # features associated with each game_state seen
         self.stacks = []  # stack size at each time that features are recorded
@@ -36,36 +35,36 @@ class Player(object):
 
         self.train = True  # player will not update regressor if self.train is False
 
-        if r_factor == None and n_raises != 1:
-            raise Exception('Must set \'r_factor\' when \'n_raises\ is not 1.')
-        if r_factor <= 0 or r_factor >= 1:
-            raise Exception('r_factor must be between 0 and 1, exclusive.')
+        if raise_increase == None and raise_choices != 1:
+            raise Exception('Must set \'raise_increase\' when \'raise_choices\ is not 1.')
+        if raise_increase <= 0 or raise_increase >= 1:
+            raise Exception('raise_increase must be between 0 and 1, exclusive.')
 
         # generate logrithmically distributed raise choices, as multiples of stack
         self.r_choices = [1]
-        for i in range(n_raises - 1):
-            self.r_choices = [self.r_choices[0] * r_factor] + self.r_choices
+        for i in range(raise_choices - 1):
+            self.r_choices = [self.r_choices[0] * raise_increase] + self.r_choices
 
     def buy_chips(self, new_stack):
-        """ This method moves chips to player's bankroll such that player's stack is 'new_stack'. """
+        """ This method moves chips to player's chips_amount such that player's stack is 'new_stack'. """
 
-        if new_stack > self.bankroll + self.stack:
+        if new_stack > self.chips_amount + self.stack:
             return False  # player cannot buy chips
 
         if new_stack < self.stack:
             raise Exception('Requested stack is smaller than old stack.')
 
         move = new_stack - self.stack
-        self.bankroll -= move
+        self.chips_amount -= move
         self.stack += move
 
         return True
 
     def cash_out(self):
-        self.bankroll += self.stack
+        self.chips_amount += self.stack
         self.stack = 0
 
-    def act(self, game_state, vocal=False):
+    def act(self, game_state, narrate_hands=False):
         """ 
         Accepts a game_state object and returns an action in the form (action_string, amount). 
         Valid action_strings are fold, check, call, raise, and bet.
@@ -94,7 +93,7 @@ class Player(object):
             self.stacks.append(self.stack)
             self.features.append(game_features + action_features)
 
-        if (vocal and self.name == "User"):
+        if (narrate_hands and self.name == "User"):
             print("Possible moves: \n" + str(all_actions))
             pos_move = int(
                 input("Enter number to select which move to play: "))
@@ -196,7 +195,7 @@ class Player(object):
         for i in range(len(cards)):
             game_features[6 * i] = 1  # ith card exists
             game_features[6 * i + 1] = cards[i].get_card_num()
-            suit = cards[i].get_suit()
+            suit = cards[i].get_card_suit()
 
             # create binary encoding for suit
             game_features[6 * i + 2] = suit == 'c'
@@ -244,7 +243,7 @@ class Player(object):
 
     def get_stack(self): return self.stack
 
-    def get_bankroll(self): return self.bankroll
+    def get_chips_amount(self): return self.chips_amount
 
     def get_name(self): return self.name
 
@@ -254,4 +253,4 @@ class Player(object):
 
     def get_labels(self): return self.labels[:]
 
-    def set_bankroll(self, amount): self.bankroll = amount
+    def set_chips_amount(self, amount): self.chips_amount = amount

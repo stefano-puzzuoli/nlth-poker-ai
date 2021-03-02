@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 
 import itertools
 from ai_poker.evaluator.card_service import CardService
