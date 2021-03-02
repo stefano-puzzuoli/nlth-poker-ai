@@ -1,6 +1,11 @@
 import React, {Component} from 'react';
 import renderer from 'react-test-renderer';
 
+/**
+ * A mock version of the Game component 
+ * for testing purposes. This component only 
+ * renders the elements necessary for testing.
+ */ 
 class testGame extends Component {
   state = {
     loading: true,
@@ -72,6 +77,10 @@ class testGame extends Component {
   }
 }
 
+/* 
+Test to verify that the game 
+component renders correctly
+*/
 test('render main game', () => {
   const component = renderer.create( <testGame/>)
   let tree = component.toJSON()
