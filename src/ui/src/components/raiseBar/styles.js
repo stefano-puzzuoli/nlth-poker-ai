@@ -1,3 +1,6 @@
+/**
+ * Slider and Raise Rail  
+*/
 
 const sliderStyle = {
     position: 'relative',
