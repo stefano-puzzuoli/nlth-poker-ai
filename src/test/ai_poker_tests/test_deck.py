@@ -16,14 +16,14 @@ class TestDeck(unittest.TestCase):
 		''' SetUp Deck object '''
 
 		self.ranks = {}
-		self.cards = Deck.getCompleteDeck()
+		self.cards = Deck.get_deck_of_cards()
 		self.board = [card for card in self.cards]
 
 	def test_shuffle(self):
 		''' Test the shuffle functionality used for Evaluator ''' 
 
 		
-		otherCards = Deck.getCompleteDeck()
+		otherCards = Deck.get_deck_of_cards()
 		# shuffle second copy of deck of cards
 		shuffle(otherCards)
 
@@ -43,9 +43,9 @@ class TestDeck(unittest.TestCase):
 			self.assertEqual(self.cards[0], self.cards.pop(0))
 
 	def test_get_complete_deck(self):
-		''' Test the getCompleteDeck functionality used for Evaluator '''
+		''' Test the get_deck_of_cards functionality used for Evaluator '''
 
-		cards = Deck.getCompleteDeck()
+		cards = Deck.get_deck_of_cards()
 		self.assertEqual(len(cards), 52)
 
 def main():

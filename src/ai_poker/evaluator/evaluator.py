@@ -23,7 +23,7 @@ class Evaluator(object):
     def five(self, cards):
         if cards[0] & cards[1] & cards[2] & cards[3] & cards[4] & 0xF000:
             handOR = (cards[0] | cards[1] | cards[2] | cards[3] | cards[4]) >> 16
-            prime = CardService.prime_product_from_rbits(handOR)
+            prime = CardService.prime_product_from_rankings(handOR)
             return self.table.lookup_flush[prime]
 
         else:

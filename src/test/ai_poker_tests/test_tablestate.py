@@ -13,19 +13,22 @@ class TestTableState(unittest.TestCase):
 
 	def setUp(self):
 		''' SetUp TableState object '''
-
+		
+		# set number of agent players at table
+		NUM_AGENT_PLAYERS = 5
+		
 		# add players to table
 		players = []
-		for i in range(5):
+		for i in range(NUM_AGENT_PLAYERS):
 			regressor = GradientBoostingRegressor()
 			name = 'Player ' + str(i+1)
-			p = Player(name=name, regressor=regressor, chips_amount=10**6, raise_choices=1000, raise_increase=0.7, memory=10**5)
-			players.append(p)
+			player = Player(name=name, regressor=regressor, chips_amount=10**6, raise_choices=1000, raise_increase=0.7, memory=10**5)
+			players.append(player)
 
 		regressor = GradientBoostingRegressor()
 		name = 'Player ' + str(i+1)
-		p = Player(name="User", regressor=regressor, chips_amount=10**6, raise_choices=1000, raise_increase=0.7, memory=10**5)
-		players.append(p)
+		player = Player(name="User", regressor=regressor, chips_amount=10**6, raise_choices=1000, raise_increase=0.7, memory=10**5)
+		players.append(player)
 
 		self.players = players
 		self.tablestate = TableState(players)

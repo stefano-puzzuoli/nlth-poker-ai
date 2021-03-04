@@ -21,13 +21,16 @@ class TestAIModel(unittest.TestCase):
         except IOError:
             print("Error: Cannot create Poker Table")
 
+        # set number of agent players at table
+        NUM_AGENT_PLAYERS = 5
+
         # add players to table
         players = []
-        for i in range(5):
+        for i in range(NUM_AGENT_PLAYERS):
             regressor = GradientBoostingRegressor()
-            name = 'Player ' + str(i+1)
-            p = Player(name=name, regressor=regressor, chips_amount=10**6, raise_choices=1000, raise_increase=0.7, memory=10**5)
-            players.append(p)
+            name = 'Agent ' + str(i+1)
+            player = Player(name=name, regressor=regressor, chips_amount=10**6, raise_choices=1000, raise_increase=0.7, memory=10**5)
+            players.append(player)
 
         regressor = GradientBoostingRegressor()
         name = 'Player ' + str(i+1)
@@ -55,22 +58,26 @@ class TestAIModel(unittest.TestCase):
     def test_players_added(self):
         ''' Test that the players are added to the table as expected'''
 
+        # set number of agent players at table
+        NUM_AGENT_PLAYERS = 5
+
         # create table for comparison
         otherTable = Table(small_bind=10, big_blind=20, max_buy_in=20000)
+
+        regressor = GradientBoostingRegressor()
+
         # add players to comparison table
         players = []
-        for i in range(5):
-            r = GradientBoostingRegressor()
-            name = 'Player ' + str(i+1)
-            p = Player(name=name, regressor=r, chips_amount=10**6, raise_choices=1000, raise_increase=0.7, memory=10**5)
-            players.append(p)
+        for i in range(NUM_AGENT_PLAYERS):
+            name = 'Agent ' + str(i+1)
+            player = Player(name=name, regressor=regressor, chips_amount=10**6, raise_choices=1000, raise_increase=0.7, memory=10**5)
+            players.append(player)
 
-        r = GradientBoostingRegressor()
         name = 'Player ' + str(i+1)
-        p = Player(name="User", regressor=r, chips_amount=10**6, raise_choices=1000, raise_increase=0.7, memory=10**5)
-        players.append(p)
+        player = Player(name="User", regressor=regressor, chips_amount=10**6, raise_choices=1000, raise_increase=0.7, memory=10**5)
+        players.append(player)
 
-        for p in players: otherTable.add_player(p)
+        for player in players: otherTable.add_player(player)
 
         # check that both lists have same numebr of players
         self.assertEqual(len(self.table.players), len(otherTable.players))

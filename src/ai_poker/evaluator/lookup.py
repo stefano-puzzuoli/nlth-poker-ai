@@ -74,13 +74,13 @@ class LookupTable(object):
         flushes.reverse()
         rank = 1
         for sf in s_flushes:
-            prime_product = CardService.prime_product_from_rbits(sf)
+            prime_product = CardService.prime_product_from_rankings(sf)
             self.lookup_flush[prime_product] = rank
             rank += 1
 
         rank = LookupTable.f_house + 1
         for f in flushes:
-            prime_product = CardService.prime_product_from_rbits(f)
+            prime_product = CardService.prime_product_from_rankings(f)
             self.lookup_flush[prime_product] = rank
             rank += 1
 
@@ -90,24 +90,24 @@ class LookupTable(object):
         rank = LookupTable.flush + 1
 
         for s in straights:
-            prime_product = CardService.prime_product_from_rbits(s)
+            prime_product = CardService.prime_product_from_rankings(s)
             self.lookup_unsuited[prime_product] = rank
             rank += 1
 
         rank = LookupTable.pair + 1
         for h in hcards:
-            prime_product = CardService.prime_product_from_rbits(h)
+            prime_product = CardService.prime_product_from_rankings(h)
             self.lookup_unsuited[prime_product] = rank
             rank += 1
 
     def multiples(self):
-        reverse_ranks = list(range(len(CardService.int_ranks) - 1, -1, -1))
+        reverse_ranks = list(range(len(CardService.card_rankings) - 1, -1, -1))
         rank = LookupTable.s_flush + 1
         for i in reverse_ranks:
             kickers = reverse_ranks[:]
             kickers.remove(i)
             for k in kickers:
-                product = CardService.prime_nums[i]**4 * CardService.prime_nums[k]
+                product = CardService.primes[i]**4 * CardService.primes[k]
                 self.lookup_unsuited[product] = rank
                 rank += 1
         
@@ -118,7 +118,7 @@ class LookupTable(object):
             pairranks = reverse_ranks[:]
             pairranks.remove(i)
             for pr in pairranks:
-                product = CardService.prime_nums[i]**3 * CardService.prime_nums[pr]**2
+                product = CardService.primes[i]**3 * CardService.primes[pr]**2
                 self.lookup_unsuited[product] = rank
                 rank += 1
 
@@ -133,7 +133,7 @@ class LookupTable(object):
             for kickers in gen_bit:
 
                 c1, c2 = kickers
-                product = CardService.prime_nums[r]**3 * CardService.prime_nums[c1] * CardService.prime_nums[c2]
+                product = CardService.primes[r]**3 * CardService.primes[c1] * CardService.primes[c2]
                 self.lookup_unsuited[product] = rank
                 rank += 1
 
@@ -148,7 +148,7 @@ class LookupTable(object):
             kickers.remove(pair2)
             for kicker in kickers:
 
-                product = CardService.prime_nums[pair1]**2 * CardService.prime_nums[pair2]**2 * CardService.prime_nums[kicker]
+                product = CardService.primes[pair1]**2 * CardService.primes[pair2]**2 * CardService.primes[kicker]
                 self.lookup_unsuited[product] = rank
                 rank += 1
 
@@ -163,8 +163,8 @@ class LookupTable(object):
             for kickers in kgen:
 
                 k1, k2, k3 = kickers
-                product = CardService.prime_nums[pair]**2 * CardService.prime_nums[k1] \
-                        * CardService.prime_nums[k2] * CardService.prime_nums[k3]
+                product = CardService.primes[pair]**2 * CardService.primes[k1] \
+                        * CardService.primes[k2] * CardService.primes[k3]
                 self.lookup_unsuited[product] = rank
                 rank += 1
 

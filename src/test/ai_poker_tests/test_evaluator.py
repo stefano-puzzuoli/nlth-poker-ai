@@ -18,31 +18,28 @@ class TestEvaluator(unittest.TestCase):
 
 		self.eval = Evaluator()
 		self.ranks = {}
-		self.cards = Deck.getCompleteDeck()
+		self.cards = Deck.get_deck_of_cards()
 		self.board = [card for card in self.cards]
 
 
 	def test_evaluate(self):
 		''' Test the evaluate functionality used for Evaluator '''
 
-		players = []
-		for i in range(5):
-  
-			#create Player that uses GradientBoostingRegressor as machine learning model
-			#with wealth of 1 million and 10 discrete choices for raising,
-			#with each raise choice .7 times the next largest raise choice
-			#Player forgets training samples older than 100,000
-			r = GradientBoostingRegressor()
-			name = 'Player ' + str(i+1)
-			p = Player(name=name, regressor=r, chips_amount=10**6, raise_choices=1000, raise_increase=0.7, memory=10**5)
-			players.append(p)
+		# set number of agent players at table
+		NUM_AGENT_PLAYERS = 5
 
+		players = []
+		for i in range(NUM_AGENT_PLAYERS):
+  
+			regressor = GradientBoostingRegressor()
+			name = 'Agent ' + str(i+1)
+			player = Player(name=name, regressor=regressor, chips_amount=10**6, raise_choices=1000, raise_increase=0.7, memory=10**5)
+			players.append(player)
 		
-		#evaluate rank of hand for each player
 		ranks = {}
 		for player in players:
 			if not self.board: 
-				rank = -1    #all players but one have folded before flop
+				rank = -1   
 				ranks[player] = rank
 
 		self.assertEqual(self.ranks, ranks)
@@ -50,7 +47,7 @@ class TestEvaluator(unittest.TestCase):
 
 		
 	def test_hand_summary(self):
-		''' Test the get_rank_int functionality used for hand Evaluator '''
+		''' Test the hand_summary functionality used for hand Evaluator '''
 		self.assertTrue(len(self.board))
 
 		hands = []

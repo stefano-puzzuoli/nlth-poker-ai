@@ -53,7 +53,7 @@ class Card(object):
 
     def to_evaluation_int(self):
         """ Returns corresponding integer value of Card which is readable by hand Evaluator"""
-        return CardService.createEvaluation(str(self))
+        return CardService.create_evaluation(str(self))
 
     def get_card_num(self):
         """ Getter for card numeric value"""

@@ -83,12 +83,12 @@ class TestLookUp(unittest.TestCase):
 		flushes.reverse()
 		rank = 1
 		for sf in s_flushes:
-			prime_product = CardService.prime_product_from_rbits(sf)
+			prime_product = CardService.prime_product_from_rankings(sf)
 			rank += 1
 
 		rank = LookupTable.f_house + 1
 		for f in flushes:
-			prime_product = CardService.prime_product_from_rbits(f)
+			prime_product = CardService.prime_product_from_rankings(f)
 			rank += 1
 
 		self.assertEqual(rank, expectedFlushRank)
