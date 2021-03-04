@@ -26,12 +26,12 @@ class TestAIModel(unittest.TestCase):
         for i in range(5):
             regressor = GradientBoostingRegressor()
             name = 'Player ' + str(i+1)
-            p = Player(name=name, reg=regressor, chips_amount=10**6, raise_choices=1000, raise_increase=0.7, memory=10**5)
+            p = Player(name=name, regressor=regressor, chips_amount=10**6, raise_choices=1000, raise_increase=0.7, memory=10**5)
             players.append(p)
 
         regressor = GradientBoostingRegressor()
         name = 'Player ' + str(i+1)
-        p = Player(name="User", reg=regressor, chips_amount=10**6, raise_choices=1000, raise_increase=0.7, memory=10**5)
+        p = Player(name="User", regressor=regressor, chips_amount=10**6, raise_choices=1000, raise_increase=0.7, memory=10**5)
         players.append(p)
 
         for p in players: self.table.add_player(p)
@@ -62,12 +62,12 @@ class TestAIModel(unittest.TestCase):
         for i in range(5):
             r = GradientBoostingRegressor()
             name = 'Player ' + str(i+1)
-            p = Player(name=name, reg=r, chips_amount=10**6, raise_choices=1000, raise_increase=0.7, memory=10**5)
+            p = Player(name=name, regressor=r, chips_amount=10**6, raise_choices=1000, raise_increase=0.7, memory=10**5)
             players.append(p)
 
         r = GradientBoostingRegressor()
         name = 'Player ' + str(i+1)
-        p = Player(name="User", reg=r, chips_amount=10**6, raise_choices=1000, raise_increase=0.7, memory=10**5)
+        p = Player(name="User", regressor=r, chips_amount=10**6, raise_choices=1000, raise_increase=0.7, memory=10**5)
         players.append(p)
 
         for p in players: otherTable.add_player(p)

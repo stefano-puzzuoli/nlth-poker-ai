@@ -1,49 +1,76 @@
 
-import time
 
 from ai_poker.player import Player
 
 
-def simulate(table, num_hands, hands_before_training=0, hands_between_training=0, hands_between_buyin=0, t_print=5, narrate_hands=False):
-    """
-    This function simulates several hands of Holdem according to these parameters:
-
-    Parameters:
-    table - table used in simulation (Table)
-    num_hands - total number of hands to simulate (int)
-    hands_before_training - number of hands before first training, when players take random actions (int)
-    hands_between_training - number of hands between training players (int)
-    hands_between_buyin - number of hands between cashing out/buying in players (int)
-    t_print - number of seconds between printing hand number (int)
-    narrate_hands - hands are narrated by table when narrate_hands is True (bool)
+def simulate(table, num_hands, hands_before_training=0, hands_between_training=0, hands_between_buyin=0, narrate_hands=False):
     """
 
-    print("Agent training starting...")
+    This is the helper function used for simulating Poker games
+    for training AI Poker Agents.
+
+    In this function AI Poker Agents that are part of a Poker Table are
+    trained according to parameters entered.
+
+    ...
+
+    Parameters
+    ----------
+    table : Table
+        Poker table used for game simulation
+    num_hands : int
+        total number of hands to simulate 
+    hands_before_training : int
+        number of hands simulated before Agents start learning,
+        this is because initially they will perform random actions
+        from which we do not want them to learn
+    hands_between_training : int 
+        number of hands between training players
+    hands_between_buyin : int 
+        number of hands between agent are allowed to buy in again.
+        Buy ins are necessary to allow the simualtion to go on until
+        the designated number of hands are simulated
+    narrate_hands : bool
+        comments of hands simulation are outputted to standard output
+        according to this value
+    """
+
+    # hands simulated interval between outputting current number of hands simulated
+    PRINT_HANDS_INTERVAL = 200
+
+    print("Poker hands simulation starting...")
     print(num_hands, 'hands will be simulated between agents.\n')
 
     players = table.get_players()
-    # holds chips_amount history of all players
-    chips_amount = [[] for player in players]
-    max_buy_in = table.get_params()[-1]
 
-    # set Player stack sizes to max buy-in or less
+    # holds chips_amount that players have had throughtout the entire game
+    chips_amount = [[] for player in players]
+
+    # get max amount of buy in for table
+    max_buy_in = table.get_blinds_and_buyin()[-1]
+
+    # limit player stack according to max_buy_in table parameter
     for player in players:
+        # cash out to initialise stack from 0
         player.cash_out()
         if player.get_stack() < max_buy_in:
             player.buy_chips(max_buy_in)
 
-    next_train = hands_before_training  # next hand players will train
+    # next hand players will train
+    next_train = hands_before_training  
     if hands_before_training == 0:
         next_train = hands_between_training
-    next_buy_in = hands_between_buyin  # next hand players will cash out and buy in
-    hand = 1  # hands started
-    last_time = time.time()  # last time printed hands completed
-    while hand <= num_hands:
 
-        if time.time() - last_time > t_print:
-            last_time = time.time()
-            print(hand - 1, 'hands simulated.')
+    # next hand players will buy-in    
+    next_buy_in = hands_between_buyin  
+   
+    # simulate one hand at a time
+    for hand in range(1, num_hands + 1):
 
+        if hand % 200 == 0:
+            print(hand, 'hands simulated.')
+
+        # train agents
         if hand == next_train:
             print('Agents are training...')
             for player in players:
@@ -51,9 +78,10 @@ def simulate(table, num_hands, hands_before_training=0, hands_between_training=0
             next_train = hand + hands_between_training
             print('Complete.')
 
+        # let eliminated agents buy-in again
         if hand == next_buy_in:
             if narrate_hands:
-                print('Agents are cashing out and buying in.')
+                print('Agents are buying in again...')
             for player in players:
                 player.cash_out()
                 if player.get_stack() < max_buy_in:
@@ -62,17 +90,20 @@ def simulate(table, num_hands, hands_before_training=0, hands_between_training=0
 
         if narrate_hands:
             print('Hand', hand)
+        
+        # simulate hand between agents
         played = table.play_hand(narrate_hands=narrate_hands)
 
-        # Hand failure
+        # if all agents but one are eliminated let them buy-in again
         if not played:
-            if next_buy_in == hand + hands_between_buyin:  # if players just bought in
-                print('All or all but one Agent are bankrupt.')
+            if next_buy_in == hand + hands_between_buyin:
+                print('All but one Agent have no chips left.')
+                # agents buy-in and continue simulation
                 break
-
-            # buy in and redo hand
+                
             if narrate_hands:
-                print('Game over.')
+                print('Poker Game over.')
+                # find only agent with chips left (winner)
                 for player in players:
                     if (player.get_stack() != 0):
                         print(player.get_name() + " is the winner.")
@@ -80,7 +111,7 @@ def simulate(table, num_hands, hands_before_training=0, hands_between_training=0
             next_buy_in = hand
 
         else:
-            hand += 1
+            # record chips amount of each player after each hand
             for i in range(len(players)):
                 chips_amount[i].append(players[i].get_chips_amount())
 

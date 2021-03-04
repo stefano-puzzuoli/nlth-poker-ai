@@ -31,12 +31,12 @@ def main():
 
         # create Agent that uses GradientBoostingRegressor to be trained
         name = 'Agent ' + str(i + 1)
-        player = Player(name=name, reg=regressor, chips_amount=10**5,
+        player = Player(name=name, regressor=regressor, chips_amount=10**5,
                         raise_choices=20000, raise_increase=0.5, memory=10**5)
         players.append(player)
 
     # add player that will represent user
-    userPlayer = Player(name="User", reg=regressor, chips_amount=10**5,
+    userPlayer = Player(name="User", regressor=regressor, chips_amount=10**5,
                         raise_choices=20000, raise_increase=0.5, memory=10**5)
     players.append(userPlayer)
 

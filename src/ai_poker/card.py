@@ -11,9 +11,9 @@ class Card(object):
     Attributes
     ----------
     _card_num : int
-        value of Poker Game card
+        value of Poker Game card (can be value between 2 and 14 or value in ['T', 'J', 'Q', 'K', 'A'])
     _suit : str
-        suit of Poker Game card
+        suit of Poker Game card (can be value in ['c', 'd', 's', 'h'])
     n_enumerator : dict
         mapping from card letter value to card number value
     suits : list
@@ -29,14 +29,7 @@ class Card(object):
     def __init__(self, card_num, card_suit):
         """ 
         Constructor for all the necessary attributes of the Card object.
-
-        Parameters
-        ----------
-            card_num : int
-                value of Poker Game card (can be value between 2 and 14 or value in ['T', 'J', 'Q', 'K', 'A'])
-            card_suit : str
-                suit of Poker Game card (can be value in ['c', 'd', 's', 'h']).
-         """
+        """
         if type(card_num) == int:
             if card_num < 2 or card_num > 14:
                 raise Exception(
