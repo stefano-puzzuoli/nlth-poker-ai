@@ -5,6 +5,22 @@ class CardService(object):
 
     This class allows Agents to make use of the hand Evaluator object and 
     classify their hands in an effective manner through bitwise operations.
+
+    Cards are represented as 32-bit integers, so 
+    there is no object instantiation. 
+    
+    The specific meaning of the bits is: 
+
+                          bitrank     suit rank   prime
+                    +--------+--------+--------+--------+
+                    |xxxbbbbb|bbbbbbbb|cdhsrrrr|xxpppppp|
+                    +--------+--------+--------+--------+
+        1) p = prime number of rank 
+        2) r = rank of card
+        3) cdhs = suit of card 
+        4) b = bit turned on depending on rank of card
+        5) x = unused
+        
     """
 
     # list of rankings for all cards (from 0 to 12 inclusive)

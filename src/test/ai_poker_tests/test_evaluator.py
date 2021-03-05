@@ -62,8 +62,7 @@ class TestEvaluator(unittest.TestCase):
 			for player, h in enumerate(hands):
 				rank = self.eval.evaluate(h, board[:(i + 3)])
 				hand_rank = self.eval.get_hand_rank(rank)
-				rank_string = self.eval.to_string(hand_rank)
-				percentage = 1.0 - self.eval.get_rank_percentage(rank) 
+				hand_value_name = self.eval.class_to_readable_hand(hand_rank)
 
 				if rank == best_rank:
 					winners.append(player)

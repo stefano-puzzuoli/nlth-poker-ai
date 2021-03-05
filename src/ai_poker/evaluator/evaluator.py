@@ -5,22 +5,50 @@ from ai_poker.evaluator.deck import Deck
 from ai_poker.evaluator.lookup import LookupTable
 
 class Evaluator(object):
+    ''' 
+    Evaluates Poker hand values/strengths. 
+    
+    Performs very efficiently as all calculations are done with 
+    bit arithmetic and instant table lookups. 
+
+    Handles Lookups for:
+    - 5 card hand (on flop)
+    - 6 card hand (on turn)
+    - 7 card hand (on river)
+    ...
+
+    Attributes
+    ----------
+    table : LookupTable
+        dictionary for efficiently looking up Poker hand values/strengths
+    '''
 
     def __init__(self):
+        ''' 
+        Initialises LookupTable attributes and generates LookupTable.
+        
+        Generates LookupTable mappings for 5 card hands, 6 card hands and 7
+        card hands.
+        '''
 
         self.table = LookupTable()
         
         self.hand_map = {
-            5 : self.five,
-            6 : self.six,
-            7 : self.seven
+            5 : self.evaluate_five_cards,
+            6 : self.evaluate_six_cards,
+            7 : self.evaluate_seven_cards
         }
 
     def evaluate(self, cards, board):
+        ''' Performs lookup of hand value/strenght in generated LookupTable. '''
         all_cards = cards + board
         return self.hand_map[len(all_cards)](all_cards)
 
-    def five(self, cards):
+    def evaluate_five_cards(self, cards):
+        """
+        Performs a hand evalution given a hand of 5 cards (after flop), mapping them to
+        a rank in the range [1, 7462], with lower ranks being better evaluations.
+        """
         if cards[0] & cards[1] & cards[2] & cards[3] & cards[4] & 0xF000:
             handOR = (cards[0] | cards[1] | cards[2] | cards[3] | cards[4]) >> 16
             prime = CardService.prime_product_from_rankings(handOR)
@@ -30,104 +58,70 @@ class Evaluator(object):
             prime = CardService.prime_product_from_hand(cards)
             return self.table.lookup_unsuited[prime]
 
-    def six(self, cards):
-        minimum = LookupTable.h_card
+    def evaluate_six_cards(self, cards):
+        """
+        Performs a hand evalution given a hand of 6 cards (after turn), mapping them to
+        a rank in the range [1, 7462], with lower ranks being better evaluations.
+        """
+        minimum = LookupTable.possible_high_card
 
+        # generate combinations of five card hands
         five_card_combos = itertools.combinations(cards, 5)
-        for combo in five_card_combos:
 
-            score = self.five(combo)
+        # calculate what best 5 card hand is (discards one card)
+        for combo in five_card_combos:
+            score = self.evaluate_five_cards(combo)
             if score < minimum:
                 minimum = score
 
         return minimum
 
-    def seven(self, cards):
+    def evaluate_seven_cards(self, cards):
         """
-        Performs five_card_eval() on all (7 choose 5) = 21 subsets
-        of 5 cards in the set of 7 to determine the best ranking, 
-        and returns this ranking.
+        Performs a hand evalution given a hand of 7 cards (after river), mapping them to
+        a rank in the range [1, 7462], with lower ranks being better evaluations.
         """
-        minimum = LookupTable.h_card
+        minimum = LookupTable.possible_high_card
 
+        # generate combinations of five card hands
         five_card_combos = itertools.combinations(cards, 5)
+
+        # calculate what best 5 card hand is (discards two cards)
         for combo in five_card_combos:
-            
-            score = self.five(combo)
+            score = self.evaluate_five_cards(combo)
             if score < minimum:
                 minimum = score
 
         return minimum
 
-    def get_hand_rank(self, hr):
-        if hr >= 0 and hr < LookupTable.s_flush:
-            return LookupTable.hand_rank[LookupTable.s_flush]
-        elif hr <= LookupTable.four_kind:
-            return LookupTable.hand_rank[LookupTable.four_kind]
-        elif hr <= LookupTable.f_house:
-            return LookupTable.hand_rank[LookupTable.f_house]
-        elif hr <= LookupTable.flush:
-            return LookupTable.hand_rank[LookupTable.flush]
-        elif hr <= LookupTable.straight:
-            return LookupTable.hand_rank[LookupTable.straight]
-        elif hr <= LookupTable.three_kind:
-            return LookupTable.hand_rank[LookupTable.three_kind]
-        elif hr <= LookupTable.two_pair:
-            return LookupTable.hand_rank[LookupTable.two_pair]
-        elif hr <= LookupTable.pair:
-            return LookupTable.hand_rank[LookupTable.pair]
-        elif hr <= LookupTable.h_card:
-            return LookupTable.hand_rank[LookupTable.h_card]
+    def get_hand_rank(self, hand_rank):
+        '''
+        Returns the level/class of hand given the hand_rank
+        returned from the evaluator.
+        '''
+        if hand_rank >= 0 and hand_rank < LookupTable.possible_straight_flush:
+            return LookupTable.hand_value_to_rank[LookupTable.possible_straight_flush]
+        elif hand_rank <= LookupTable.possible_four_kind:
+            return LookupTable.hand_value_to_rank[LookupTable.possible_four_kind]
+        elif hand_rank <= LookupTable.possible_full_house:
+            return LookupTable.hand_value_to_rank[LookupTable.possible_full_house]
+        elif hand_rank <= LookupTable.possible_flush:
+            return LookupTable.hand_value_to_rank[LookupTable.possible_flush]
+        elif hand_rank <= LookupTable.possible_straight:
+            return LookupTable.hand_value_to_rank[LookupTable.possible_straight]
+        elif hand_rank <= LookupTable.possible_three_kind:
+            return LookupTable.hand_value_to_rank[LookupTable.possible_three_kind]
+        elif hand_rank <= LookupTable.possible_two_pair:
+            return LookupTable.hand_value_to_rank[LookupTable.possible_two_pair]
+        elif hand_rank <= LookupTable.possible_pair:
+            return LookupTable.hand_value_to_rank[LookupTable.possible_pair]
+        elif hand_rank <= LookupTable.possible_high_card:
+            return LookupTable.hand_value_to_rank[LookupTable.possible_high_card]
         else:
-            raise Exception("Inavlid hand rank, cannot return rank class")
+            raise Exception("Inavlid hand rank, cannot return rank level")
 
-    def to_string(self, class_int):
-        return LookupTable.rank_string[class_int]
-
-    def get_rank_percentage(self, hand_rank):
-
-        return float(hand_rank) / float(LookupTable.h_card)
-
-    def hand_summary(self, board, hands):
-        assert len(board) == 5, "Invalid board length"
-        for h in hands:
-            assert len(h) == 2, "Inavlid hand length"
-
-        line_length = 10
-        game_stages = ["FLOP", "TURN", "RIVER"]
-
-        for i in range(len(game_stages)):
-            line = ("=" * line_length) + " %s " + ("=" * line_length) 
-            print(line % game_stages[i])
-            
-            best_rank = 7463 
-            winners = []
-            for player, h in enumerate(hands):
-                rank = self.evaluate(h, board[:(i + 3)])
-                hand_rank = self.get_hand_rank(rank)
-                rank_string = self.to_string(hand_rank)
-                percentage = 1.0 - self.get_rank_percentage(rank) 
-                print("Player %d hand = %s, percentage rank among all hands = %f" % (
-                    player + 1, rank_string, percentage))
-
-                if rank == best_rank:
-                    winners.append(player)
-                    best_rank = rank
-                elif rank < best_rank:
-                    winners = [player]
-                    best_rank = rank
-
-            if i != game_stages.index("RIVER"):
-                if len(winners) == 1:
-                    print("Player %d hand is currently winning.\n" % (winners[0] + 1,))
-                else:
-                    print("Players %s are tied for the lead.\n" % [x + 1 for x in winners])
-            else:
-                print
-                print(("=" * line_length) + " HAND OVER " + ("=" * line_length))
-                if len(winners) == 1:
-                    print("Player %d is the winner with a %s\n" % (winners[0] + 1, 
-                        self.to_string(self.get_hand_rank(self.evaluate(hands[winners[0]], board)))))
-                else:
-                    print("Players %s tied for the win with a %s\n" % (winners, 
-                        self.to_string(self.get_hand_rank(self.evaluate(hands[winners[0]], board)))))
+    def class_to_readable_hand(self, class_int):
+        """
+        Converts the integer class hand score into a human-readable hand class string.
+        """
+        return LookupTable.rank_to_hand_value_name[class_int]
