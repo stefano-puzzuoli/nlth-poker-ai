@@ -5,7 +5,9 @@ from sklearn.ensemble import GradientBoostingRegressor
 import sys
 sys.path.append("..")                                   # allows imports from parent directories
 from ai_poker.table import Table
-from ai_poker.templates import BasicPlayer, simulate
+from ai_poker.simulation import simulate
+from ai_poker.player import Player
+
 
 
 class TestAIModel(unittest.TestCase):
@@ -19,17 +21,20 @@ class TestAIModel(unittest.TestCase):
         except IOError:
             print("Error: Cannot create Poker Table")
 
+        # set number of agent players at table
+        NUM_AGENT_PLAYERS = 5
+
         # add players to table
         players = []
-        for i in range(5):
+        for i in range(NUM_AGENT_PLAYERS):
             regressor = GradientBoostingRegressor()
-            name = 'Player ' + str(i+1)
-            p = BasicPlayer(name=name, reg=regressor, bankroll=10**6, n_raises=1000, r_factor=0.7, memory=10**5)
-            players.append(p)
+            name = 'Agent ' + str(i+1)
+            player = Player(name=name, regressor=regressor, chips_amount=10**6, raise_choices=1000, raise_increase=0.7, memory=10**5)
+            players.append(player)
 
         regressor = GradientBoostingRegressor()
         name = 'Player ' + str(i+1)
-        p = BasicPlayer(name="User", reg=regressor, bankroll=10**6, n_raises=1000, r_factor=0.7, memory=10**5)
+        p = Player(name="User", regressor=regressor, chips_amount=10**6, raise_choices=1000, raise_increase=0.7, memory=10**5)
         players.append(p)
 
         for p in players: self.table.add_player(p)
@@ -53,29 +58,33 @@ class TestAIModel(unittest.TestCase):
     def test_players_added(self):
         ''' Test that the players are added to the table as expected'''
 
+        # set number of agent players at table
+        NUM_AGENT_PLAYERS = 5
+
         # create table for comparison
         otherTable = Table(small_bind=10, big_blind=20, max_buy_in=20000)
+
+        regressor = GradientBoostingRegressor()
+
         # add players to comparison table
         players = []
-        for i in range(5):
-            r = GradientBoostingRegressor()
-            name = 'Player ' + str(i+1)
-            p = BasicPlayer(name=name, reg=r, bankroll=10**6, n_raises=1000, r_factor=0.7, memory=10**5)
-            players.append(p)
+        for i in range(NUM_AGENT_PLAYERS):
+            name = 'Agent ' + str(i+1)
+            player = Player(name=name, regressor=regressor, chips_amount=10**6, raise_choices=1000, raise_increase=0.7, memory=10**5)
+            players.append(player)
 
-        r = GradientBoostingRegressor()
         name = 'Player ' + str(i+1)
-        p = BasicPlayer(name="User", reg=r, bankroll=10**6, n_raises=1000, r_factor=0.7, memory=10**5)
-        players.append(p)
+        player = Player(name="User", regressor=regressor, chips_amount=10**6, raise_choices=1000, raise_increase=0.7, memory=10**5)
+        players.append(player)
 
-        for p in players: otherTable.add_player(p)
+        for player in players: otherTable.add_player(player)
 
         # check that both lists have same numebr of players
         self.assertEqual(len(self.table.players), len(otherTable.players))
 
     def test_ai_game_simulation(self):
         ''' Test that AI game simulation executes as expected'''
-        self.assertNotEqual(simulate(self.table, n_hands=5, first_train=5, n_train=5, n_buy_in=5), None)
+        self.assertNotEqual(simulate(self.table, num_hands=5, hands_before_training=5, hands_between_training=5, hands_between_buyin=5), None)
     
 
 def main():

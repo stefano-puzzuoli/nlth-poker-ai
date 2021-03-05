@@ -18,31 +18,28 @@ class TestEvaluator(unittest.TestCase):
 
 		self.eval = Evaluator()
 		self.ranks = {}
-		self.cards = Deck.getCompleteDeck()
+		self.cards = Deck.get_deck_of_cards()
 		self.board = [card for card in self.cards]
 
 
 	def test_evaluate(self):
 		''' Test the evaluate functionality used for Evaluator '''
 
-		players = []
-		for i in range(5):
-  
-			#create BasicPlayer that uses GradientBoostingRegressor as machine learning model
-			#with wealth of 1 million and 10 discrete choices for raising,
-			#with each raise choice .7 times the next largest raise choice
-			#Player forgets training samples older than 100,000
-			r = GradientBoostingRegressor()
-			name = 'Player ' + str(i+1)
-			p = Player(name=name, reg=r, bankroll=10**6, n_raises=1000, r_factor=0.7, memory=10**5)
-			players.append(p)
+		# set number of agent players at table
+		NUM_AGENT_PLAYERS = 5
 
+		players = []
+		for i in range(NUM_AGENT_PLAYERS):
+  
+			regressor = GradientBoostingRegressor()
+			name = 'Agent ' + str(i+1)
+			player = Player(name=name, regressor=regressor, chips_amount=10**6, raise_choices=1000, raise_increase=0.7, memory=10**5)
+			players.append(player)
 		
-		#evaluate rank of hand for each player
 		ranks = {}
 		for player in players:
 			if not self.board: 
-				rank = -1    #all players but one have folded before flop
+				rank = -1   
 				ranks[player] = rank
 
 		self.assertEqual(self.ranks, ranks)
@@ -50,7 +47,7 @@ class TestEvaluator(unittest.TestCase):
 
 		
 	def test_hand_summary(self):
-		''' Test the get_rank_int functionality used for hand Evaluator '''
+		''' Test the hand_summary functionality used for hand Evaluator '''
 		self.assertTrue(len(self.board))
 
 		hands = []
@@ -65,8 +62,7 @@ class TestEvaluator(unittest.TestCase):
 			for player, h in enumerate(hands):
 				rank = self.eval.evaluate(h, board[:(i + 3)])
 				hand_rank = self.eval.get_hand_rank(rank)
-				rank_string = self.eval.to_string(hand_rank)
-				percentage = 1.0 - self.eval.get_rank_percentage(rank) 
+				hand_value_name = self.eval.class_to_readable_hand(hand_rank)
 
 				if rank == best_rank:
 					winners.append(player)

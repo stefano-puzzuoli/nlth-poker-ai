@@ -1,329 +1,478 @@
-#!/usr/bin/env python3
 
 from random import shuffle
-from .player import Player
+
 from .card import Card
 from .evaluator.evaluator import Evaluator
-from .gamestate import GameState
+from .player import Player
+from .tablestate import TableState
 
-class Table:
 
+class Table(object):
     """
-    This class is primarily responsible for core holdem simulation logic. Basic usage consists of 
-    adding players via add_player() and simulating a single hand via play_hand(). For simplicity, betting takes place
-    with integer number of chips with uniform value.
+    A class to represent a Poker Game Table. 
+
+    Contains main Poker Game logic, specifically No-Limit Texas Hold'em. 
+    ...
+
+    Attributes
+    ----------
+    players : list
+        all poker players that start game
+    active_players : list
+        poker players that are still part of game (in game)
+    eliminated_players : list
+        players that have been eliminated from game (have no more chips)
+    dealer : int
+        position of dealer chip (decided who pays blinds)
+    eval : Evaluator
+        hand evaluator (used by AI Agents to decide best action - through feautures/labels)
+    small_bind : int
+        small blind to pay
+    big_blind : int
+        big blind to pay
+    max_buy_in : int
+        maxium amount of chips allowed for buy in
     """
 
     def __init__(self, small_bind, big_blind, max_buy_in):
+        """ 
+        Constructor for all the necessary attributes of the Table object.
+        Takes in and sets blinds and max buy in.
+        """
 
-        """ Constructor accepts  blinds and maximum table buy in as integers. """
-        
-        self.players = []  #players at the table
-        self.playing = []  #players who are not bankrupt
-        self.sit_out = []   #players who have gone bankrupt
-        self.dealer = 0    #position of dealer in self.playing
+        self.players = []
+        self.active_players = []
+        self.eliminated_players = []
+        self.dealer = 0
         self.eval = Evaluator()
-
-        if type(small_bind) != int or type(big_blind) != int or type(max_buy_in) != int:
-            raise Exception('Parameters must be integer number of chips.')
         self.small_bind = small_bind
         self.big_blind = big_blind
         self.max_buy_in = max_buy_in
 
-    def add_player(self, player):
+    def generate_deck(self):
+        ''' Generate the deck of 52 cards.  '''
 
-        self.sit_out.append(player)
-        self.players.append(player)
-
-    def play_hand(self, vocal=False):
-
-        """ 
-        This method simulates one hand between added players. Narrates hand if vocal is True.
-        Returns False if unable to play hand. 
-        """
-
-        self.vocal = vocal
-
-        #add players to hand who are eligible to play
-        for player in self.sit_out[:]:
-            if player.get_stack() >= self.big_blind:
-                if player.get_stack() > self.max_buy_in: 
-                    raise Exception('Player\'s stack is greater than maximum buy in.')
-                self.playing.append(player)
-                self.sit_out.remove(player)
-
-        if len(self.playing) <= 1: return False
-            
-        #reset table game state before hand
-        self.state = GameState(self.playing)
-    
-        #commence simulation
-        self.gen_deck()
-        self.deal_hole_cards()
-        self.pre_flop(vocal)
-        self.flip(3, vocal)
-        self.flip(1, vocal)
-        self.flip(1, vocal)
-        self.pay_winners()
-        for player in self.playing: player.end_hand()
-
-        #find next dealer
-        dealer_position = (self.dealer + 1) % self.state.num_players
-        while self.playing[dealer_position].get_stack() < self.big_blind: 
-            dealer_position = (dealer_position + 1) % self.state.num_players
-        dealer = self.playing[dealer_position]
-
-        #remove players who have gone bankrupt
-        for player in self.playing[:]:
-            if player.get_stack() < self.big_blind:
-                self.playing.remove(player)
-                self.sit_out.append(player)
-
-        #move dealer chip 
-        self.dealer = 0
-        while self.playing[self.dealer] != dealer: self.dealer = (self.dealer + 1) % self.state.num_players
-
-        if vocal: print()
-        return True
-
-    def gen_deck(self):
-
+        # get every combination of suit and value
         self.deck = []
         for s in ['c', 'd', 'h', 's']:
-            for i in range(2,15):
-                self.deck.append(Card(i,s))
+            for i in range(2, 15):
+                self.deck.append(Card(i, s))
         shuffle(self.deck)
- 
-    def deal_hole_cards(self):
 
-        """ This method gives each player their starting cards at the beginning of the hand. """
+    def deal_private_cards(self):
+        """ Deals players private cards at the start of each hand. """
 
-        for player in self.playing:
-            player.take_hole_cards((self.deck[0],self.deck[1]))
-            if self.vocal: print(player.get_name() + '(' + str(player.get_stack()) + ')', 'dealt', self.deck[0], 'and', self.deck[1])
+        # deal cards until every player at table has 2
+        for player in self.active_players:
+            player.take_hole_cards((self.deck[0], self.deck[1]))
+            if self.narrate_hands:
+                print(player.get_name(
+                ) + '(' + str(player.get_stack()) + ')', 'dealt', self.deck[0], 'and', self.deck[1])
             self.deck = self.deck[2:]
-        if self.vocal: print()
+        if self.narrate_hands:
+            print()
 
-    def pre_flop(self, vocal=False):
+    def start_hand(self, narrate_hands=False):
+        """ 
+        Initialises hand by entering blinds for designated Players
+        and then allows hand to begin.
+        """
 
-        """ This method posts the blinds and commences betting. """
+        # get small blind position
+        sb_position = (self.dealer + 1) % self.state.num_active_players
+        # get big blind position
+        bb_position = (self.dealer + 2) % self.state.num_active_players
 
-        self.state.min_raise = 2 * self.big_blind    #minimum first raise before flop is 2 x Big Blind
+        # get position of first player to perform action
+        self.state.currently_active = (
+            self.dealer + 3) % self.state.num_active_players
 
-        sb_position = (self.dealer + 1) % self.state.num_players    #small blind position
-        bb_position = (self.dealer + 2) % self.state.num_players    #big blind position
-        self.state.actor = (self.dealer + 3) % self.state.num_players    #first player to act
+        # set minimum allowed raise amount (is twice the amount of the big blind)
+        self.state.min_raise_amount = 2 * self.big_blind
 
-        #Heads-Up (1v1) has different rules prelop
-        if self.state.num_players == 2:    
-            sb_position = self.dealer    
-            bb_position = (self.dealer + 1) % self.state.num_players
-            self.state.actor = self.dealer   
+        # if only 2 players left in table rules of blinds are different
+        if self.state.num_active_players == 2:
+            # dealer is small blind
+            sb_position = self.dealer
+            # other player is big blind
+            bb_position = (self.dealer + 1) % self.state.num_active_players
+            # the dealer player is first to play
+            self.state.currently_active = self.dealer
 
-        #post blinds
+        # enter small blind and big blind
         self.state.current_bets[sb_position] += self.small_bind
-        self.playing[sb_position].remove_chips(self.small_bind)
-        if self.vocal:print(self.playing[sb_position].get_name(), 'posts small blind of', self.small_bind)
+        self.active_players[sb_position].remove_chips(self.small_bind)
+        if self.narrate_hands:
+            print(
+                self.active_players[sb_position].get_name(), 'posts small blind of', self.small_bind)
         self.state.current_bets[bb_position] += self.big_blind
-        self.playing[bb_position].remove_chips(self.big_blind)
-        if self.vocal: print(self.playing[bb_position].get_name(), 'posts big blind of', self.big_blind)
+        self.active_players[bb_position].remove_chips(self.big_blind)
+        if self.narrate_hands:
+            print(
+                self.active_players[bb_position].get_name(), 'posts big blind of', self.big_blind)
 
-        self.open_betting(vocal)
-        if self.vocal: print()
+        self.start_betting(narrate_hands)
 
-    def flip(self, num_cards, vocal=False):  
+        # new line for better output layout
+        if self.narrate_hands:
+            print()
 
-        """ This method flips num_cards cards from deck to be seen by players and then commences betting. """
+    def add_player(self, player):
+        """ Add Player (Agent or User) to table. """
 
-        if len(self.state.folded) + 1 == self.state.num_players: return    #all players but one have folded
+        self.eliminated_players.append(player)
+        self.players.append(player)
 
-        self.state.min_raise = self.big_blind    #minimum first bet after the flop is Big Blind
+    def deal_community_cards(self, num_cards, narrate_hands=False):
+        """  
+        Deals the entered amount of community cards that will be seen by all players.
 
-        #flip num_cards
+        First called with num_cards = 3 -> Flop
+        Then called with num_cards = 1 -> Turn 
+        Finally called with num_cards = 1 -> River
+
+        """
+
+        # if only one player still active (all others have folded)
+        if len(self.state.folded) + 1 == self.state.num_active_players:
+            # hand is over
+            return
+
+        # minimum allowed raise after the flop is Big Blind
+        self.state.min_raise_amount = self.big_blind
+
+        # deal community cards
         self.state.cards += self.deck[:num_cards]
-        if self.vocal: print([str(c) for c in self.state.cards])
+        if self.narrate_hands:
+            # print to standard output for CLI play
+            print([str(c) for c in self.state.cards])
         self.deck = self.deck[num_cards:]
-        
-        self.state.actor = (self.dealer + 1) % self.state.num_players    #first actor is player after dealer
-        
-        self.open_betting(vocal)
-        if self.vocal: print()
+
+        # first player to select action is player following dealer
+        self.state.currently_active = (
+            self.dealer + 1) % self.state.num_active_players
+
+        # let betting begin
+        self.start_betting(narrate_hands)
+        if self.narrate_hands:
+            # new line for better output layout
+            print()
 
     def pay_winners(self):
+        """ Assignes/Splits the pot to the winner(s). """
 
-        """ This method distributes the pot to the winner(s). """
-
-        board = [card.to_int() for card in self.state.cards]
-        
-        #evaluate rank of hand for each player
+        # get hand evaluation of each player still in hand
+        board = [card.to_evaluation_int() for card in self.state.cards]
         ranks = {}
-        for player in self.playing:
-            if not board: rank = -1    #all players but one have folded before flop
-            else: rank = self.eval.evaluate(board, [player.show()[0].to_int(), player.show()[1].to_int()])
+        for player in self.active_players:
+            if not board:
+                rank = -1
+            else:
+                rank = self.eval.evaluate(board, [player.show(
+                )[0].to_evaluation_int(), player.show()[1].to_evaluation_int()])
             ranks[player] = rank
 
         n = 0
-        while sum(self.state.bets) > 0:    #to handle n side pots
+        # if there is more than one winner split pot
+        while sum(self.state.bets) > 0:
 
-            #get rank of best hand and bet of each player who is eligible to win sub pot
-            min_live_bet = None    #bet that any eligible player has in current sub pot
+            # get rank of best hand and bet of each player who is eligible to win sub pot
+            min_live_bet = None
             min_rank = None
             eligible_winners = []
-            for i in range(self.state.num_players):
-                if not i in self.state.folded and self.state.bets[i] != 0:    #if player hasnt folded and has stake in current sub pot
-                    if min_live_bet == None: min_live_bet = self.state.bets[i]
-                    else: min_live_bet = min(min_live_bet, self.state.bets[i])
-                    player = self.playing[i]
+            for i in range(self.state.num_active_players):
+                # check hands of players only still active
+                if not i in self.state.folded and self.state.bets[i] != 0:
+                    # assign best hand and associated sub pots
+                    if min_live_bet == None:
+                        min_live_bet = self.state.bets[i]
+                    else:
+                        min_live_bet = min(min_live_bet, self.state.bets[i])
+                    player = self.active_players[i]
                     eligible_winners.append(player)
-                    if min_rank == None: min_rank = ranks[player]
-                    else: min_rank = min(min_rank, ranks[player])
+                    if min_rank == None:
+                        min_rank = ranks[player]
+                    else:
+                        min_rank = min(min_rank, ranks[player])
 
-            #create sub pot by adding contributions of its members
-            winners = [player for player in eligible_winners if ranks[player] == min_rank]
+            winners = [
+                player for player in eligible_winners if ranks[player] == min_rank]
             sub_pot = 0
-            for i in range(self.state.num_players):
+            # subtract from main pot amount designated to smaller pots being divided
+            for i in range(self.state.num_active_players):
                 contribution = min(min_live_bet, self.state.bets[i])
                 self.state.bets[i] -= contribution
                 sub_pot += contribution
 
-
-            #pay winners
+            # divide pot amongst winners
             winnings = int(float(sub_pot) / len(winners))
             for winner in winners:
                 winner.add_chips(winnings)
                 sub_pot -= winnings
-                if self.vocal:
-                    if min_rank == -1:    #everyone else folded
+                if self.narrate_hands:
+                    # if only one winner
+                    if min_rank == -1:
                         print(winner.get_name(), 'wins', winnings)
-                    else:   
-                        if n == 0: print(winner.get_name(), 'wins', winnings, 'from main pot')
-                        if n > 0: print(winner.get_name(), 'wins', winnings, 'from side pot')
+                    # when more than one winner
+                    else:
+                        # winnings are split
+                        if n == 0:
+                            print(winner.get_name(),
+                                  'wins', winnings, 'from main pot')
+                        if n > 0:
+                            print(winner.get_name(), 'wins',
+                                  winnings, 'from side pot')
 
-            #give odd chips to player in earliest position
+            # if pot is odd value
             if sub_pot > 0:
-                actor = (self.dealer + 1) % self.state.num_players
+                # first winning player gets the extra chips (usually 1)
+                current_active_player = (self.dealer + 1) % self.state.num_active_players
                 while sub_pot > 0:
-                    player = self.playing[actor]
+                    player = self.active_players[current_active_player]
                     if player in winners:
                         player.add_chips(sub_pot)
-                        if self.vocal: print(player.get_name(), 'wins', sub_pot, 'odd chips')
+                        if self.narrate_hands:
+                            print(
+                                player.get_name(), 'wins', sub_pot, 'odd chips')
                         sub_pot = 0
-                    actor = (actor + 1) % self.state.num_players
+                    current_active_player = (current_active_player + 1) % self.state.num_active_players
 
             n += 1
 
-    def open_betting(self, vocal=False): 
+    def start_betting(self, narrate_hands=False):
+        """ 
+        Allows round of betting to start and continues until no further bets
+        are allowed to be placed (all active players have called same amount).
+        """
 
-        """ The method starts a round of betting. """
+        # get last player to bet/call for betting to stop
+        last_to_play = self.state.currently_active
 
-        last_to_raise = self.state.actor    #so that action ends when everyone checks
+        # continue betting until all active players have called same amount
+        betting_round = 0
+        while True:
+            betting_round += 1
+            current_active_player = self.state.currently_active
 
-        #main betting loop
-        t = 0
-        while True: 
-            t += 1      
+            # stop betting if last player to bet has been reached
+            if current_active_player == last_to_play and betting_round > 1:
+                break
 
-            actor = self.state.actor
-
-            if actor == last_to_raise and t > 1: break    #break if last raising player has been reached
-            
-            #break if no further calls are possible
+            # stop betting if last player to call has been reached
             not_allin_or_fold = []
-            for i in range(self.state.num_players):
-                if i not in self.state.folded and i not in self.state.all_in: not_allin_or_fold.append(i)
-            if len(not_allin_or_fold) == 0: break    #break if all players are folded or all-in
-            #break if last player's raise cannot be matched
-            if len(not_allin_or_fold) == 1 and self.state.current_bets[not_allin_or_fold[0]] == max(self.state.current_bets): break    
+            for i in range(self.state.num_active_players):
+                if i not in self.state.folded and i not in self.state.all_in:
+                    not_allin_or_fold.append(
+                        i)
+            # stop betting if all players have folded or are all-in
+            if len(not_allin_or_fold) == 0:
+                break
+            if len(not_allin_or_fold) == 1 and self.state.current_bets[not_allin_or_fold[0]] == max(self.state.current_bets):
+                break
 
-            #skip player if player folded or player is all in
-            if actor in self.state.folded or actor in self.state.all_in: 
-                self.state.actor = (actor + 1) % self.state.num_players 
+            # skip player if player folded or player is all-in already
+            if current_active_player in self.state.folded or current_active_player in self.state.all_in:
+                self.state.currently_active = (
+                    current_active_player + 1) % self.state.num_active_players
                 continue
 
-            self.state.to_call = max(self.state.current_bets) - self.state.current_bets[actor]    #player must call maximum bet to call
+            # caluclate amount player must call to continue hand
+            self.state.to_call = max(
+                self.state.current_bets) - self.state.current_bets[current_active_player]
 
-            #request player action and parse action
-            action = self.playing[actor].act(self.state, vocal)
-            self.parse_action(action)
-            if action[0] == 'raise': last_to_raise = actor
-            
-            self.state.actor = (actor + 1) % self.state.num_players  #move to next player
+            # player takes action
+            action = self.active_players[current_active_player].perform_action(
+                self.state, narrate_hands)
+            self.handle_action(action)
 
-        #return uncalled chips to raiser
+            # if player raises the betting round ends when they are reached again (unless more raises occur)
+            if action[0] == 'raise':
+                last_to_play = current_active_player
+
+            # next player is next to take action
+            self.state.currently_active = (
+                current_active_player + 1) % self.state.num_active_players  
+
+        # assign unmatched chips raise to owner 
         unique_bets = sorted(set(self.state.current_bets))
         max_bet = unique_bets[-1]
-        if len(unique_bets) >= 2: below_max = unique_bets[-2]
-        if len([bet for bet in self.state.current_bets if bet==max_bet]) == 1:
-            for i in range(self.state.num_players):
+        if len(unique_bets) >= 2:
+            below_max = unique_bets[-2]
+        if len([bet for bet in self.state.current_bets if bet == max_bet]) == 1:
+            for i in range(self.state.num_active_players):
                 if self.state.current_bets[i] == max_bet:
                     self.state.current_bets[i] = below_max
-                    player = self.playing[i]
+                    player = self.active_players[i]
                     player.add_chips(max_bet - below_max)
-                    if self.vocal: print(max_bet - below_max, 'uncalled chips return to', player.get_name())
+                    if self.narrate_hands:
+                        print(
+                            max_bet - below_max, 'uncalled chips return to', player.get_name())
 
-        self.state.actor = None    #action has closed
-        
-        #add bets of current round to bets and flush current_bets and num_raises
-        for i in range(len(self.state.current_bets)): 
-            self.state.bets[i] += self.state.current_bets[i]    
+        # no players to perform actions left
+        self.state.currently_active = None 
+
+        for i in range(len(self.state.current_bets)):
+            # add bets of current round to record of bets
+            self.state.bets[i] += self.state.current_bets[i]
+            # initialise current bet to 0 for next round of betting
             self.state.current_bets[i] = 0
+            # initialise raises to 0 for next round of betting
             self.state.num_raises[i] = 0
 
-    def parse_action(self, action):
-
-        """ 
-        This method accepts a tuple of the form (action string, amount) or (action string,) and changes
-        the GameState, self.state, appropriately.
+    def handle_action(self, action):
         """
-        actor = self.state.actor
-        player = self.playing[actor]
-        maximum = max(self.state.current_bets)    #largest contribution that any player has in current pot
+        Takes in a tuple in the format of (action, amount) and updates the
+        TableState object accordingly.
+        """
+
+        # current active player
+        actor = self.state.currently_active
+
+        # current players still in hand
+        player = self.active_players[actor]
+
+        # maximum bet placed in current betting round
+        maximum = max(self.state.current_bets)
+
+        # latest bet amount places by current active player
         current_bet = self.state.current_bets[actor]
 
+        # player check (no amount entered)
         if action[0] == 'check':
-            if current_bet < maximum: raise Exception('Player must call to remain in the pot.')
-            if self.vocal: print(player.get_name(), 'checks.')
-        
-        elif action[0] == 'fold': 
+            if current_bet < maximum:
+                raise Exception(
+                    'Player must call to remain in active in current hand.')
+            if self.narrate_hands:
+                print(player.get_name(), 'checks.')
+
+        # player fold (player exits hand)
+        elif action[0] == 'fold':
             self.state.folded.append(actor)
-            if self.vocal: print(player.get_name(), 'folds.') 
-        
-        elif action[0] == 'call': 
+            if self.narrate_hands:
+                print(player.get_name(), 'folds.')
+
+        # player call (player matches largest amount bet)
+        elif action[0] == 'call':
             to_call = self.state.to_call
-            if to_call == 0: raise Exception('Player called a bet of 0 chips. Did you mean to check?')
             stack = player.get_stack()
-            if stack <= to_call:    #player has all-in called
+            if stack <= to_call: 
                 self.state.current_bets[actor] += stack
                 player.remove_chips(stack)
-                if self.vocal: print(player.get_name(), 'all-in calls with', stack)
+                if self.narrate_hands:
+                    print(
+                        player.get_name(), 'all-in calls with', stack)
                 self.state.all_in.append(actor)
             else:
                 self.state.current_bets[actor] = maximum
                 player.remove_chips(maximum - current_bet)
-                if self.vocal: print(player.get_name(), 'calls', maximum - current_bet)
-        
-        elif action[0] == 'raise' or action[0] == 'bet':    #raising is interpreted as "raise to" a a new total bet
-            raise_to = action[1]    #new total bet of player
-            raise_by = raise_to - maximum    #change in maximum bet in pot
-            # if action[0] == 'bet' and maximum > 0: raise Exception('Cannot bet when pot has been opened. Did you mean to raise?')
-            # if action[0] == 'raise' and maximum == 0: raise Exception('Cannot raise when pot is unopened. Did you mean to bet?')
-            if raise_to < self.state.min_raise: raise Exception('Raise amount is less than minimum raise.')
-            self.state.min_raise = raise_to + raise_by    #player must raise by twice as much as last raise
+                if self.narrate_hands:
+                    print(
+                        player.get_name(), 'calls', maximum - current_bet)
+
+        # player raises or bets (player increases largest amount bet)
+        elif action[0] == 'raise' or action[0] == 'bet':
+            raise_to = action[1]  # new total bet of player
+            raise_by = raise_to - maximum  # change in maximum bet in pot
+            if raise_to < self.state.min_raise_amount:
+                raise Exception(
+                    'Raise amount is less than minimum raise.')
+            # get minimum amount raise must be
+            self.state.min_raise_amount = raise_to + raise_by
             self.state.current_bets[actor] = raise_to
+            # remove amount bet from player stack and add to pot
             player.remove_chips(raise_to - current_bet)
             self.state.num_raises[actor] += 1
-            all_in  = player.get_stack() == 0
-            if all_in: self.state.all_in.append(actor)
-            if self.vocal: 
-                if not all_in: print(player.get_name(), 'raises', raise_by, 'to', raise_to)
-                else: print(player.get_name(), 'raises all-in', raise_by, 'to', raise_to)
-        
-        else: raise Exception('Invalid player action.')
 
-    def get_playing(self): return self.playing[:]
+            # check if player is all-in
+            all_in = player.get_stack() == 0
+            if all_in:
+                self.state.all_in.append(actor)
+            if self.narrate_hands:
+                if not all_in:
+                    print(
+                        player.get_name(), 'raises', raise_by, 'to', raise_to)
+                else:
+                    print(player.get_name(), 'raises all-in',
+                          raise_by, 'to', raise_to)
 
-    def get_sit_out(self): return self.sit_out[:]
+        else:
+            raise Exception('Invalid player action.')
+
+    def play_hand(self, narrate_hands=False):
+        """ 
+        Simulates/plays hand between players that are part of table.
+
+        Narrates the hand and actions according to narrate_hands value.
+        """
+
+        # set if hand should be narrated
+        self.narrate_hands = narrate_hands
+
+        # check players that have enough chips to take part in hand
+        # (checks eliminated players in case any player has bought in again)
+        for player in self.eliminated_players[:]:
+            # check if stack of player is enough to play hand
+            if player.get_stack() >= self.big_blind:
+                if player.get_stack() > self.max_buy_in:
+                    raise Exception(
+                        'Player\'s stack is greater than maximum buy in.')
+                # add players that match requirement
+                self.active_players.append(player)
+                self.eliminated_players.remove(player)
+
+        # if not enoguh players hand can't go ahead
+        if len(self.active_players) <= 1:
+            return False
+
+        # reset table game state before hand
+        self.state = TableState(self.active_players)
+
+        # simulate hand after all necessary prep
+        self.generate_deck()
+        self.deal_private_cards()
+        self.start_hand(narrate_hands)
+        # deal flop
+        self.deal_community_cards(3, narrate_hands)
+        # deal turn
+        self.deal_community_cards(1, narrate_hands)
+        # deal river
+        self.deal_community_cards(1, narrate_hands)
+        self.pay_winners()
+
+        # discard older (not as effective) strategies for each agent 
+        for player in self.active_players:
+            player.forget_old_strategies()
+
+        # determine next dealer at table (for blinds and first active player)
+        dealer_position = (self.dealer + 1) % self.state.num_active_players
+        while self.active_players[dealer_position].get_stack() < self.big_blind:
+            dealer_position = (dealer_position +
+                               1) % self.state.num_active_players
+        dealer = self.active_players[dealer_position]
+
+        # remove players who do not have any chips left in stack
+        for player in self.active_players[:]:
+            if player.get_stack() < self.big_blind:
+                self.active_players.remove(player)
+                self.eliminated_players.append(player)
+
+        # move dealer chip to determined next dealer position
+        self.dealer = 0
+        while self.active_players[self.dealer] != dealer:
+            self.dealer = (self.dealer + 1) % self.state.num_active_players
+
+        # print new line for better output formatting
+        if narrate_hands:
+            print()
+        return True
+
+    # Getters
+
+    def get_active_players(self): return self.active_players[:]
+
+    def get_blinds_and_buyin(self): return (
+        self.small_bind, self.big_blind, self.max_buy_in)
+
+    def get_eliminated_players(self): return self.eliminated_players[:]
 
     def get_players(self): return self.players[:]
-
-    def get_params(self): return (self.small_bind, self.big_blind, self.max_buy_in)

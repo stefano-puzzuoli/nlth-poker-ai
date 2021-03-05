@@ -4,7 +4,7 @@ import unittest
 from sklearn.ensemble import GradientBoostingRegressor
 import sys
 sys.path.append("..")                                   	# allows imports from parent directories
-from ai_poker.templates import simulate
+from ai_poker.simulation import simulate
 from ai_poker.player import Player
 
 
@@ -14,7 +14,7 @@ class TestPlayer(unittest.TestCase):
 	def setUp(self):
 		''' SetUp Player object '''
 		regressor = GradientBoostingRegressor()
-		player = Player(name="Player", reg=regressor, bankroll=10**6, n_raises=1000, r_factor=0.7, memory=10**5)
+		player = Player(name="Player", regressor=regressor, chips_amount=10**6, raise_choices=1000, raise_increase=0.7, memory=10**5)
 		self.player = player
 
 	def test_buy_chips(self):

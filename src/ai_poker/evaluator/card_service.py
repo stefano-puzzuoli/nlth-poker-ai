@@ -1,13 +1,57 @@
-#!/usr/bin/env python3
 
 class CardService(object):
-    string_ranks = '23456789TJQKA'
-    int_ranks = range(13)
-    prime_nums = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41]
+    """
+    A class to for bitwise Card Evaluation services.
 
-    # converstion from string => int
-    char_to_int_rank = dict(zip(list(string_ranks), int_ranks))
-    char_to_int_rank_suit = {
+    This class allows Agents to make use of the hand Evaluator object and 
+    classify their hands in an effective manner through bitwise operations.
+
+    Cards are represented as 32-bit integers, so 
+    there is no object instantiation. 
+    
+    The specific meaning of the bits is: 
+
+                          bitrank     suit rank   prime
+                    +--------+--------+--------+--------+
+                    |xxxbbbbb|bbbbbbbb|cdhsrrrr|xxpppppp|
+                    +--------+--------+--------+--------+
+        1) p = prime number of rank 
+        2) r = rank of card
+        3) cdhs = suit of card 
+        4) b = bit turned on depending on rank of card
+        5) x = unused
+        
+    """
+
+    # list of rankings for all cards (from 0 to 12 inclusive)
+    card_rankings = range(13)
+
+    # card values (from 2 to A)
+    card_values = '23456789TJQKA'
+
+    # use prime numbers to efficiently generate card evaluations (in bits)
+    # (each prime number represents a card value)
+    primes = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41]
+
+    # card value to card ranking map
+    card_value_to_rank = {
+        '2' : 0,
+        '3' : 1,
+        '4' : 2,
+        '5' : 3,
+        '6' : 4,
+        '7' : 5,
+        '8' : 6,
+        '9' : 7,
+        'T' : 8,
+        'J' : 9,
+        'Q' : 10,
+        'K' : 11,
+        'A' : 12,
+    }
+
+
+    suit_to_rank = {
         's' : 1, # spades
         'h' : 2, # hearts
         'd' : 4, # diamonds
@@ -15,127 +59,114 @@ class CardService(object):
     }
     int_to_char_suit = 'xshxdxxxc'
 
-    # for pretty printing
+    # for user friendly output in CLI
     unicode_suits = {
         1 : "♠", # spades 
         2 : "♥", # hearts
         4 : "♦", # diamonds
-        8 : "♣" # clubs
+        8 : "♣"  # clubs
     }
 
-     # hearts and diamonds
+    # unicodes for hearts and diamonds
     unicode_reds = [2, 4]
 
     @staticmethod
-    def new(string):
-        r_char = string[0]
-        suit_char = string[1]
-        r_int = CardService.char_to_int_rank[r_char]
-        suit_int = CardService.char_to_int_rank_suit[suit_char]
-        r_prime = CardService.prime_nums[r_int]
+    def create_evaluation(card_value_suit_pair):
+        ''' Creates bit evaluation given a card value-suit pair. '''
 
-        bitrank = 1 << r_int << 16
-        suit = suit_int << 12
-        rank = r_int << 8
+        # get string card value
+        raw_card_value = card_value_suit_pair[0]
+        # get string card suit
+        raw_card_suit = card_value_suit_pair[1]
+        # get rank of card value
+        card_value_rank = CardService.card_value_to_rank[raw_card_value]
+        # get rank of card suit
+        card_suit_rank = CardService.suit_to_rank[raw_card_suit]
 
-        return bitrank | suit | rank | r_prime
+        # get correspomnding card prime value for bitwise evaluation
+        card_prime_match = CardService.primes[card_value_rank]
 
-    @staticmethod
-    def str_from_int(n):
-        r_int = CardService.get_rank_int(n)
-        suit_int = Card.get_suit_int(n)
-        return CardService.string_ranks[r_int] + CardService.int_to_char_suit[suit_int]
+        # get bitwise evaluations of rank, value and suit
+        bitrank = 1 << card_value_rank << 16
+        suit = card_suit_rank << 12
+        value = card_value_rank << 8
 
-    @staticmethod
-    def get_rank_int(n):
-        return (n >> 8) & 0xF
-
-    @staticmethod
-    def get_suit_int(n):
-        return (n >> 12) & 0xF
+        return bitrank | suit | value | card_prime_match
 
     @staticmethod
-    def get_bitr_int(n):
-        return (n >> 16) & 0x1FFF
-
-    @staticmethod
-    def get_prime(n):
-        return n & 0x3F
-
-    @staticmethod
-    def make_binary(s):
-        bhand = []
-        for c in s:
-            bhand.append(CardService.new(c))
-        return bhand
-
-    @staticmethod
-    def prime_product_from_hand(n):
+    def prime_product_from_hand(cards):
+        ''' Return prime products bit evaluation of pair of cards. '''
+        # to avoid getting 0 
         product = 1
-        for c in n:
-            product *= (c & 0xFF)
+        # calculate prime products bit evaluation for each card
+        for card in cards:
+            product *= (card & 0xFF)
 
         return product
 
     @staticmethod
-    def prime_product_from_rbits(rbits):
+    def prime_product_from_rankings(rbits):
+        ''' Return prime products bit evaluation of hand ranking (in bit format). '''
+        # to avoid getting 0 
         product = 1
-        for i in CardService.int_ranks:
-            # if the ith bit is set
-            if rbits & (1 << i):
-                product *= CardService.prime_nums[i]
+        # calculate prime products bit evaluation for card ranking
+        for card_ranking in CardService.card_rankings:
+            # if ith bit is set
+            if rbits & (1 << card_ranking):
+                product *= CardService.primes[card_ranking]
 
         return product
 
     @staticmethod
-    def binary_from_int(n):
-        bstr = bin(n)[2:][::-1] # chop off the 0b and THEN reverse string
-        output = list("".join(["0000" +"\t"] * 7) +"0000")
-
-        for i in range(len(bstr)):
-            output[i + int(i/4)] = bstr[i]
-
-        # output the string to console
-        output.reverse()
-        return "".join(output)
-
-    @staticmethod
-    def int_to_unicode(n):
+    def get_card_unicode(card):
+        ''' Returns unicode value of card for pretty printing to CLI. '''
         
+        # get card suit and rank
+        suit = CardService.get_suit_bit(card)
+        rank = CardService.get_rank_bit(card)
+
+        # default is black cards
         color = False
+
+        # if can import include colors
         try:
             from termcolor import colored
-            ### for mac, linux: http://pypi.python.org/pypi/termcolor
-            ### can use for windows: http://pypi.python.org/pypi/colorama
             color = True
         except ImportError: 
             pass
 
-        # suit and rank
-        suit_int = CardService.get_suit_int(n)
-        r_int = CardService.get_rank_int(n)
-
-        # if we need to color red
-        s = CardService.unicode_suits[suit_int]
-        if color and suit_int in CardService.unicode_reds:
+        # if card has red suit
+        suit_unicode = CardService.unicode_suits[suit]
+        if color and suit in CardService.unicode_reds:
             s = colored(s, "red")
 
-        r = CardService.string_ranks[r_int]
+        rank = CardService.card_values[r_int]
 
-        return " [ " +r+ " " + s + " ] "
-
-    @staticmethod
-    def print_unicode(n):
-        print(CardService.int_to_unicode(n))
+        return " [ " + rank + " " + suit_unicode + " ] "
 
     @staticmethod
-    def print_unicode_cards(n):
+    def print_cards(card):
+        ''' Prints cards through unicode values of rank and suit. '''
         output = " "
-        for i in range(len(n)):
-            c = n[i]
-            if i != len(n) - 1:
-                output += CardService.int_to_unicode(c) + ","
+        # iterate through rank and suit of card
+        for i in range(len(card)):
+            value = card[i]
+
+            # check if is rank or suit
+            if i != len(card) - 1:
+                output += CardService.get_card_unicode(c) + ","
             else:
-                output += CardService.int_to_unicode(c) + " "
+                output += CardService.get_card_unicode(c) + " "
     
+        # output card
         print(output)
+
+    @staticmethod
+    def get_rank_bit(card):
+        ''' Returns bit value of card rank. '''
+        return (card >> 8) & 0xF
+
+    @staticmethod
+    def get_suit_bit(card):
+        ''' Returns bit value of card suit. '''
+        return (card >> 12) & 0xF
