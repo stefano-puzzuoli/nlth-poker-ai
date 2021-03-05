@@ -1,9 +1,9 @@
-import React, { useState } from "react"
-import { Card, Button, Container, Alert } from "react-bootstrap"
-import { useAuth } from "../../contexts/AuthContext"
-import { useHistory } from "react-router-dom"
-import Logo from '../helpers/Logo';
+import React, { useState } from "react";
+import { Alert, Button, Card, Container } from "react-bootstrap";
+import { useHistory } from "react-router-dom";
+import { useAuth } from "../../contexts/AuthContext";
 import '../../Game.css';
+import Logo from '../helpers/Logo';
 
 
 /**
@@ -16,6 +16,11 @@ export default function Dashboard() {
     const { currentUser, logout } = useAuth()
     const history = useHistory()
 
+    Dashboard.username = getUsername(currentUser.email)
+
+    /*
+     Logout user
+    */
     async function handleLogout() {
         setError("")
 
@@ -27,6 +32,9 @@ export default function Dashboard() {
         }
     }
 
+    /*
+     Show user statistics
+    */
     async function viewStatistics() {
         setError("")
         try {
@@ -36,6 +44,9 @@ export default function Dashboard() {
         }
     }
 
+    /*
+     Start Game
+    */
     async function playPoker(difficulty = "Beginner") {
         setError("")
         try {
@@ -44,22 +55,29 @@ export default function Dashboard() {
             setError("Failed to enter game")
         }
     }
-    
+
+    /*
+     Get username from email address
+    */
+    function getUsername(emailAddress) {
+        return emailAddress.substring(0, emailAddress.indexOf("@"));
+    }
+
     return (
         <>
             <Container
                 className="d-flex flex-column align-items-center justify-content-center"
                 style={{ minHeight: "100vh" }}
-              >
+            >
                 <div className="w-200 text-center">
-                    <Logo/>
+                    <Logo />
                 </div>
                 <div className="w-100" style={{ maxWidth: "400px" }}>
                     <Card>
                         <Card.Body>
                             <h2 className="text-center mb-4">Dashboard</h2>
                             {error && <Alert variant="danger">{error}</Alert>}
-                    Welcome <strong> {currentUser.email} </strong>. 
+                            <div className="text-center mb-2">Welcome <strong> {Dashboard.username}</strong>!</div>
                             <div className="w-100 text-center mt-2">
                                 <Button className="w-100 mb-3" onClick={() => playPoker("beginner")}>
                                     Join Beginner Table

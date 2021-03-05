@@ -14,6 +14,9 @@ export default function ForgotPassword() {
   const [message, setMessage] = useState("")
   const [loading, setLoading] = useState(false)
 
+  /*
+    Handle user forgot password submission
+  */
   async function handleSubmit(e) {
     e.preventDefault()
 

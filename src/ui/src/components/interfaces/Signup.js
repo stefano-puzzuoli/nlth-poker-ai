@@ -1,9 +1,9 @@
-import React, { useRef, useState } from "react"
-import { Form, Button, Card, Container, Alert } from "react-bootstrap"
-import { useAuth } from "../../contexts/AuthContext"
-import { Link, useHistory } from "react-router-dom"
-import Logo from '../helpers/Logo';
+import React, { useRef, useState } from "react";
+import { Alert, Button, Card, Container, Form } from "react-bootstrap";
+import { Link, useHistory } from "react-router-dom";
+import { useAuth } from "../../contexts/AuthContext";
 import '../../Game.css';
+import Logo from '../helpers/Logo';
 
 /**
  * Signup component to allow users to sign up
@@ -19,6 +19,9 @@ export default function Signup() {
   const [loading, setLoading] = useState(false)
   const history = useHistory()
 
+  /*
+     Signup user submission
+  */
   async function handleSubmit(e) {
     e.preventDefault()
 
@@ -45,7 +48,7 @@ export default function Signup() {
         style={{ minHeight: "100vh" }}
       >
         <div className="w-200 text-center">
-            <Logo/>
+          <Logo />
         </div>
         <div className="w-100" style={{ maxWidth: "400px" }}>
           <Card>
@@ -71,7 +74,7 @@ export default function Signup() {
               </Form>
             </Card.Body>
           </Card>
-          <div className="w-100 text-center mt-2">
+          <div className="help-text w-100 text-center mt-2">
             Already have an account? <Link to="/login">Log In</Link>
           </div>
         </div>
