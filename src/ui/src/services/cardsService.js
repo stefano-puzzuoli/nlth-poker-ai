@@ -31,8 +31,8 @@ const VALUE_MAP = {
 
 
 
-/**
- * Generate the deck of 52 cards 
+/*
+  Generate the deck of 52 cards 
  */
 const makeDeckOfCards = () => {
 	const deck = [];
@@ -51,8 +51,8 @@ const makeDeckOfCards = () => {
 }
 
 
-/**
- * Shuffle cards to randomize their order
+/*
+  Shuffle cards to randomize their order
  */
 const shuffleCards = (deck) => {
 	let shuffledDeck = new Array(totalNumCards);
@@ -78,8 +78,8 @@ const shuffleCards = (deck) => {
 }
 
 
-/**
- * Deal players cards at start of each hand
+/*
+  Deal players cards at start of each hand
  */
 const dealPlayerCards = (state) => {
 	state.clearCards = false;
@@ -107,8 +107,8 @@ const dealPlayerCards = (state) => {
 }
 
 
-/**
- * Find random start position for giving cards (assigns dealer chip)
+/*
+  Find random start position for giving cards (assigns dealer chip)
  */
 const randomStartPosition = (min, max) => {
 	min = Math.ceil(min);
@@ -117,8 +117,8 @@ const randomStartPosition = (min, max) => {
 }
 
 
-/**
- * Get cards dealt to a player
+/*
+  Get cards dealt to a player
  */
 const getCards = (deck, numToGet) => {
 	// make shallow copy of deck to not alter original deck attributes
@@ -138,8 +138,8 @@ const getCards = (deck, numToGet) => {
 }
 
 
-/**
- * Deal flop cards
+/*
+  Deal flop cards
  */
 const dealFlopCards = (state) => {
 	let animationDelay = 0;
@@ -161,8 +161,8 @@ const dealFlopCards = (state) => {
 	return state;
 }
 
-/**
- * Deal turn cards
+/*
+  Deal turn cards
  */
 const dealTurnCards = (state) => {
 	const { mutableDeckCopy, chosenCards } = getCards(state.deck, 1);
@@ -178,8 +178,8 @@ const dealTurnCards = (state) => {
 }
 
 
-/**
- * Deal river cards
+/*
+  Deal river cards
  */
 const dealRiverCards = (state) => {
 	const { mutableDeckCopy, chosenCards } = getCards(state.deck, 1);
@@ -194,8 +194,8 @@ const dealRiverCards = (state) => {
 	return state
 }
 
-/**
- * Deal table Community cards 
+/*
+  Deal table Community cards 
  */
 const dealOtherCommunityCards = (state) => {
 	// check number of cards left to deal
@@ -217,8 +217,8 @@ const dealOtherCommunityCards = (state) => {
 	return state
 }
 
-/**
- * Perform player showdown at end of hand
+/*
+  Perform player showdown at end of hand
  */
 const playerShowDown = (state) => {
 	// find players that are still in the hand
@@ -308,8 +308,8 @@ const playerShowDown = (state) => {
 
 }
 
-/**
- * Get cards of players that are part of showdown
+/*
+  Get cards of players that are part of showdown
  */
 const getShowdownCards = (deck, numToPop) => {
 	// make shallow copy of deck to not alter original deck attributes
@@ -328,8 +328,8 @@ const getShowdownCards = (deck, numToPop) => {
 	return { mutableDeckCopy, chosenCards }
 }
 
-/**
- * Find best hand amongst players still in a hand
+/*
+  Find best hand amongst players still in a hand
  */
 const findBestHand = (hand, bestRank, flushedSuit, flushCards, concurrentCardValues, concurrentCardValuesLow, isLowStraight, isLowStraightFlush, concurrentSFCardValues, concurrentSFCardValuesLow, frequencyHistogramMetaData) => {
 	// check if hand matches any value from best to worst (Royal Flush to High Card)
@@ -477,8 +477,8 @@ const findBestHand = (hand, bestRank, flushedSuit, flushCards, concurrentCardVal
 	}
 }
 
-/**
- * Determine ranking order of players' hands
+/*
+  Determine ranking order of players' hands
  */
 const determinePlayerHandsHierarchy = (sortedComparator, handRank) => {
 	let winnerHierarchy = [];
@@ -545,8 +545,8 @@ const determinePlayerHandsHierarchy = (sortedComparator, handRank) => {
 	return winnerHierarchy;
 }
 
-/**
- * Build ranking of hands of each player still in hand
+/*
+  Build ranking of hands of each player still in hand
  */
 const buildPlayerRankings = (state) => {
 
@@ -615,8 +615,8 @@ const buildPlayerRankings = (state) => {
 	return hierarchy;
 }
 
-/**
- * Rank hands of players still active in hand
+/*
+  Rank hands of players still active in hand
  */
 const rankPlayersHands = (state, contestants) => {
 
@@ -650,8 +650,8 @@ const rankPlayersHands = (state, contestants) => {
 	return rankMap;
 }
 
-/**
- * Handle and get snapshot with winners and losers of hand
+/*
+  Handle and get snapshot with winners and losers of hand
  */
 const handleSnapshotFrame = (frame) => {
 	const highValue = frame[0].card.value;
@@ -660,8 +660,8 @@ const handleSnapshotFrame = (frame) => {
 	return { winningFrame, losingFrame }
 }
 
-/**
- * Assign winnings to hand winners (handles pot splits too)
+/*
+  Assign winnings to hand winners (handles pot splits too)
  */
 const assignWinnings = (state, rankMap, prize) => {
 	let winnerFound = false;
@@ -695,8 +695,8 @@ const assignWinnings = (state, rankMap, prize) => {
 	return state
 }
 
-/**
- * Assign side pots when there are multiple winners for the same hand
+/*
+  Assign side pots when there are multiple winners for the same hand
  */
 const assignSidePots = (state) => {
 	// find winners of hand
@@ -718,8 +718,8 @@ const assignSidePots = (state) => {
 	return state
 }
 
-/**
- * Pay winnings to hand winners
+/*
+  Pay winnings to hand winners
  */
 const payWinnings = (state, winners, prize, rank) => {
 	// if only one winner they win all the pot
@@ -750,8 +750,8 @@ const payWinnings = (state, winners, prize, rank) => {
 	return state
 }
 
-/**
- * Create hand rankings comparator to compare hand rankings
+/*
+  Create hand rankings comparator to compare hand rankings
  */
 const createRankingsComparator = (rank, playerData) => {
 	let comparator;
@@ -941,8 +941,8 @@ const createRankingsComparator = (rank, playerData) => {
 	return comparator
 }
 
-/**
- * Find current hand winner
+/*
+  Find current hand winner
  */
 const findHandWinner = (comparator, rank) => {
 	let winners;
@@ -988,8 +988,8 @@ const findHandWinner = (comparator, rank) => {
 
 }
 
-/**
- * Check if hand is a Flush
+/*
+  Check if hand is a Flush
  */
 const checkIfFlush = (suitHistogram) => {
 	let isFlush;
@@ -1009,8 +1009,8 @@ const checkIfFlush = (suitHistogram) => {
 	}
 }
 
-/**
- * Check if hand is a Royal Flush
+/*
+  Check if hand is a Royal Flush
  */
 const checkIfRoyalFlush = (flushMatchCards) => {
 	// check if hand is Ten, Jack, Queen, King and Ace (all of same suit)
@@ -1023,8 +1023,8 @@ const checkIfRoyalFlush = (flushMatchCards) => {
 	} else { return false }
 }
 
-/**
- * Check if hand is a Straight
+/*
+  Check if hand is a Straight
  */
 const checkIfStraight = (valueSet) => {
 	// if less than five cards are valuable to the hand it is not a straight
@@ -1079,8 +1079,8 @@ const checkIfStraight = (valueSet) => {
 	}
 }
 
-/**
- * Check if hand is a Straight Flush
+/*
+  Check if hand is a Straight Flush
  */
 const checkIfStraightFlush = (flushMatchCards) => {
 	// check if hand is five cards in sequence (all of same suit)
@@ -1094,9 +1094,9 @@ const checkIfStraightFlush = (flushMatchCards) => {
 	}
 }
 
-/**
- * Check how many hand rankings have occured and with what frequence 
- * and order
+/*
+  Check how many hand rankings have occured and with what frequence 
+  and order
  */
 const checkFrequencyHistogram = (hand, frequencyHistogram) => {
 
@@ -1167,8 +1167,8 @@ const checkFrequencyHistogram = (hand, frequencyHistogram) => {
 
 }
 
-/**
- * Check if hand is straight with Ace, two, three, four, five
+/*
+  Check if hand is straight with Ace, two, three, four, five
  */
 const checkIfLowerStraight = (valueSetCopy) => {
 	let numConcurrentCards = 0;
@@ -1212,8 +1212,8 @@ const checkIfLowerStraight = (valueSetCopy) => {
 	}
 }
 
-/**
- * Generate set of five cards that add value to hand
+/*
+  Generate set of five cards that add value to hand
  */
 const generateValueSet = (hand) => {
 	return Array.from(new Set(hand.map(cardInfo => cardInfo.value)))

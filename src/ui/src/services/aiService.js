@@ -15,8 +15,9 @@ import {
 } from './uiService.js';
 
 /**
-* The aiService provides key services for the UI
-* functinality of Ai players.
+* The aiService provides key services for the 
+* functinality of Ai players. It handles 
+* how the Ai determines what move to make.
 */
 
 /* 
