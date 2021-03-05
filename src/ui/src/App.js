@@ -6,7 +6,6 @@ import 'raf/polyfill';
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "regenerator-runtime/runtime";
-import './App.css';
 import PrivateRoute from "./components/helpers/PrivateRoute";
 import Dashboard from "./components/interfaces/Dashboard";
 import ForgotPassword from "./components/interfaces/ForgotPassword";

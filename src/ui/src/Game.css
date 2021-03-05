@@ -30,7 +30,7 @@ img {
 }
 
 .logo {
-	width: 10rem;
+	width: 7rem;
 }
 
 .flex-row {
@@ -69,7 +69,7 @@ img {
 
 .title-logo img {
 	display: inline-block;
-	width: 10%;
+	width: 9%;
 	z-index: 100;
 }
 
@@ -80,6 +80,13 @@ img {
 	color: #FFEB49;
 	text-align: center;
 	z-index: 100;
+	font-family: 'Merriweather', serif;
+}
+
+.logo-main h3 {
+	font-size: 1.75rem;
+	font-weight: 600;
+	font-family: 'Merriweather', serif;
 }
 
 .dropdown {
@@ -101,7 +108,7 @@ img {
 	justify-content: space-around;
 	margin: 7% auto 0% auto;
 	color: #FFEB49;
-	width: 100%;
+	width: 65%;
 }
 
 .slider {
@@ -110,6 +117,7 @@ img {
 	justify-content: flex-end;
 	width: 70%;
 	height: 100%;
+	margin-left: 2%;
 }
 
 .game-buttons {
@@ -317,13 +325,31 @@ img {
 }
 
 .player-data-stash-div {
-	margin-top: 15px;
+	margin-top: 10px;
 }
 
 .player-data-stash-image, .player-data-bet-image {
+	height: 28px;
+	width: 28px;
+	padding: 2px;
+}
+
+.player-data-bet-div {
+	position: absolute;
+	top: -12px;
+	left: 95px;
 	height: 25px;
 	width: 25px;
-	padding: 2px;
+	z-index: 100;
+}
+
+.player-data-bet-head {
+	margin-top: 12px;
+	margin-left: 2px;
+}
+
+.player-data-stash-head {
+	margin-top: 8px;
 }
 
 /* Playing Card Styles */
@@ -346,7 +372,7 @@ img {
 
 .agent-card {
 	background-color: #333132;
-	background-image: url("assets/card_back4.svg");
+	background-image: url("./assets/card_back.svg");
 	background-size: 110px;
 	background-repeat: no-repeat;
 	background-position: center;
@@ -357,7 +383,6 @@ img {
 	animation-fill-mode: both;
 }
 
-
 .cardbabmock {
 	width: 85px;
 	margin-left: 5px;
@@ -367,11 +392,55 @@ img {
 
 .abscard {
 	position: absolute;
-	top: -80px;
+	top: -103%;
 }
 
 .shrinkwrap {
 	transform: scale(0.3);
+}
+
+/* Statistics Table */
+
+* {
+	font-family: sans-serif;
+}
+
+.content-table {
+	border-collapse: collapse;
+	margin: 25px 0;
+	font-size: 0.9em;
+	border-radius: 5px 5px 0 0;
+	overflow: hidden;
+	box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+	width: 100%;
+}
+
+.content-table thead tr {
+	background-color: #5E54AC;
+	color: #ffffff;
+	text-align: left;
+	font-weight: bold;
+}
+
+.content-table th, .content-table td {
+	padding: 12px 15px;
+}
+
+.content-table tbody tr {
+	border-bottom: 1px solid #dddddd;
+}
+
+.content-table tbody tr:nth-of-type(even) {
+	background-color: #f3f3f3;
+}
+
+.content-table tbody tr:last-of-type {
+	border-bottom: 2px solid #5E54AC;
+}
+
+.content-table tbody tr.active-row {
+	font-weight: bold;
+	color: #5E54AC;
 }
 
 /* Card Animations */
@@ -470,11 +539,12 @@ img {
 	left: 0;
 	right: 0;
 	top: 0;
-	background-color: rgba(0, 0, 0, 0.85);
+	background-color: rgba(0, 0, 0, 0.95);
 	color: #FFEB49;
 	height: auto;
 	min-height: 100%;
 	width: 100%;
+	height: 100%;
 	z-index: 100;
 }
 
@@ -564,24 +634,31 @@ img {
 
 .showdown-nextRound-button {
 	background-color: #FFEB49;
-	border: 2px solid white;
+	border: 3px solid #FFFFFF;
 	color: #8c00ff;
 	padding: 6px;
 	line-height: 1;
+	border-radius: 5%;
 }
 
 .showdown-nextRound-button:hover {
 	cursor: pointer;
 }
 
+.showdown-table {
+	width: 65%;
+}
+
+.showdown-table th {
+	text-align: center;
+}
+
 /* Responsive Styles */
 
 @media (max-width: 1080px) {
-
 	.poker-table-div {
 		top: 5%;
 	}
-
 	.poker-table-image {
 		height: 100%;
 	}
@@ -592,7 +669,6 @@ img {
 	.player-data-name {
 		width: 100px;
 	}
-	
 	.pot-div {
 		top: 49%;
 	}
@@ -600,16 +676,13 @@ img {
 		height: 40px;
 		width: 40px;
 	}
-
 	.abscard {
 		top: -100%;
 	}
-	
 	.community-hand-div {
 		top: 22%;
 		left: 36.5%
 	}
-
 	.p0 {
 		bottom: 16%;
 		left: 50%;
@@ -631,35 +704,35 @@ img {
 		bottom: 40%;
 		right: 7.5%;
 	}
-
 	.title-logo {
 		margin-left: 10%;
 	}
-
 	.title-logo h3 {
-		font-size: 1.5rem;
+		font-size: 1.75rem;
 	}
-
 	#dropdown-basic-button {
 		width: 300%;
 	}
-
 	.game-bar {
 		margin-top: 5%;
 		margin-left: 10%;
 	}
-
 	.slider {
 		width: 40%;
+	}
+	/* Showdown styles */
+	.showdown-table {
+		width: 65%;
+	}
+	.showdown-table th {
+		text-align: center;
 	}
 }
 
 @media (max-height: 950px) {
-
 	.poker-table-div {
 		top: 5%;
 	}
-
 	.poker-table-image {
 		height: 80%;
 	}
@@ -670,7 +743,6 @@ img {
 	.player-data-name {
 		width: 75px;
 	}
-
 	.pot-div {
 		top: 35%;
 	}
@@ -678,16 +750,13 @@ img {
 		height: 40px;
 		width: 40px;
 	}
-
 	.abscard {
-		top: -130%;
+		top: -136%;
 	}
-	
 	.community-hand-div {
 		top: 20%;
 		left: 36.5%
 	}
-
 	.p0 {
 		bottom: 27%;
 		left: 50%;
@@ -709,28 +778,41 @@ img {
 		bottom: 45%;
 		right: 12.5%;
 	}
-
 	.title-logo {
 		margin-left: 10%;
 	}
-
 	.title-logo h3 {
-		font-size: 1.5rem;
+		font-size: 1.75rem;
 	}
-
 	#dropdown-basic-button {
 		width: 300%;
 	}
-
 	.game-bar {
-		margin-top: -5%;
+		margin-top: -7.5%;
 	}
-
 	.player-data-stash-div h5 {
 		font-size: 95%
 	}
-
 	.player-data-bet-div h5 {
 		font-size: 95%
+	}
+	.player-data-bet-div {
+		left: 75px;
+	}
+	.current-move-head {
+		margin-top: 4%;
+	}
+	.showdown-player .player-icon-div {
+		margin-top: 15%;
+	}
+	.showdown-div-wrapper {
+		height: 110%;
+	}
+	/* Showdown styles */
+	.showdown-table {
+		width: 65%;
+	}
+	.showdown-table th {
+		text-align: center;
 	}
 }
