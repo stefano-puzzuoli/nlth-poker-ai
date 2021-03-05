@@ -1,9 +1,9 @@
-import React, { useRef, useState } from "react"
-import { Form, Button, Card, Container, Alert } from "react-bootstrap"
-import { useAuth } from "../../contexts/AuthContext"
-import { Link, useHistory } from "react-router-dom"
-import Logo from '../helpers/Logo';
+import React, { useRef, useState } from "react";
+import { Alert, Button, Card, Container, Form } from "react-bootstrap";
+import { Link, useHistory } from "react-router-dom";
+import { useAuth } from "../../contexts/AuthContext";
 import '../../Game.css';
+import Logo from '../helpers/Logo';
 
 /**
  * Login component to allow users to 
@@ -17,6 +17,9 @@ export default function Login() {
   const [loading, setLoading] = useState(false)
   const history = useHistory()
 
+  /*
+     Login user submission
+  */
   async function handleSubmit(e) {
     e.preventDefault()
 
@@ -32,6 +35,9 @@ export default function Login() {
     setLoading(false)
   }
 
+  /*
+    Login guest submission
+  */
   async function handleSubmitGuest(e) {
     e.preventDefault()
     console.log("Guest log in")
@@ -39,6 +45,7 @@ export default function Login() {
       setError("")
       setLoading(true)
       await login("guest@guest.com", "password")
+      console.log(login)
       history.push("/dashboard")
     } catch {
       setError("Error. Cannot play as guest")
@@ -54,7 +61,7 @@ export default function Login() {
         style={{ minHeight: "100vh" }}
       >
         <div className="w-200 text-center">
-            <Logo/>
+          <Logo />
         </div>
         <div className="w-100" style={{ maxWidth: "400px" }}>
           <Card>
@@ -75,14 +82,14 @@ export default function Login() {
             </Button>
               </Form>
               <Button disabled={loading} variant="warning" className="w-100 mt-3" onClick={handleSubmitGuest}>
-                  Play as Guest
+                Play as Guest
             </Button>
               <div className="w-100 text-center mt-3">
                 <Link to="/forgot-password">Forgot Password?</Link>
               </div>
             </Card.Body>
           </Card>
-          <div className="toSignUp text-center mt-2">
+          <div className="help-text text-center mt-2">
             Don't have an account? <Link to="/signup">Sign Up</Link>
           </div>
         </div>

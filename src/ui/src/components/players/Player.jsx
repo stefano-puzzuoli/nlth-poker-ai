@@ -3,8 +3,12 @@ import BackOfCard from '../cards/BackOfCard';
 import Card from '../cards/Card';
 import PlayerStatus from "./PlayerStatus";
 
+
+
 const dealerChipImageURL = "/assets/logo.svg";
 const chipCountImageURL = "./assets/chips.svg";
+const playerBetImageURL = "./assets/bet.svg";
+
 
 /**
  * Player component that creates the base player entity 
@@ -31,7 +35,7 @@ const Player = (props) => {
   } = props;
 
   /*
-    Assigns the correct format of card to players
+     Assigns the correct format of card to players
   */
   const makePlayerCards = () => {
     let applyFoldedClassname;
@@ -68,7 +72,7 @@ const Player = (props) => {
 
 
   /*
-    Assign dealer chip to current round dealer
+     Assign dealer chip to current round dealer
   */
   const makeDealerChip = () => {
     if (hasDealerChip) {
@@ -81,7 +85,7 @@ const Player = (props) => {
   }
 
   /*
-    Check if player should have animation
+     Check if player should have animation
   */
   const Animating = (playerBoxIndex) => {
     if (playerAnimationSwitchboard[playerBoxIndex].Animating) {

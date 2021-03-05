@@ -26,19 +26,43 @@ function UserStatistics({ userStatistics }) {
 
     return (
         <>
-            <div>
-                <div> Beginner Games Played : {userStatistics.num_beginner_games}</div>
-                <div> Beginner Games Won : {userStatistics.num_beginner_wins}</div>
-                <div> Intermediate Games Played : {userStatistics.num_intermediate_games}</div>
-                <div> Intermediate Games Won : {userStatistics.num_intermediate_wins}</div>
-                <div> Expert Games Played : {userStatistics.num_expert_games}</div>
-                <div> Expert Games Won : {userStatistics.num_expert_wins}</div>
-                <div> Ultimate Poker Pro Games Played : {userStatistics.num_ultimate_games}</div>
-                <div> Ultimate Poker Pro Games Won : {userStatistics.num_ultimate_wins}</div>
-                <div> Total Games Played : {userStatistics.num_beginner_games + userStatistics.num_intermediate_games + userStatistics.num_expert_games + userStatistics.num_ultimate_games}</div>
-                <div> Total Games Won : {userStatistics.num_beginner_wins + userStatistics.num_intermediate_wins + userStatistics.num_expert_wins + userStatistics.num_ultimate_wins}</div>
+            <table class="content-table">
+                <thead>
+                    <tr>
+                        <th>Played</th>
+                        <th>Difficulty</th>
+                        <th>Won</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td> {userStatistics.num_beginner_games}</td>
+                        <td>Beginner</td>
+                        <td>{userStatistics.num_beginner_wins}</td>
+                    </tr>
+                    <tr>
+                        <td>{userStatistics.num_intermediate_games}</td>
+                        <td>Intermediate</td>
+                        <td>{userStatistics.num_intermediate_wins}</td>
+                    </tr>
+                    <tr>
+                        <td>{userStatistics.num_expert_games}</td>
+                        <td>Expert</td>
+                        <td>{userStatistics.num_expert_wins}</td>
+                    </tr>
+                    <tr>
+                        <td>{userStatistics.num_ultimate_games}</td>
+                        <td>Ultimate Poker Pro</td>
+                        <td>{userStatistics.num_ultimate_wins}</td>
+                    </tr>
+                    <tr class="active-row">
+                        <td>{userStatistics.num_beginner_games + userStatistics.num_intermediate_games + userStatistics.num_expert_games + userStatistics.num_ultimate_games}</td>
+                        <td>Total</td>
+                        <td>{userStatistics.num_beginner_wins + userStatistics.num_intermediate_wins + userStatistics.num_expert_wins + userStatistics.num_ultimate_wins}</td>
+                    </tr>
+                </tbody>
+            </table>
 
-            </div>
             <Button className="w-100 mt-3" onClick={handleReturnToDashboard}>
                 Return to Dashboard
             </Button>
