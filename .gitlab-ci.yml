@@ -49,3 +49,12 @@ frontend-build:
     - yarn install
     - yarn build
     - echo "Build successful!"
+
+frontend-test:
+  stage: test
+  image: node:10.15.3
+  script:
+    - echo "Testing front-end Components..."
+    - yarn install
+    - yarn test
+    - echo "Front-end Components rendered successfully!"
