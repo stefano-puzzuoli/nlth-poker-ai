@@ -28,13 +28,13 @@ init:
     paths: ['src/ui/node_modules']
 
 
-ai_poker_ci_start:
+ai_poker-ci-start:
      tags:
        - ci
      script:
        - echo ai_poker_ci_start job with test_ai_model.py running
 
-ai_poker_all_tests:
+ai_poker-test:
     stage: test
     script:
       - pip install -r requirements.txt
@@ -44,6 +44,7 @@ frontend-build:
   stage: build
   image: node:10.15.3
   script:
+    - cd ../ui/src
     - echo "Start building App..."
     - yarn install
     - yarn build
