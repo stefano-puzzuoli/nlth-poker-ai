@@ -44,7 +44,6 @@ frontend-build:
   stage: build
   image: node:10.15.3
   script:
-    - cd ../ui/src
     - echo "Start building App..."
     - yarn install
     - yarn build
@@ -54,7 +53,12 @@ frontend-test:
   stage: test
   image: node:10.15.3
   script:
+    - cd ../ui/src
     - echo "Testing front-end Components..."
     - yarn install
     - yarn test
     - echo "Front-end Components rendered successfully!"
+  artifacts:
+    expire_in: 1 day
+    paths:
+      - node_modules/
