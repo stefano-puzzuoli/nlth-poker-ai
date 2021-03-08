@@ -46,6 +46,7 @@ frontend-build:
   script:
     - cd ../ui/src
     - echo "Start building App..."
+    - npm install -g yarn
     - yarn install
     - yarn build
     - echo "Build successful!"
