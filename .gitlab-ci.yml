@@ -39,3 +39,13 @@ ai_poker_all_tests:
     script:
       - pip install -r requirements.txt
       - python -m unittest
+
+frontend-build:
+  stage: build
+  image: node
+  script:
+    - cd ../ui/src
+    - echo "Start building App..."
+    - yarn install
+    - yarn build
+    - echo "Build successful!"
