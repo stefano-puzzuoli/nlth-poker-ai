@@ -56,8 +56,10 @@ frontend-test:
   script:
     - cd ../ui/src
     - echo "Testing front-end Components..."
-    - yarn cache clean
     - yarn install
     - yarn test
     - echo "Front-end Components rendered successfully!"
-
+  artifacts:
+    expire_in: 1 day
+    paths:
+      - node_modules/
