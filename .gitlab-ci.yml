@@ -10,11 +10,6 @@ stages:
   - test
   - build
 
-cache:
-  key: ${CI_COMMIT_SHA}-key
-  paths:
-    - src/ui/node_modules/
-
 before_script:
   - cd src/test
 
