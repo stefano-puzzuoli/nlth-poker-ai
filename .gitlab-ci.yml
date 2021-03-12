@@ -11,7 +11,7 @@ stages:
   - build
 
 cache:
-  key: ${CI_COMMIT_SHA}
+  key: ${CI_COMMIT_SHA}-key
   paths:
     - src/ui/node_modules/
 
