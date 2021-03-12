@@ -233,7 +233,7 @@ img {
 	z-index: 100;
 }
 
-.p0, .p1, .p2, .p3, .p4 {
+.p0, .p1, .p2, .p3, .p4, .p5 {
 	position: absolute;
 	display: flex;
 	align-items: center;
@@ -242,30 +242,33 @@ img {
 
 .p0 {
 	bottom: 0%;
-	left: 50%;
-	transform: translateX(-50%);
+	right: 34%;
 }
 
 .p1 {
 	bottom: 0%;
-	left: 22%;
+	left: 34%;
 }
 
 .p2 {
-	bottom: 33%;
+	bottom: 40%;
 	left: 0%;
 }
 
 .p4 {
-	bottom: 0%;
-	right: 22%;
+	bottom: 3%;
+	right: 9%;
 }
 
 .p3 {
-	bottom: 33%;
+	bottom: 40%;
 	right: 0%;
 }
 
+.p5 {
+	bottom: 3%;
+	left: 9%;
+}
 .player-div {
 	display: flex;
 	height: auto;
