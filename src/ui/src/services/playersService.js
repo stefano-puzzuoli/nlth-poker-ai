@@ -131,7 +131,7 @@ const makeTable = async (playerName = "User") => {
 		chips: 20000,
 		roundStartChips: 20000,
 		roundEndChips: 20000,
-		currentRoundChipsInvested: 0,
+		currentRoundChipsInvested: 0, 
 		bet: 0,
 		betReconciled: false,
 		folded: false,
