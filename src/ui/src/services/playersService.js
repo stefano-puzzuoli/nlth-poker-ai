@@ -127,7 +127,7 @@ const makeTable = async (playerName = "User") => {
  */
 const makePersonality = (seed) => {
 	switch (seed) {
-		// intermediate/advanced ai
+		// intermediate/advanced ai 
 		case (seed > 0.5):
 			return 'standard'
 		// beginner ai
