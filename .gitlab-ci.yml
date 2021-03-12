@@ -46,8 +46,8 @@ build:
   script:
     - cd ../ui/src
     - echo "Start building App..."
-    - npm install
-    - npm run-script build
+    - yarn install
+    - yarn build
     - echo "Build successful!"
 
 frontend-test:
@@ -56,10 +56,10 @@ frontend-test:
   script:
     - cd ../ui/src
     - echo "Testing front-end Components..."
-    - npm install
-    - npm test
+    - yarn install
+    - yarn test
     - echo "Front-end Components rendered successfully!"
   artifacts:
-    expire_in: 2 hrs
+    expire_in: 1 day
     paths:
       - node_modules/
