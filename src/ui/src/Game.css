@@ -242,22 +242,18 @@ img {
 
 .p0 {
 	bottom: 0%;
-	right: 34%;
+	left: 34%;
 }
 
 .p1 {
 	bottom: 0%;
-	left: 34%;
+	right: 34%;
 }
+
 
 .p2 {
 	bottom: 40%;
 	left: 0%;
-}
-
-.p4 {
-	bottom: 3%;
-	right: 9%;
 }
 
 .p3 {
@@ -265,10 +261,16 @@ img {
 	right: 0%;
 }
 
+.p4 {
+	bottom: 3%;
+	right: 9%;
+}
+
 .p5 {
 	bottom: 3%;
 	left: 9%;
 }
+
 .player-div {
 	display: flex;
 	height: auto;
@@ -699,13 +701,13 @@ img {
 		bottom: 40%;
 		left: 7.5%;
 	}
-	.p4 {
-		bottom: 16%;
-		right: 29%;
-	}
 	.p3 {
 		bottom: 40%;
 		right: 7.5%;
+	}
+	.p4 {
+		bottom: 16%;
+		right: 29%;
 	}
 	.title-logo {
 		margin-left: 10%;
@@ -773,13 +775,13 @@ img {
 		bottom: 45%;
 		left: 12.5%;
 	}
-	.p4 {
-		bottom: 27%;
-		right: 29%;
-	}
 	.p3 {
 		bottom: 45%;
 		right: 12.5%;
+	}
+	.p4 {
+		bottom: 27%;
+		right: 29%;
 	}
 	.title-logo {
 		margin-left: 10%;
