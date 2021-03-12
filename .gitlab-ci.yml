@@ -56,7 +56,7 @@ frontend-test:
   script:
     - cd ../ui/src
     - echo "Testing front-end Components..."
-    - yarn cache clean
+    - docker system prune -af
     - yarn install
     - yarn test
     - echo "Front-end Components rendered successfully!"
