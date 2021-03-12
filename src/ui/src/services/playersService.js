@@ -17,7 +17,7 @@ const makeTable = async (playerName = "User") => {
 	const users = [{
 		id: uuid(),
 		name: playerName,
-		avatarURL: '/assets/playerIcons/blackUser.svg',
+		avatarURL: '/assets/playerIcons/greenUser.svg',
 		cards: [],
 		showDownHand: {
 			hand: [],
@@ -122,7 +122,7 @@ const makeTable = async (playerName = "User") => {
 	{
 		id: uuid(),
 		name: 'Agent 5',
-		avatarURL: '/assets/playerIcons/yellowUser.svg',
+		avatarURL: '/assets/playerIcons/brownUser.svg',
 		cards: [],
 		showDownHand: {
 			hand: [],
