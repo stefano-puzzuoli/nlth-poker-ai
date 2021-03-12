@@ -45,6 +45,7 @@ build:
   image: node:10.15.3
   script:
     - cd ../ui/src
+    - docker system prune -af
     - echo "Start building App..."
     - yarn install
     - yarn build
