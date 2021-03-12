@@ -10,6 +10,11 @@ stages:
   - test
   - build
 
+cache:
+  key: ${CI_COMMIT_SHA}
+  paths:
+    - src/ui/node_modules/
+
 before_script:
   - cd src/test
 
@@ -55,6 +60,6 @@ frontend-test:
     - yarn test
     - echo "Front-end Components rendered successfully!"
   artifacts:
-    expire_in: 1 day
+    expire_in: 2 hrs
     paths:
       - node_modules/
