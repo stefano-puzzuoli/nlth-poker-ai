@@ -19,17 +19,12 @@ cache:
 
 before_script:
   - cd src/test
-  - docker system prune -af
-
+  
 init:
   stage: init
-  image: node
-  script: ['']
-  cache:
-    policy: pull-push
-    key: ${CI_COMMIT_SHA}
-    paths: ['src/ui/node_modules']
-
+  image: gitlab/dind
+  script:
+    - docker system prune -af
 
 ai_poker-ci-start:
      tags:
