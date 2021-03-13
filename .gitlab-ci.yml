@@ -1,4 +1,4 @@
-image: python:3.6
+image: python:3.7
 
 variables:
   REPO: gitlab.computing.dcu.ie
@@ -11,7 +11,6 @@ stages:
   - build
 
 cache:
-  key: ${CI_COMMIT_SHA}
   paths:
     - src/ui/node_modules/
 
@@ -40,9 +39,9 @@ ai_poker-test:
       - pip install -r requirements.txt
       - python -m unittest
 
-build:
+app-build:
   stage: build
-  image: node:10.15.3
+  image: node:12.16.1
   script:
     - cd ../ui/src
     - echo "Start building App..."
@@ -52,7 +51,7 @@ build:
 
 frontend-test:
   stage: test
-  image: node:10.15.3
+  image: node:12.16.1
   script:
     - cd ../ui/src
     - echo "Testing front-end Components..."
