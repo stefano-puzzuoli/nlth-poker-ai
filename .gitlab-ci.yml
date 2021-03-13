@@ -1,4 +1,4 @@
-image: node:10.15.3
+image: python:3.6
 
 variables:
   REPO: gitlab.computing.dcu.ie
@@ -10,19 +10,22 @@ stages:
   - test
   - build
 
-before_script:
-  - cd src/ui
-  - yarn install
-
 cache:
-  key: $CI_PROJECT_ID
-  policy: pull
-  untracked: true
+  key: ${CI_COMMIT_SHA}
+  paths:
+    - src/ui/node_modules/
+
+before_script:
+  - cd src/test
 
 init:
   stage: init
   image: node:10.15.3
   script: ['']
+  cache:
+    policy: pull-push
+    key: ${CI_COMMIT_SHA}
+    paths: ['src/ui/node_modules']
 
 ai_poker-ci-start:
      tags:
@@ -30,23 +33,32 @@ ai_poker-ci-start:
      script:
        - echo ai_poker_ci_start job with test_ai_model.py running
 
+ai_poker-test:
+    stage: test
+    script:
+      - pip install -r requirements.txt
+      - python -m unittest
+
 app-build:
   stage: build
   image: node:10.15.3
   script:
-    - cd src
+    - cd ../ui/src
     - echo "Start building App..."
+    - yarn install
     - yarn build
     - echo "Build successful!"
-  artifacts:
-    paths:
-      - 'packages/*/lib' 
 
 frontend-test:
   stage: test
   image: node:10.15.3
   script:
-    - cd src
+    - cd ../ui/src
     - echo "Testing front-end Components..."
+    - yarn install
     - yarn test
     - echo "Front-end Components rendered successfully!"
+  artifacts:
+    expire_in: 1 day
+    paths:
+      - node_modules/
