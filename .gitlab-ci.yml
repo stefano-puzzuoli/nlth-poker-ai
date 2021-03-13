@@ -1,4 +1,4 @@
-image: python:3.6
+image: node:10.15.3
 
 variables:
   REPO: gitlab.computing.dcu.ie
@@ -11,7 +11,13 @@ stages:
   - build
 
 before_script:
+  - yarn install
   - cd src/test
+
+cache:
+  key: $CI_PROJECT_ID
+  policy: pull
+  untracked: true
 
 init:
   stage: init
@@ -26,6 +32,7 @@ ai_poker-ci-start:
 
 ai_poker-test:
     stage: test
+    image: python:3.6
     script:
       - pip install -r requirements.txt
       - python -m unittest
@@ -36,9 +43,11 @@ app-build:
   script:
     - cd ../ui/src
     - echo "Start building App..."
-    - yarn install
     - yarn build
     - echo "Build successful!"
+  artifacts:
+    paths:
+      - 'packages/*/lib' 
 
 frontend-test:
   stage: test
@@ -46,6 +55,5 @@ frontend-test:
   script:
     - cd ../ui/src
     - echo "Testing front-end Components..."
-    - yarn install
     - yarn test
     - echo "Front-end Components rendered successfully!"
