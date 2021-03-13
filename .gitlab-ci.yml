@@ -1,10 +1,64 @@
-image: gitlab/dind
+image: python:3.6
+
+variables:
+  REPO: gitlab.computing.dcu.ie
+  GROUP: iidele
+  PROJECT: 2021-ca400-idelegi2-puzzuos2
 
 stages:
+  - init
+  - test
   - build
 
-build:
+cache:
+  key: ${CI_COMMIT_SHA}
+  paths:
+    - src/ui/node_modules/
+
+before_script:
+  - cd src/test
+
+init:
+  stage: init
+  image: node:10.15.3
+  script: ['']
+  cache:
+    policy: pull-push
+    key: ${CI_COMMIT_SHA}
+    paths: ['src/ui/node_modules']
+
+ai_poker-ci-start:
+     tags:
+       - ci
+     script:
+       - echo ai_poker_ci_start job with test_ai_model.py running
+
+ai_poker-test:
+    stage: test
+    script:
+      - pip install -r requirements.txt
+      - python -m unittest
+
+app-build:
   stage: build
+  image: node:10.15.3
   script:
-    - docker info
-    - docker container prune
+    - cd ../ui/src
+    - echo "Start building App..."
+    - yarn install
+    - yarn build
+    - echo "Build successful!"
+
+frontend-test:
+  stage: test
+  image: node:10.15.3
+  script:
+    - cd ../ui/src
+    - echo "Testing front-end Components..."
+    - yarn install
+    - yarn test
+    - echo "Front-end Components rendered successfully!"
+  artifacts:
+    expire_in: 1 day
+    paths:
+      - node_modules/
