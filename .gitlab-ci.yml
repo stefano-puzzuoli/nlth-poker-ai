@@ -1,7 +1,4 @@
-image: gitlab/dind
-
-services:
-  - docker:dind
+image: python:3.6
 
 variables:
   REPO: gitlab.computing.dcu.ie
@@ -13,18 +10,14 @@ stages:
   - test
   - build
 
-cache:
-  paths:
-    - src/ui/node_modules/
-
 before_script:
   - cd src/test
-  
+
 init:
   stage: init
-  image: gitlab/dind
-  script:
-    - docker system prune -af
+  image: node:10.15.3
+  script: ['']
+
 
 ai_poker-ci-start:
      tags:
@@ -34,14 +27,13 @@ ai_poker-ci-start:
 
 ai_poker-test:
     stage: test
-    image: python:3.7
     script:
       - pip install -r requirements.txt
       - python -m unittest
 
 app-build:
   stage: build
-  image: node:10.24.0
+  image: node:10.15.3
   script:
     - cd ../ui/src
     - echo "Start building App..."
@@ -51,7 +43,7 @@ app-build:
 
 frontend-test:
   stage: test
-  image: node:10.24.0
+  image: node:10.15.3
   script:
     - cd ../ui/src
     - echo "Testing front-end Components..."
