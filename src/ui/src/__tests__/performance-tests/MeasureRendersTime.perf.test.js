@@ -3,7 +3,7 @@ import React from 'react';
 import { perf } from 'react-performance-testing/native';
 import "regenerator-runtime/runtime";
 
-test('should render time be less than 80ms', async () => {
+test('render time should be less than 80ms', async () => {
   const Counter = () => {
     const [count, setCount] = React.useState(0);
     return (
@@ -29,7 +29,7 @@ test('should render time be less than 80ms', async () => {
   });
 });
 
-test('should measure re-render time when state is updated with it have multiple same component', async () => {
+test('should measure re-render time when state is updated from multiple components', async () => {
   const Counter = ({ testid }) => {
     const [count, setCount] = React.useState(0);
     return (
