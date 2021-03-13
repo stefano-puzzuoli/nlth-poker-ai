@@ -11,7 +11,7 @@ stages:
   - build
 
 before_script:
-  - cd src/ui/src
+  - cd src/ui
   - yarn install
 
 cache:
@@ -34,6 +34,7 @@ app-build:
   stage: build
   image: node:10.15.3
   script:
+    - cd src
     - echo "Start building App..."
     - yarn build
     - echo "Build successful!"
@@ -45,6 +46,7 @@ frontend-test:
   stage: test
   image: node:10.15.3
   script:
+    - cd src
     - echo "Testing front-end Components..."
     - yarn test
     - echo "Front-end Components rendered successfully!"
