@@ -1,31 +1,22 @@
-image: python:3.6
+image: node:9.4.0
 
-variables:
-  REPO: gitlab.computing.dcu.ie
-  GROUP: iidele
-  PROJECT: 2021-ca400-idelegi2-puzzuos2
+cache:
+  paths:
+    - node_modules/
+    - .yarn
+
+before_script:  
+  - apt-get update -qq && apt-get install
 
 stages:
   - init
   - test
   - build
 
-cache:
-  key: ${CI_COMMIT_SHA}
-  paths:
-    - src/ui/node_modules/
-
-before_script:
-  - cd src/test
-
 init:
   stage: init
-  image: node:10.15.3
+  image: node:9.4.0
   script: ['']
-  cache:
-    policy: pull-push
-    key: ${CI_COMMIT_SHA}
-    paths: ['src/ui/node_modules']
 
 ai_poker-ci-start:
      tags:
@@ -35,27 +26,31 @@ ai_poker-ci-start:
 
 ai_poker-test:
     stage: test
+    image: python:3.6
     script:
+      - cd src/test
       - pip install -r requirements.txt
       - python -m unittest
 
 app-build:
   stage: build
-  image: node:10.15.3
+  image: node:9.4.0
   script:
-    - cd ../ui/src
+    - cd src/ui/src
+    - yarn config set cache-folder .yarn
+    - yarn install --frozen-lockfile
     - echo "Start building App..."
-    - yarn install
     - yarn build
     - echo "Build successful!"
 
 frontend-test:
   stage: test
-  image: node:10.15.3
+  image: node:9.4.0
   script:
-    - cd ../ui/src
+    - cd src/ui/src
+    - yarn config set cache-folder .yarn
+    - yarn install --frozen-lockfile
     - echo "Testing front-end Components..."
-    - yarn install
     - yarn test
     - echo "Front-end Components rendered successfully!"
   artifacts:
