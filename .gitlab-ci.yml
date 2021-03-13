@@ -18,7 +18,6 @@ init:
   image: node:10.15.3
   script: ['']
 
-
 ai_poker-ci-start:
      tags:
        - ci
@@ -50,7 +49,3 @@ frontend-test:
     - yarn install
     - yarn test
     - echo "Front-end Components rendered successfully!"
-  artifacts:
-    expire_in: 1 day
-    paths:
-      - node_modules/
