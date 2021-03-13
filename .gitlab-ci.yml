@@ -1,4 +1,4 @@
-image: node:9.4.0
+image: node:10.15.3
 
 cache:
   paths:
@@ -15,7 +15,7 @@ stages:
 
 init:
   stage: init
-  image: node:9.4.0
+  image: node:10.15.3
   script: ['']
 
 ai_poker-ci-start:
@@ -34,7 +34,7 @@ ai_poker-test:
 
 app-build:
   stage: build
-  image: node:9.4.0
+  image: node:10.15.3
   script:
     - cd src/ui/src
     - yarn config set cache-folder .yarn
@@ -45,7 +45,7 @@ app-build:
 
 frontend-test:
   stage: test
-  image: node:9.4.0
+  image: node:10.15.3
   script:
     - cd src/ui/src
     - yarn config set cache-folder .yarn
