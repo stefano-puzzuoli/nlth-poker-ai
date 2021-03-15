@@ -15,11 +15,11 @@ const Card = (props) => {
   } = props;
 
   // get suit of card
-  var cardSuit = suit.substring(0, 1).toUpperCase();
+  var suitOfCard = suit.substring(0, 1).toUpperCase();
 
   // display card according to value and suit given
   return (
-    <div className="poker-card"><img src={`${process.env.PUBLIC_URL}/assets/cardFaces/${cardFace}${cardSuit}.svg`}></img></div>
+    <div className="poker-card"><img src={`${process.env.PUBLIC_URL}/assets/cardFaces/${cardFace}${suitOfCard}.svg`}></img></div>
   )
 }
 
