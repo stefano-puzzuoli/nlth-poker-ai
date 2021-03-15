@@ -659,7 +659,7 @@ img {
 
 /* Responsive Styles */
 
-@media (max-width: 1080px) {
+@media (max-width: 1200px) {
 	.poker-table-div {
 		top: 5%;
 	}
@@ -689,12 +689,11 @@ img {
 	}
 	.p0 {
 		bottom: 16%;
-		left: 50%;
-		transform: translateX(-50%);
+		left: 38%;
 	}
 	.p1 {
 		bottom: 16%;
-		left: 29%;
+		left: 20%;
 	}
 	.p2 {
 		bottom: 40%;
@@ -706,11 +705,11 @@ img {
 	}
 	.p4 {
 		bottom: 16%;
-		right: 29%;
+		right: 20%;
 	}
 	.p5 {
 		bottom: 16%;
-		right: 44.5%;
+		right: 38%;
 	}
 	.title-logo {
 		margin-left: 10%;
@@ -722,11 +721,9 @@ img {
 		width: 300%;
 	}
 	.game-bar {
-		margin-top: 5%;
-		margin-left: 10%;
-	}
-	.slider {
-		width: 40%;
+		position: fixed;
+		width: 80%;
+		margin: 0 0% 0 10%;
 	}
 	/* Showdown styles */
 	.showdown-table {
