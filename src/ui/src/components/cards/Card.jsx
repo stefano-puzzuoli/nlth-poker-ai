@@ -9,9 +9,9 @@ const Card = (props) => {
     cardData: {
       suit,
       cardFace,
-      animationDelay
+      stallAnimation
     },
-    applyFoldedClassname
+    setFoldedClassName
   } = props;
 
   // get suit of card

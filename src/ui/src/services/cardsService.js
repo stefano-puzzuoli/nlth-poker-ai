@@ -83,14 +83,14 @@ const shuffleCards = (deck) => {
  */
 const dealPlayerCards = (state) => {
 	state.clearCards = false;
-	let animationDelay = 0;
+	let stallAnimation = 0;
 	// deal cards until every player at table has 2
 	while (state.players[state.activePlayerIndex].cards.length < 2) {
 		const { mutableDeckCopy, chosenCards } = getCards(state.deck, 1);
 
 		// add animation delay 
-		chosenCards.animationDelay = animationDelay;
-		animationDelay = animationDelay + 250;
+		chosenCards.stallAnimation = stallAnimation;
+		stallAnimation = stallAnimation + 250;
 
 		const newDeck = [...mutableDeckCopy];
 		state.players[state.activePlayerIndex].cards.push(chosenCards);
@@ -142,14 +142,14 @@ const getCards = (deck, numToGet) => {
   Deal flop cards
  */
 const dealFlopCards = (state) => {
-	let animationDelay = 0;
+	let stallAnimation = 0;
 	const { mutableDeckCopy, chosenCards } = getCards(state.deck, 3);
 
 	// deal first 3 chosen flop cards
 	for (let card of chosenCards) {
 		// add animation delay 
-		card.animationDelay = animationDelay;
-		animationDelay = animationDelay + 250;
+		card.stallAnimation = stallAnimation;
+		stallAnimation = stallAnimation + 250;
 		state.communityCards.push(card);
 	}
 
@@ -166,7 +166,7 @@ const dealFlopCards = (state) => {
  */
 const dealTurnCards = (state) => {
 	const { mutableDeckCopy, chosenCards } = getCards(state.deck, 1);
-	chosenCards.animationDelay = 0;
+	chosenCards.stallAnimation = 0;
 
 	state.communityCards.push(chosenCards);
 	state.deck = mutableDeckCopy;
@@ -183,7 +183,7 @@ const dealTurnCards = (state) => {
  */
 const dealRiverCards = (state) => {
 	const { mutableDeckCopy, chosenCards } = getCards(state.deck, 1);
-	chosenCards.animationDelay = 0;
+	chosenCards.stallAnimation = 0;
 
 	state.communityCards.push(chosenCards);
 	state.deck = mutableDeckCopy;
@@ -201,12 +201,12 @@ const dealOtherCommunityCards = (state) => {
 	// check number of cards left to deal
 	const cardsToPop = 5 - state.communityCards.length
 	if (cardsToPop >= 1) {
-		let animationDelay = 0;
+		let stallAnimation = 0;
 		const { mutableDeckCopy, chosenCards } = getShowdownCards(state.deck, cardsToPop);
 
 		for (let card of chosenCards) {
-			card.animationDelay = animationDelay;
-			animationDelay = animationDelay + 250;
+			card.stallAnimation = stallAnimation;
+			stallAnimation = stallAnimation + 250;
 			state.communityCards.push(card);
 		}
 

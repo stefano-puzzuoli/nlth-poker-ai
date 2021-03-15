@@ -38,10 +38,10 @@ const Player = (props) => {
      Assigns the correct format of card to players
   */
   const makePlayerCards = () => {
-    let applyFoldedClassname;
+    let setFoldedClassName;
 
     if (folded || clearCards) {
-      applyFoldedClassname = true
+      setFoldedClassName = true
     }
 
     // Hidden back of card for agents
@@ -49,13 +49,13 @@ const Player = (props) => {
       return cards.map((card, index) => {
         if (phase !== 'showdown') {
           return (
-            <BackOfCard key={index} cardData={card} applyFoldedClassname={applyFoldedClassname} />
+            <BackOfCard key={index} cardData={card} setFoldedClassName={setFoldedClassName} />
           );
         } else {
           // Reset Animation Delay
-          const cardData = { ...card, animationDelay: 0 }
+          const cardData = { ...card, stallAnimation: 0 }
           return (
-            <Card key={index} cardData={cardData} applyFoldedClassname={applyFoldedClassname} />
+            <Card key={index} cardData={cardData} setFoldedClassName={setFoldedClassName} />
           );
         }
       });
@@ -64,7 +64,7 @@ const Player = (props) => {
     else {
       return cards.map((card, index) => {
         return (
-          <Card key={index} cardData={card} applyFoldedClassname={applyFoldedClassname} />
+          <Card key={index} cardData={card} setFoldedClassName={setFoldedClassName} />
         );
       });
     }

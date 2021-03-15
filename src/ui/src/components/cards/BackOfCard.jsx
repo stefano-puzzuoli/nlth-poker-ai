@@ -9,17 +9,17 @@ const BackOfCard = (props) => {
     cardData: {
       suit,
       cardFace,
-      animationDelay
+      stallAnimation
     },
-    applyFoldedClassname
+    setFoldedClassName
   } = props;
 
   // display back of card (values hidden from user)
   return (
     <div
       key={`${suit} ${cardFace}`}
-      className={`poker-card cardIn agent-card${(applyFoldedClassname ? ' folded' : '')}`}
-      style={{ animationDelay: `${(applyFoldedClassname) ? 0 : animationDelay}ms` }}>
+      className={`poker-card cardIn agent-card${(setFoldedClassName ? ' folded' : '')}`}
+      style={{ stallAnimation: `${(setFoldedClassName) ? 0 : stallAnimation}ms` }}>
     </div>
   )
 }
