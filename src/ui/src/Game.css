@@ -340,8 +340,8 @@ img {
 
 .player-data-bet-div {
 	position: absolute;
-	top: -12px;
-	left: 95px;
+	top: -5px;
+	left: 100px;
 	height: 25px;
 	width: 25px;
 	z-index: 100;
@@ -396,7 +396,7 @@ img {
 
 .abscard {
 	position: absolute;
-	top: -103%;
+	top: -99%;
 }
 
 .shrinkwrap {
@@ -687,7 +687,7 @@ img {
 	}
 
 	.abscard {
-		top: -100%;
+		top: -120%;
 	}
 
 	.community-hand-div {
@@ -743,6 +743,10 @@ img {
 		margin: 0 0% 0 10%;
 	}
 
+	.player-data-bet-div {
+		top: 5px;
+	}
+
 	/* Showdown styles */
 	.showdown-table {
 		width: 65%;
@@ -792,7 +796,6 @@ img {
 	.p0 {
 		bottom: 27%;
 		left: 39.5%;
-
 	}
 
 	.p1 {
