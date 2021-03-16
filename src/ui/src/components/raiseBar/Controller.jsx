@@ -14,17 +14,16 @@ function Controller({
       style={{
         left: `${percent}%`,
         position: 'absolute',
-        marginLeft: -15,
-        marginTop: 25,
-        zIndex: 2,
-        width: 50,
-        height: 25,
         border: "3px solid #7177A3",
         textAlign: 'center',
         cursor: 'pointer',
-        borderRadius: "15px",
+        borderRadius: "25px",
         backgroundColor: '#FFEB49',
-        color: '#aaa',
+        marginLeft: -15,
+        marginTop: 27,
+        zIndex: 2,
+        width: 30,
+        height: 22,
       }}
       {...getHandleProps(id)}
     >
