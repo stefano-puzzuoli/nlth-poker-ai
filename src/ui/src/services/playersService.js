@@ -33,7 +33,7 @@ const makeTable = async (playerName = "User") => {
 		allIn: false,
 		canRaise: true,
 		stackInvestment: 0,
-		robot: false
+		agent: false
 	},
 	{
 		id: uuid(),
@@ -54,7 +54,7 @@ const makeTable = async (playerName = "User") => {
 		allIn: false,
 		canRaise: true,
 		stackInvestment: 0,
-		robot: true
+		agent: true
 	},
 	{
 		id: uuid(),
@@ -75,7 +75,7 @@ const makeTable = async (playerName = "User") => {
 		allIn: false,
 		canRaise: true,
 		stackInvestment: 0,
-		robot: true
+		agent: true
 	},
 	{
 		id: uuid(),
@@ -96,7 +96,7 @@ const makeTable = async (playerName = "User") => {
 		allIn: false,
 		canRaise: true,
 		stackInvestment: 0,
-		robot: true
+		agent: true
 	},
 	{
 		id: uuid(),
@@ -117,7 +117,7 @@ const makeTable = async (playerName = "User") => {
 		allIn: false,
 		canRaise: true,
 		stackInvestment: 0,
-		robot: true
+		agent: true
 	},
 	{
 		id: uuid(),
@@ -138,7 +138,7 @@ const makeTable = async (playerName = "User") => {
 		allIn: false,
 		canRaise: true,
 		stackInvestment: 0,
-		robot: true
+		agent: true
 	}];
 
 	return users

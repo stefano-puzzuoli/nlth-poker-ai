@@ -29,7 +29,7 @@ class testGame extends Component {
     playerHierarchy: [],
     showDownMessages: [],
     playActionMessages: [],
-    playerAnimationSwitchboard: {
+    playerAnimationCase: {
       0: { isAnimating: false, content: null },
       1: { isAnimating: false, content: null },
       2: { isAnimating: false, content: null },

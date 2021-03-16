@@ -17,14 +17,14 @@ const playerBetImageURL = "./assets/bet.svg";
 const Player = (props) => {
   const {
     arrayIndex,
-    playerAnimationSwitchboard,
+    playerAnimationCase,
     endTransition,
     hasDealerChip,
     isActive,
     phase,
     clearCards,
     player: {
-      robot,
+      agent,
       folded,
       cards,
       avatarURL,
@@ -35,7 +35,7 @@ const Player = (props) => {
   } = props;
 
   /*
-     Assigns the correct format of card to players
+  Assigns the correct format of card to players
   */
   const makePlayerCards = () => {
     let setFoldedClassName;
@@ -45,7 +45,7 @@ const Player = (props) => {
     }
 
     // Hidden back of card for agents
-    if (robot) {
+    if (agent) {
       return cards.map((card, index) => {
         if (phase !== 'showdown') {
           return (
@@ -72,7 +72,7 @@ const Player = (props) => {
 
 
   /*
-     Assign dealer chip to current round dealer
+  Assign dealer chip to current round dealer
   */
   const makeDealerChip = () => {
     if (hasDealerChip) {
@@ -85,10 +85,10 @@ const Player = (props) => {
   }
 
   /*
-     Check if player should have animation
+  Check if player should have animation
   */
   const Animating = (playerBoxIndex) => {
-    if (playerAnimationSwitchboard[playerBoxIndex].Animating) {
+    if (playerAnimationCase[playerBoxIndex].Animating) {
       return true;
     } else {
       return false;
@@ -101,7 +101,7 @@ const Player = (props) => {
       <PlayerStatus
         index={arrayIndex}
         isActive={Animating(arrayIndex)}
-        content={playerAnimationSwitchboard[arrayIndex].content}
+        content={playerAnimationCase[arrayIndex].content}
         endTransition={endTransition}
       />
       <div className='flex-row abscard'>
@@ -122,7 +122,7 @@ const Player = (props) => {
             <h5 className="player-data-stash-head">{`${chips}`}</h5>
           </div>
           <div className="player-data-bet-div">
-            <img className="player-data-bet-image" src="./assets/pot.svg" alt="Player Bet" />
+            <img className="player-data-bet-image" src={playerBetImageURL} alt="Player Bet" />
             <h5 className="player-data-bet-head">{`${bet}`}</h5>
           </div>
           {makeDealerChip()}

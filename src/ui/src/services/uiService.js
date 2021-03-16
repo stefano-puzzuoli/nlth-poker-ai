@@ -134,7 +134,7 @@ const makeActionMenu = (highBet, players, activePlayerIndex, phase, changeSlider
 	const min = calculateMinBet(highBet, players[activePlayerIndex].chips, players[activePlayerIndex].bet)
 	const max = players[activePlayerIndex].chips + players[activePlayerIndex].bet
 	return (
-		(phase === 'betting1' || phase === 'betting2' || phase === 'betting3' || phase === 'betting4') ? (players[activePlayerIndex].robot) ? (<h4 className="current-move-head"> {`Current Move: ${players[activePlayerIndex].name}`}</h4>) : (
+		(phase === 'betting1' || phase === 'betting2' || phase === 'betting3' || phase === 'betting4') ? (players[activePlayerIndex].agent) ? (<h4 className="current-move-head"> {`Current Move: ${players[activePlayerIndex].name}`}</h4>) : (
 			<React.Fragment>
 				<Slider
 					rootStyle={sliderStyle}
