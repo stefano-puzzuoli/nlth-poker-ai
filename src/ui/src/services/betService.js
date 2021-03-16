@@ -63,7 +63,7 @@ const manageBet = (state, bet, min, max) => {
 	activePlayer.chips = activePlayer.chips - subtractableChips;
 	if (activePlayer.chips === 0) {
 		activePlayer.allIn = true;
-		state.numPlayersAllIn++
+		state.playersAllIn++
 	}
 	activePlayer.betReconciled = true;
 	return chooseNextActivePlayer(state)
@@ -73,8 +73,8 @@ const managePlayerFold = (state) => {
 	const activePlayer = state.players[state.activePlayerIndex];
 	activePlayer.folded = true;
 	activePlayer.betReconciled = true;
-	state.numPlayersFolded++
-	state.numPlayersActive--
+	state.playersFolded++
+	state.playersActive--
 
 	const nextState = chooseNextActivePlayer(state)
 	return nextState

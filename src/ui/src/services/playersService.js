@@ -201,8 +201,8 @@ const chooseNextActivePlayer = (state) => {
 	state.activePlayerIndex = manageOverflowIndex(state.activePlayerIndex, 1, state.players.length, 'up');
 	const activePlayer = state.players[state.activePlayerIndex];
 
-	const allButOnePlayersAreAllIn = (state.numPlayersActive - state.numPlayersAllIn === 1);
-	if (state.numPlayersActive === 1) {
+	const allButOnePlayersAreAllIn = (state.playersActive - state.playersAllIn === 1);
+	if (state.playersActive === 1) {
 		console.log("Only one player active, skipping to showdown.")
 		return (playerShowDown(remakePot(dealOtherCommunityCards(state))));
 	}
@@ -220,7 +220,7 @@ const chooseNextActivePlayer = (state) => {
 	}
 
 	if (activePlayer.chips === 0) {
-		if (state.numPlayersAllIn === state.numPlayersActive) {
+		if (state.playersAllIn === state.playersActive) {
 			console.log("All players are all in.")
 			return (playerShowDown(remakePot(dealOtherCommunityCards(state))));
 		} else if (allButOnePlayersAreAllIn && activePlayer.allIn) {
@@ -283,9 +283,9 @@ const findBrokePlayers = (state, dealerID) => {
 			folded: false,
 			allIn: false,
 		}))
-		state.numPlayersAllIn = 0;
-		state.numPlayersFolded = 0;
-		state.numPlayersActive = state.players.length;
+		state.playersAllIn = 0;
+		state.playersFolded = 0;
+		state.playersActive = state.players.length;
 	} else {
 		const blindIndicies = calculateBlindIndices(newDealerIndex, state.players.length);
 		state.blindIndex = {
@@ -305,9 +305,9 @@ const findBrokePlayers = (state, dealerID) => {
 			folded: false,
 			allIn: false,
 		}))
-		state.numPlayersAllIn = 0;
-		state.numPlayersFolded = 0;
-		state.numPlayersActive = state.players.length;
+		state.playersAllIn = 0;
+		state.playersFolded = 0;
+		state.playersActive = state.players.length;
 	}
 	return dealPlayerCards(state)
 }

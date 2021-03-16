@@ -44,27 +44,6 @@ import PlayerWin from './PlayerWin';
  */
 class Game extends Component {
   state = {
-    loading: true,
-    winnerFound: null,
-    winner: null,
-    players: null,
-    numPlayersActive: null,
-    numPlayersFolded: null,
-    numPlayersAllIn: null,
-    activePlayerIndex: null,
-    dealerIndex: null,
-    blindIndex: null,
-    deck: null,
-    communityCards: [],
-    pot: null,
-    highBet: null,
-    betInputValue: null,
-    sidePots: [],
-    minBet: 20,
-    phase: 'loading',
-    playerHierarchy: [],
-    showDownMessages: [],
-    playActionMessages: [],
     playerAnimationSwitchboard: {
       0: { isAnimating: false, content: null },
       1: { isAnimating: false, content: null },
@@ -72,11 +51,32 @@ class Game extends Component {
       3: { isAnimating: false, content: null },
       4: { isAnimating: false, content: null },
       5: { isAnimating: false, content: null }
-    }
+    },
+    loading: true,
+    winnerFound: null,
+    winner: null,
+    blindIndex: null,
+    playerHierarchy: [],
+    showDownMessages: [],
+    playActionMessages: [],
+    deck: null,
+    communityCards: [],
+    pot: null,
+    highBet: null,
+    betInputValue: null,
+    sidePots: [],
+    minBet: 20,
+    phase: 'loading', 
+    players: null,
+    playersActive: null,
+    playersFolded: null,
+    playersAllIn: null,
+    activePlayerIndex: null,
+    dealerIndex: null,  
   }
 
   // animation delay for cards which gives real dealer effect
-  cardstallAnimation = 0;
+  cardStallAnimation = 0;
 
   /*
    On component load create game with table, players, etc.
@@ -134,9 +134,9 @@ class Game extends Component {
     // set initial game state
     this.setState(prevState => ({
       players: playersBoughtIn,
-      numPlayersActive: players.length,
-      numPlayersFolded: 0,
-      numPlayersAllIn: 0,
+      playersActive: players.length,
+      playersFolded: 0,
+      playersAllIn: 0,
       activePlayerIndex: dealerIndex,
       dealerIndex,
       blindIndex: {

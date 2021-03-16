@@ -663,72 +663,91 @@ img {
 	.poker-table-div {
 		top: 5%;
 	}
+
 	.poker-table-image {
 		height: 100%;
 	}
+
 	.player-icon-div {
 		height: 75px;
 		width: 75px;
 	}
+
 	.player-data-name {
 		width: 100px;
 	}
+
 	.pot-div {
 		top: 49%;
 	}
+
 	.pot-div img {
 		height: 40px;
 		width: 40px;
 	}
+
 	.abscard {
 		top: -100%;
 	}
+
 	.community-hand-div {
 		top: 22%;
 		left: 36.5%
 	}
+
 	.p0 {
 		bottom: 16%;
 		left: 38%;
 	}
+
 	.p1 {
 		bottom: 16%;
 		left: 20%;
 	}
+
 	.p2 {
 		bottom: 40%;
 		left: 7.5%;
 	}
+
 	.p3 {
 		bottom: 40%;
 		right: 7.5%;
 	}
+
 	.p4 {
 		bottom: 16%;
 		right: 20%;
 	}
+
 	.p5 {
 		bottom: 16%;
 		right: 38%;
 	}
+
 	.title-logo {
 		margin-left: 10%;
 	}
+
 	.title-logo h3 {
 		font-size: 1.75rem;
 	}
+
 	#dropdown-basic-button {
 		width: 300%;
 	}
+
 	.game-bar {
 		position: fixed;
 		width: 80%;
 		margin: 0 0% 0 10%;
 	}
+
 	/* Showdown styles */
 	.showdown-table {
 		width: 65%;
 	}
+
 	.showdown-table th {
 		text-align: center;
 	}
@@ -738,89 +757,114 @@ img {
 	.poker-table-div {
 		top: 5%;
 	}
+
 	.poker-table-image {
 		height: 80%;
 	}
+
 	.player-icon-div {
 		height: 75px;
 		width: 75px;
 	}
+
 	.player-data-name {
 		width: 75px;
 	}
+
 	.pot-div {
 		top: 35%;
 	}
+
 	.pot-div img {
 		height: 40px;
 		width: 40px;
 	}
+
 	.abscard {
 		top: -136%;
 	}
+
 	.community-hand-div {
 		top: 20%;
 		left: 36.5%
 	}
+
 	.p0 {
 		bottom: 27%;
 		left: 39.5%;
 
 	}
+
 	.p1 {
 		bottom: 27%;
 		left: 24%;
 	}
+
 	.p2 {
 		bottom: 51.5%;
 		left: 12.5%;
 	}
+
 	.p3 {
 		bottom: 51.5%;
 		right: 12.5%;
 	}
+
 	.p4 {
 		bottom: 27%;
 		right: 24%;
 	}
+
 	.p5 {
 		bottom: 27%;
 		right: 39.5%;
 	}
+
 	.title-logo {
 		margin-left: 10%;
 	}
+
 	.title-logo h3 {
 		font-size: 1.75rem;
 	}
+
 	#dropdown-basic-button {
 		width: 300%;
 	}
+
 	.game-bar {
 		margin-top: -7.5%;
 	}
+
 	.player-data-stash-div h5 {
 		font-size: 95%
 	}
+
 	.player-data-bet-div h5 {
 		font-size: 95%
 	}
+
 	.player-data-bet-div {
 		left: 75px;
 	}
+
 	.current-move-head {
 		margin-top: 4%;
 	}
+
 	.showdown-player .player-icon-div {
 		margin-top: 15%;
 	}
+
 	.showdown-div-wrapper {
 		height: 110%;
 	}
+
 	/* Showdown styles */
 	.showdown-table {
 		width: 65%;
 	}
+	
 	.showdown-table th {
 		text-align: center;
 	}
