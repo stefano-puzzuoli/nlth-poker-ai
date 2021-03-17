@@ -8,18 +8,12 @@ import React from 'react';
 const PlayerShowdown = (props) => {
   const {
     name,
-    avatarURL,
-    cards
+    avatar
   } = props;
 
   return (
     <div className="player-div">
       <div className="player-icon-div">
-        <img
-          className="player-icon-image"
-          src={avatarURL}
-          alt="Player Avatar"
-        />
         <h5 className="player-data-name">
           {`${name}`}
         </h5>

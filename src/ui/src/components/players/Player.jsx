@@ -13,7 +13,7 @@ const Player = (props) => {
       agent,
       folded,
       cards,
-      avatarURL,
+      avatar,
       name,
       chips,
       bet
@@ -131,7 +131,7 @@ const Player = (props) => {
         <div className="player-icon-div">
           <img
             className={`player-icon-image${determineName(isActive)}`}
-            src={avatarURL}
+            src={avatar}
             alt="Player Avatar"
           />
           <h5 className="player-data-name" style={{ 'fontSize': fontSize(name)}}>
