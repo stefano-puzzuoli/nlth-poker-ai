@@ -101,7 +101,7 @@ const dealPlayerCards = (state) => {
 	if (state.players[state.activePlayerIndex].cards.length === 2) {
 		state.activePlayerIndex = manageOverflowIndex(state.blindIndex.big, 1, state.players.length, 'up');
 		// set first phase of betting
-		state.phase = 'betting1';
+		state.phase = 'first round';
 		return state;
 	}
 }
@@ -156,7 +156,7 @@ const dealFlopCards = (state) => {
 	state.deck = mutableDeckCopy;
 	state = choosePhaseStartActivePlayer(state)
 	// set second phase of betting
-	state.phase = 'betting2';
+	state.phase = 'second round';
 
 	return state;
 }
@@ -172,7 +172,7 @@ const dealTurnCards = (state) => {
 	state.deck = mutableDeckCopy;
 	state = choosePhaseStartActivePlayer(state)
 	// set third phase of betting
-	state.phase = 'betting3'
+	state.phase = 'third round'
 
 	return state
 }
@@ -189,7 +189,7 @@ const dealRiverCards = (state) => {
 	state.deck = mutableDeckCopy;
 	state = choosePhaseStartActivePlayer(state)
 	// set fourth phase of betting
-	state.phase = 'betting4'
+	state.phase = 'fourth round'
 
 	return state
 }

@@ -19,13 +19,13 @@ const makePhaseStatement = (phase) => {
 	switch (phase) {
 		case ('loading'): return 'Finding a Table, Please Wait';
 		case ('initialDeal'): return 'Dealing out the cards';
-		case ('betting1'): return 'Betting 1';
+		case ('first round'): return 'Betting 1';
 		case ('flop'): return 'Flop';
-		case ('betting2'): return 'Flop';
+		case ('second round'): return 'Flop';
 		case ('turn'): return 'Turn';
-		case ('betting3'): return 'Turn';
+		case ('third round'): return 'Turn';
 		case ('river'): return 'River';
-		case ('betting4'): return 'River';
+		case ('fourth round'): return 'River';
 		case ('showdown'): return 'Show Your Cards!';
 		default: throw Error('Unfamiliar phase returned from makePhaseStatement()');
 	}
@@ -133,7 +133,7 @@ const makeActionMenu = (highBet, players, activePlayerIndex, phase, changeSlider
 	const min = calculateMinBet(highBet, players[activePlayerIndex].chips, players[activePlayerIndex].bet)
 	const max = players[activePlayerIndex].chips + players[activePlayerIndex].bet
 	return (
-		(phase === 'betting1' || phase === 'betting2' || phase === 'betting3' || phase === 'betting4') ? (players[activePlayerIndex].agent) ? (<h4 className="current-move-head"> {`Current Move: ${players[activePlayerIndex].name}`}</h4>) : (
+		(phase === 'first round' || phase === 'second round' || phase === 'third round' || phase === 'fourth round') ? (players[activePlayerIndex].agent) ? (<h4 className="current-move-head"> {`Current Move: ${players[activePlayerIndex].name}`}</h4>) : (
 			<React.Fragment>
 				<Slider
 					domain={[min, max]}

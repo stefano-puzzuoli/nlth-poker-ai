@@ -82,19 +82,19 @@ const managePlayerFold = (state) => {
 
 const managePhaseShift = (state) => {
 	switch (state.phase) {
-		case ('betting1'): {
+		case ('first round'): {
 			state.phase = 'flop';
 			return dealFlopCards(remakePot(state));
 		}
-		case ('betting2'): {
+		case ('second round'): {
 			state.phase = 'turn';
 			return dealTurnCards(remakePot(state));
 		}
-		case ('betting3'): {
+		case ('third round'): {
 			state.phase = 'river'
 			return dealRiverCards(remakePot(state));
 		}
-		case ('betting4'): {
+		case ('fourth round'): {
 			state.phase = 'showdown'
 			return playerShowDown(remakePot(state));
 		}

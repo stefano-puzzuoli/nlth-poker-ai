@@ -701,6 +701,11 @@ img {
 /* Responsive Styles */
 
 @media (max-width: 1200px) {
+
+	.dealer-chips-div {
+		top: 0;
+	}
+
 	.poker-table-div {
 		top: 5%;
 	}
@@ -728,7 +733,7 @@ img {
 	}
 
 	.abscard {
-		top: -120%;
+		top: -125%;
 	}
 
 	.community-hand-div {
