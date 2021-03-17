@@ -28,8 +28,6 @@ init:
     paths: ['src/ui/node_modules']
 
 ai_poker-ci-start:
-     tags:
-       - ci
      script:
        - echo ai_poker_ci_start job with test_ai_model.py running
 
