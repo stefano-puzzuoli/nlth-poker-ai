@@ -18,10 +18,38 @@ const BackOfCard = (props) => {
   return (
     <div
       key={`${suit} ${cardFace}`}
-      className={`poker-card cardIn agent-card${(setFoldedClassName ? ' folded' : '')}`}
-      style={{ stallAnimation: `${(setFoldedClassName) ? 0 : stallAnimation}ms` }}>
+      className={`poker-card cardIn agent-card${determineName(setFoldedClassName)}`}
+      style={
+        {stallAnimation: `${determineStall(setFoldedClassName, stallAnimation)}ms` }
+        }>
     </div>
   )
+}
+
+/* 
+Selects the class name depending on 
+the state of the players cards.
+*/
+function determineName(className){
+  if (className) {
+    return ' folded'
+  }
+  else {
+    return ''
+  }
+}
+
+/* 
+Determines how long the stall animations 
+takes to complete.
+*/
+function determineStall(name, time) {
+  if(name) {
+    return 0
+  }
+  else{
+    return time
+  }
 }
 
 export default BackOfCard;
