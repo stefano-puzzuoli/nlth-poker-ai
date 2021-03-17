@@ -1,7 +1,6 @@
 import React from 'react';
 import { Handles, Rail, Slider, Tracks } from 'react-compound-slider';
 import Handle from "../components/raiseBar/Controller";
-import { railStyle, sliderStyle } from "../components/raiseBar/styles";
 import Track from "../components/raiseBar/Tracker";
 import {
 	calculateMinBet
@@ -137,18 +136,16 @@ const makeActionMenu = (highBet, players, activePlayerIndex, phase, changeSlider
 		(phase === 'betting1' || phase === 'betting2' || phase === 'betting3' || phase === 'betting4') ? (players[activePlayerIndex].agent) ? (<h4 className="current-move-head"> {`Current Move: ${players[activePlayerIndex].name}`}</h4>) : (
 			<React.Fragment>
 				<Slider
-					rootStyle={sliderStyle}
 					domain={[min, max]}
 					values={[min]}
 					step={1}
-
 					onChange={changeSliderInputFn}
 					mode={2}
 				>
 					<Rail>
 						{
 							({ getRailProps }) => (
-								<div style={railStyle} {...getRailProps()} />
+								<div {...getRailProps()} />
 							)
 						}
 					</Rail>
