@@ -44,16 +44,21 @@ import PlayerWin from './PlayerWin';
  */
 class Game extends Component {
   state = {
+    playerAnimationCase: {
+      0: { isAnimating: false, content: null },
+      1: { isAnimating: false, content: null },
+      2: { isAnimating: false, content: null },
+      3: { isAnimating: false, content: null },
+      4: { isAnimating: false, content: null },
+      5: { isAnimating: false, content: null }
+    },
     loading: true,
     winnerFound: null,
     winner: null,
-    players: null,
-    numPlayersActive: null,
-    numPlayersFolded: null,
-    numPlayersAllIn: null,
-    activePlayerIndex: null,
-    dealerIndex: null,
     blindIndex: null,
+    playerHierarchy: [],
+    showDownMessages: [],
+    playActionMessages: [],
     deck: null,
     communityCards: [],
     pot: null,
@@ -61,22 +66,17 @@ class Game extends Component {
     betInputValue: null,
     sidePots: [],
     minBet: 20,
-    phase: 'loading',
-    playerHierarchy: [],
-    showDownMessages: [],
-    playActionMessages: [],
-    playerAnimationSwitchboard: {
-      0: { isAnimating: false, content: null },
-      1: { isAnimating: false, content: null },
-      2: { isAnimating: false, content: null },
-      3: { isAnimating: false, content: null },
-      4: { isAnimating: false, content: null },
-      5: { isAnimating: false, content: null }
-    }
+    phase: 'loading', 
+    players: null,
+    playersActive: null,
+    playersFolded: null,
+    playersAllIn: null,
+    activePlayerIndex: null,
+    dealerIndex: null,  
   }
 
   // animation delay for cards which gives real dealer effect
-  cardAnimationDelay = 0;
+  cardanimationDelay = 0;
 
   /*
    On component load create game with table, players, etc.
@@ -134,9 +134,9 @@ class Game extends Component {
     // set initial game state
     this.setState(prevState => ({
       players: playersBoughtIn,
-      numPlayersActive: players.length,
-      numPlayersFolded: 0,
-      numPlayersAllIn: 0,
+      playersActive: players.length,
+      playersFolded: 0,
+      playersAllIn: 0,
       activePlayerIndex: dealerIndex,
       dealerIndex,
       blindIndex: {
@@ -162,7 +162,7 @@ class Game extends Component {
     const newState = dealPlayerCards(cloneDeep(this.state))
     // update state after each action
     this.setState(newState, () => {
-      if ((this.state.players[this.state.activePlayerIndex].robot) && (this.state.phase !== 'showdown')) {
+      if ((this.state.players[this.state.activePlayerIndex].agent) && (this.state.phase !== 'showdown')) {
         setTimeout(() => {
           this.aiHandler()
         }, 1200)
@@ -175,7 +175,7 @@ class Game extends Component {
    according to their in game decisions
   */
   aiHandler = () => {
-    const { playerAnimationSwitchboard, ...appState } = this.state;
+    const { playerAnimationCase, ...appState } = this.state;
     // change state according to AI decision/action
     const newState = aiHandlerUtil(cloneDeep(appState), this.changePlayerAnimationState)
 
@@ -184,7 +184,7 @@ class Game extends Component {
       ...newState,
       betInputValue: newState.minBet
     }, () => {
-      if ((this.state.players[this.state.activePlayerIndex].robot) && (this.state.phase !== 'showdown')) {
+      if ((this.state.players[this.state.activePlayerIndex].agent) && (this.state.phase !== 'showdown')) {
         setTimeout(() => {
 
           this.aiHandler()
@@ -209,7 +209,7 @@ class Game extends Component {
    Handle player bet submit action
   */
   manageBetSubmit = (bet, min, max) => {
-    const { playerAnimationSwitchboard, ...appState } = this.state;
+    const { playerAnimationCase, ...appState } = this.state;
     // get active player
     const { activePlayerIndex } = appState;
     // execute player action 
@@ -218,7 +218,7 @@ class Game extends Component {
 
     // continue to next player if hand is not over
     this.setState(newState, () => {
-      if ((this.state.players[this.state.activePlayerIndex].robot) && (this.state.phase !== 'showdown')) {
+      if ((this.state.players[this.state.activePlayerIndex].agent) && (this.state.phase !== 'showdown')) {
         setTimeout(() => {
 
           this.aiHandler()
@@ -240,13 +240,13 @@ class Game extends Component {
    Handle Player fold action
   */
   managePlayerFold = () => {
-    const { playerAnimationSwitchboard, ...appState } = this.state
+    const { playerAnimationCase, ...appState } = this.state
     // player fold action
     const newState = managePlayerFold(cloneDeep(appState));
 
     // continue to next player if hand is not over
     this.setState(newState, () => {
-      if ((this.state.players[this.state.activePlayerIndex].robot) && (this.state.phase !== 'showdown')) {
+      if ((this.state.players[this.state.activePlayerIndex].agent) && (this.state.phase !== 'showdown')) {
         setTimeout(() => {
 
           this.aiHandler()
@@ -278,7 +278,7 @@ class Game extends Component {
     }
     // continue to next round if hand is over
     this.setState(newState, () => {
-      if ((this.state.players[this.state.activePlayerIndex].robot) && (this.state.phase !== 'showdown')) {
+      if ((this.state.players[this.state.activePlayerIndex].agent) && (this.state.phase !== 'showdown')) {
         setTimeout(() => this.aiHandler(), 1200)
       }
     })
@@ -290,23 +290,23 @@ class Game extends Component {
   changePlayerAnimationState = (index, content) => {
     const newAnimationSwitchboard = Object.assign(
       {},
-      this.state.playerAnimationSwitchboard,
+      this.state.playerAnimationCase,
       { [index]: { isAnimating: true, content } }
     )
-    this.setState({ playerAnimationSwitchboard: newAnimationSwitchboard });
+    this.setState({ playerAnimationCase: newAnimationSwitchboard });
   }
 
   /*
    Stop latest player animation 
   */
   popPlayerAnimationState = (index) => {
-    const persistContent = this.state.playerAnimationSwitchboard[index].content;
+    const persistContent = this.state.playerAnimationCase[index].content;
     const newAnimationSwitchboard = Object.assign(
       {},
-      this.state.playerAnimationSwitchboard,
+      this.state.playerAnimationCase,
       { [index]: { isAnimating: false, content: persistContent } }
     )
-    this.setState({ playerAnimationSwitchboard: newAnimationSwitchboard });
+    this.setState({ playerAnimationCase: newAnimationSwitchboard });
   }
 
   /*
@@ -320,7 +320,7 @@ class Game extends Component {
       dealerIndex,
       clearCards,
       phase,
-      playerAnimationSwitchboard
+      playerAnimationCase
     } = this.state;
 
     // changes turn of player each hand
@@ -340,7 +340,7 @@ class Game extends Component {
           player={player}
           clearCards={clearCards}
           phase={phase}
-          playerAnimationSwitchboard={playerAnimationSwitchboard}
+          playerAnimationCase={playerAnimationCase}
           endTransition={this.popPlayerAnimationState}
         />
       )
@@ -360,7 +360,7 @@ class Game extends Component {
     const max = players[activePlayerIndex].chips + players[activePlayerIndex].bet
 
     // render different buttons/text according to user input 
-    return ((players[activePlayerIndex].robot) || (phase === 'showdown')) ? null : (
+    return ((players[activePlayerIndex].agent) || (phase === 'showdown')) ? null : (
       <React.Fragment>
         <button className='fold-button' onClick={() => this.managePlayerFold()}>
           Fold
@@ -396,15 +396,15 @@ class Game extends Component {
   renderPlayerShowdown = () => {
     return (
       <div className='showdown-div-wrapper'>
-        <h5 className="showdown-div-title">
+        <h4 className="showdown-div-title">
           Hand Complete!
-        </h5>
+        </h4>
         <div className="showdown-div-messages">
           {makeShowdownMessages(this.state.showDownMessages)}
         </div>
-        <h5 className="showdown-div-community-card-label">
+        <h4 className="showdown-div-community-card-label">
           Community Cards
-        </h5>
+        </h4>
         <div className='showdown-div-community-cards'>
           {this.renderTableCommunityCards(true)}
         </div>
@@ -514,9 +514,9 @@ class Game extends Component {
         <div className="title-text" style={{ maxWidth: "400px" }}></div>
         <div className="poker-table-div">
           <div className="title-logo">
-            <img src={"./assets/logo.svg"}></img>
+            <img src={"./assets/logo.svg"} alt="App Logo"></img>
             <h3>No-Limit Texas Hold'em Poker</h3>
-            <DropdownButton id="dropdown-basic-button" title="">
+            <DropdownButton id="dropdown-basic-button" title="Menu" alt="Menu Dropdown" aria-label="Menu Dropdown">
               <Dropdown.Item href="#"> <Link to="/dashboard">Return to Dashboard</Link></Dropdown.Item>
               <Dropdown.Item href="#"> <Link to="/login">Logout</Link></Dropdown.Item>
             </DropdownButton>
@@ -527,8 +527,8 @@ class Game extends Component {
             {this.renderTableCommunityCards()}
           </div>
           <div className='pot-div'>
-            <img src={'./assets/pot.svg'} alt="Pot Value" />
-            <h5> {`${this.state.pot}`} </h5>
+            <img src={'./assets/pot.svg'} alt="Community Pot" />
+            <h4> {`${this.state.pot}`} </h4>
           </div>
         </div>
         { (this.state.phase === 'showdown') && this.renderPlayerShowdown()}
