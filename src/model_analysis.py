@@ -25,7 +25,16 @@ if __name__ == '__main__':
     for i in range(NUM_AGENT_PLAYERS):
 
         # create Agent that uses GradientBoostingRegressor to be trained
-        name = 'Agent ' + str(i + 1)
+        if i == 0:
+            name = "Ultimate Poker Pro Agent"
+        elif i == 1:
+            name = "Expert Agent"
+        elif i == 2:
+            name = "Intermediate Agent"
+        elif i == 3:
+            name = "Beginner Agent"
+        else:
+            name = 'Non-trained Agent ' + str(i+1)
         player = Player(name=name, regressor=regressor, chips_amount=10**5,
                         raise_choices=20000, raise_increase=0.5, memory=10**5)
         players.append(player)
@@ -34,20 +43,25 @@ if __name__ == '__main__':
     for player in players:
         pokerTable.add_player(player)
 
-    #train Player 1 for 1000 hands, training once
+    #train Agent 1 for 100000 hands, training every 1000 hands
     players[0].start_training()
-    simulate(pokerTable, num_hands=1000, hands_between_training=1000, hands_between_buyin=10)   
+    simulate(pokerTable, num_hands=100000, hands_between_training=1000, hands_between_buyin=10)   
     players[0].stop_training()
     
-    #train Player 2 for 10000 hands, training every 1000 hands
+    #train Agent 2 for 50000 hands, training every 1000 hands
     players[1].start_training()
-    simulate(pokerTable, num_hands=10000, hands_between_training=1000, hands_between_buyin=10)   
+    simulate(pokerTable, num_hands=50000, hands_between_training=1000, hands_between_buyin=10)   
     players[1].stop_training()
 
-    #train Player 3 for 20000 hands, training every 500 hands
+    #train Agent 3 for 25000 hands, training every 1000 hands
     players[2].start_training()
-    simulate(pokerTable, num_hands=20000, hands_between_training=500, hands_between_buyin=10)   
+    simulate(pokerTable, num_hands=25000, hands_between_training=1000, hands_between_buyin=10)   
     players[2].stop_training()
+
+    #train Agent 4 for 10000 hands, training every 1000 hands
+    players[3].start_training()
+    simulate(pokerTable, num_hands=10000, hands_between_training=1000, hands_between_buyin=10)   
+    players[3].stop_training()
 
     for p in players: p.set_chips_amount(10**6)
 
@@ -58,9 +72,9 @@ if __name__ == '__main__':
     for i in range(6):
         bankroll = bankrolls[i]
         plt.plot(range(len(bankroll)), bankroll, label=players[i].get_name())
-    plt.title('Agent chips vs Hands played')        
+    plt.title('Agent stack - Hands played')        
     plt.xlabel('Hands played')
-    plt.ylabel('Agent chips')
+    plt.ylabel('Agent stack')
     plt.legend(loc='upper left')
     plt.show()
 
