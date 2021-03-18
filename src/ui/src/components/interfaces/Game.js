@@ -399,7 +399,7 @@ class Game extends Component {
         <h4 className="showdown-div-title">
           Hand Complete!
         </h4>
-        <div className="showdown-div-messages">
+        <div className="showdown-div-messages" >
           {makeShowdownMessages(this.state.showDownMessages)}
         </div>
         <h4 className="showdown-div-community-card-label">
@@ -523,7 +523,7 @@ class Game extends Component {
           </div>
           <img className="poker-table-image" src={"./assets/table.svg"} alt="Poker Table" />
           {this.renderTable()}
-          <div className='community-hand-div' >
+          <div className='community-hand-div' aria-label="Community Cards">
             {this.renderTableCommunityCards()}
           </div>
           <div className='pot-div'>
@@ -532,11 +532,11 @@ class Game extends Component {
           </div>
         </div>
         { (this.state.phase === 'showdown') && this.renderPlayerShowdown()}
-        <div className='game-bar' >
+        <div className='game-bar'>
           <div className='game-buttons'>
             {this.renderPlayerActionButtons()}
           </div>
-          <div className='slider'>
+          <div className='slider' aria-label="Betting Slider">
             {(!this.state.loading) && makeActionMenu(highBet, players, activePlayerIndex, phase, this.manageBetChange)}
           </div>
         </div>
