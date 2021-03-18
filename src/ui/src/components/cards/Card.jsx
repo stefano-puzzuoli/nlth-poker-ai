@@ -9,7 +9,9 @@ const Card = (props) => {
     cardData: {
       suit,
       cardFace,
-    }
+      stallAnimation
+    },
+    setFoldedClassName
   } = props;
 
   // get suit of card
@@ -17,8 +19,40 @@ const Card = (props) => {
 
   // display card according to value and suit given
   return (
-    <div className="poker-card"><img src={`${process.env.PUBLIC_URL}/assets/cardFaces/${cardFace}${suitOfCard}.svg`}></img></div>
+    <div 
+      className={`poker-card cardIn ${determineName(setFoldedClassName)}`}
+      style={
+        {stallAnimation: `${determineStall(setFoldedClassName, stallAnimation)}ms` }
+        }>
+      <img src={`${process.env.PUBLIC_URL}/assets/cardFaces/${cardFace}${suitOfCard}.svg`}></img>
+    </div>
   )
+}
+
+/* 
+Selects the class name depending on 
+the state of the players cards.
+*/
+function determineName(className){
+  if (className) {
+    return ' folded'
+  }
+  else {
+    return ''
+  }
+}
+
+/* 
+Determines how long the stall animations 
+takes to complete.
+*/
+function determineStall(name, time) {
+  if(name) {
+    return 0
+  }
+  else{
+    return time
+  }
 }
 
 export default Card;

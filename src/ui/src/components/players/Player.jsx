@@ -1,7 +1,6 @@
 import React from 'react';
 import BackOfCard from '../cards/BackOfCard';
 import Card from '../cards/Card';
-import PlayerStatus from "./PlayerStatus";
 
 /**
  * Player component that creates the base player entity 
@@ -20,7 +19,6 @@ const Player = (props) => {
     },
     arrayIndex,
     playerAnimationCase,
-    endTransition,
     hasDealerChip,
     isActive,
     phase,
@@ -118,12 +116,6 @@ const Player = (props) => {
 
   return (
     <div className={`player-wrapper p${arrayIndex}`}>
-      <PlayerStatus
-        index={arrayIndex}
-        isActive={Animating(arrayIndex)}
-        content={playerAnimationCase[arrayIndex].content}
-        endTransition={endTransition}
-      />
       <div className='flex-row abscard'>
         {makePlayerCards()}
       </div>
