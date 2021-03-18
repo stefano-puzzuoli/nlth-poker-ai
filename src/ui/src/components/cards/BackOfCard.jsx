@@ -9,7 +9,7 @@ const BackOfCard = (props) => {
     cardData: {
       suit,
       cardFace,
-      stallAnimation
+      animationDelay
     },
     setFoldedClassName
   } = props;
@@ -20,7 +20,7 @@ const BackOfCard = (props) => {
       key={`${suit} ${cardFace}`}
       className={`poker-card cardIn agent-card${determineName(setFoldedClassName)}`}
       style={
-        {stallAnimation: `${determineStall(setFoldedClassName, stallAnimation)}ms` }
+        {animationDelay: `${determineStall(setFoldedClassName, animationDelay)}ms` }
         }>
     </div>
   )

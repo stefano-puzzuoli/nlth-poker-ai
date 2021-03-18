@@ -60,7 +60,7 @@ const Player = (props) => {
           );
         } else {
           // Reset Animation Delay
-          const cardData = { ...card, stallAnimation: 0 }
+          const cardData = { ...card, animationDelay: 0 }
           return (
             <Card key={index} cardData={cardData} setFoldedClassName={setFoldedClassName} />
           );
