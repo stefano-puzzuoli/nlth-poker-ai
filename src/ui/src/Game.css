@@ -310,13 +310,12 @@ img {
 }
 
 .player-icon-image {
-	border-radius: 200px;
-	/* border: 3px solid #FFEB49; */
-	transition: border 0.1s ease-out;
+	border-radius: 50px;
+	border: 4px solid #FFEB49;
 }
 
 .activePlayer {
-	border: 4px solid #00ff25;
+	border: 8px solid #00ff25;
 }
 
 .player-data-wrapper {
@@ -397,7 +396,7 @@ img {
 	margin: 0 1px;
 	border: 1px solid rgb(0, 0, 0);
 	opacity: 0;
-	animation: fade-in 0.2s;
+	animation: fade-in 0.3s;
 	animation-fill-mode: both;
 }
 
@@ -471,54 +470,6 @@ img {
 .content-table tbody tr.active-row {
 	font-weight: bold;
 	color: #5E54AC;
-}
-
-
-
-/* Action Status Notification Base Styles & Transitions*/
-
-.notification {
-	color: #FFEB49;
-	text-shadow: 15px 5px 4px orange;
-	padding: 12px;
-	font: 25px bold;
-	position: absolute;
-	top: -30px;
-	width: 100%;
-	left: 50%;
-	transform: translateX(-50%);
-	z-index: 100;
-	justify-content: center;
-}
-
-.trans-notification-in {
-	display: flex;
-	opacity: 1;
-	transform: translateX(-50%);
-}
-
-.trans-notification-in-active {
-	display: flex;
-	opacity: 1;
-	transition: opacity 1250ms ease-in-out;
-	transform: translateX(-50%);
-}
-
-.trans-notification-in-finish {
-	display: flex;
-}
-
-.trans-notification-exit {
-	display: flex;
-	opacity: 1;
-	transform: translateX(-50%);
-}
-
-.trans-notification-exit-active {
-	display: flex;
-	opacity: 0;
-	transform: translateX(-50%) translateY(-55px);
-	transition: opacity 1250ms ease-in-out, transform 1250ms linear;
 }
 
 .slider>div {
