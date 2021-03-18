@@ -9,6 +9,24 @@ import { dealOtherCommunityCards, dealPlayerCards, makeDeckOfCards, playerShowDo
 */
 
 /* 
+ Used to create agents of different difficulties
+ */
+ const makePersonality = (seed) => {
+	switch (seed) {
+		// intermediate/advanced ai
+		case (seed > 0.5):
+			return 'standard'
+		// beginner ai
+		case (seed > 0.35):
+			return 'aggressive'
+		case (seed > 0):
+		// intermediate/advanced ai
+		default:
+			return 'conservative'
+	}
+}
+
+/* 
 Intialise user and agents data
 */
 const axios = require('axios')
@@ -142,56 +160,6 @@ const makeTable = async (playerName = "User") => {
 	}];
 
 	return users
-}
-/* 
- Used to create agents of different difficulties
- */
-const makePersonality = (seed) => {
-	switch (seed) {
-		// intermediate/advanced ai
-		case (seed > 0.5):
-			return 'standard'
-		// beginner ai
-		case (seed > 0.35):
-			return 'aggressive'
-		case (seed > 0):
-		// intermediate/advanced ai
-		default:
-			return 'conservative'
-	}
-}
-
-const manageOverflowIndex = (currentIndex, incrementBy, arrayLength, direction) => {
-	switch (direction) {
-		case ('up'): {
-			return (
-				(currentIndex + incrementBy) % arrayLength
-			)
-		}
-		case ('down'): {
-			return (
-				((currentIndex - incrementBy) % arrayLength) + arrayLength
-			)
-		}
-		default: throw Error("Attempted to overfow index on unfamiliar direction");
-	}
-}
-/* 
- Determines which player starts the round
- */
-const choosePhaseStartActivePlayer = (state, recursion = false) => {
-	if (!recursion) {
-		state.activePlayerIndex = manageOverflowIndex(state.blindIndex.big, 1, state.players.length, 'up');
-	} else if (recursion) {
-		state.activePlayerIndex = manageOverflowIndex(state.activePlayerIndex, 1, state.players.length, 'up');
-	}
-	if (state.players[state.activePlayerIndex].folded) {
-		return choosePhaseStartActivePlayer(state, true)
-	}
-	if (state.players[state.activePlayerIndex].chips === 0) {
-		return choosePhaseStartActivePlayer(state, true)
-	}
-	return state
 }
 
 /* 
@@ -337,6 +305,40 @@ const startNextRound = (state) => {
  */
 const checkWin = players => {
 	return (players.filter(player => player.chips > 0).length === 1)
+}
+
+const manageOverflowIndex = (currentIndex, incrementBy, arrayLength, direction) => {
+	switch (direction) {
+		case ('up'): {
+			return (
+				(currentIndex + incrementBy) % arrayLength
+			)
+		}
+		case ('down'): {
+			return (
+				((currentIndex - incrementBy) % arrayLength) + arrayLength
+			)
+		}
+		default: throw Error("Attempted to overfow index on unfamiliar direction");
+	}
+}
+
+/* 
+ Determines which player starts the round
+ */
+const choosePhaseStartActivePlayer = (state, recursion = false) => {
+	if (!recursion) {
+		state.activePlayerIndex = manageOverflowIndex(state.blindIndex.big, 1, state.players.length, 'up');
+	} else if (recursion) {
+		state.activePlayerIndex = manageOverflowIndex(state.activePlayerIndex, 1, state.players.length, 'up');
+	}
+	if (state.players[state.activePlayerIndex].folded) {
+		return choosePhaseStartActivePlayer(state, true)
+	}
+	if (state.players[state.activePlayerIndex].chips === 0) {
+		return choosePhaseStartActivePlayer(state, true)
+	}
+	return state
 }
 
 export { makeTable, manageOverflowIndex, chooseNextActivePlayer, choosePhaseStartActivePlayer, startNextRound, checkWin };
