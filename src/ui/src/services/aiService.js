@@ -94,9 +94,6 @@ const aiHandler = (state, moveAnimationState) => {
 			const {
 
 				isStraight,
-				isLowStraight,
-				concurrentCardValues,
-				concurrentCardValuesLow,
 
 			} = checkIfStraight(valueSet);
 			const {
