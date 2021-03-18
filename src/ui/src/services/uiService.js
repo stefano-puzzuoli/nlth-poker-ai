@@ -11,6 +11,86 @@ import {
 * UI animations assignments and renderings.
 */
 
+/* 
+ Render Action Button text (Fold, Call, Raise, All in, etc.)
+*/
+const makeActionButtonText = (highBet, betInputValue, activePlayer) => {
+	if ((highBet === 0) && (betInputValue === 0)) {
+		return 'Check'
+	} else if ((highBet === betInputValue)) {
+		return 'Call'
+	} else if ((betInputValue < highBet) || (betInputValue === activePlayer.chips + activePlayer.bet)) {
+		return 'All-in!'
+	} else if ((betInputValue > highBet)) {
+		return 'Raise'
+	}
+}
+
+/* 
+ Render User Action menu for actions and slider (for raising)
+*/
+const makeActionMenu = (highBet, players, activePlayerIndex, phase, changeSliderInputFn) => {
+	const min = calculateMinBet(highBet, players[activePlayerIndex].chips, players[activePlayerIndex].bet)
+	const max = players[activePlayerIndex].chips + players[activePlayerIndex].bet
+	return (
+		(phase === 'first round' || phase === 'second round' || phase === 'third round' || phase === 'fourth round') ? (players[activePlayerIndex].agent) ? (<h4 className="current-move-head"> {`Current Move: ${players[activePlayerIndex].name}`}</h4>) : (
+			<React.Fragment>
+				<Slider
+					domain={[min, max]}
+					values={[min]}
+					step={1}
+					onChange={changeSliderInputFn}
+					mode={2}
+				>
+					<Rail>
+						{
+							({ getRailProps }) => (
+								<div {...getRailProps()} />
+							)
+						}
+					</Rail>
+					<Handles>
+						{
+							({ handles, getHandleProps }) => (
+								<div className='slider-handles'>
+									{
+										handles.map(handle => (
+											<Handle
+												key={handle.id}
+												handle={handle}
+												getHandleProps={getHandleProps}
+											/>
+										))
+									}
+								</div>
+							)
+						}
+					</Handles>
+					<Tracks right={false}>
+						{
+							({ tracks, getTrackProps }) => (
+								<div className='slider-tracks'>
+									{
+										tracks.map(
+											({ id, source, target }) => (
+												<Track
+													key={id}
+													source={source}
+													target={target}
+													getTrackProps={getTrackProps}
+												/>
+											)
+										)
+									}
+								</div>
+							)
+						}
+					</Tracks>
+				</Slider>
+			</React.Fragment>
+		) : null
+	)
+}
 
 /* 
  Set next game phase
@@ -28,21 +108,6 @@ const makePhaseStatement = (phase) => {
 		case ('fourth round'): return 'River';
 		case ('showdown'): return 'Show Your Cards!';
 		default: throw Error('Unfamiliar phase returned from makePhaseStatement()');
-	}
-}
-
-/* 
- Render Action Button text (Fold, Call, Raise, All in, etc.)
-*/
-const makeActionButtonText = (highBet, betInputValue, activePlayer) => {
-	if ((highBet === 0) && (betInputValue === 0)) {
-		return 'Check'
-	} else if ((highBet === betInputValue)) {
-		return 'Call'
-	} else if ((betInputValue < highBet) || (betInputValue === activePlayer.chips + activePlayer.bet)) {
-		return 'All-in!'
-	} else if ((betInputValue > highBet)) {
-		return 'Raise'
 	}
 }
 
@@ -124,72 +189,6 @@ const makeShowdownMessages = (showDownMessages) => {
 			)
 		}
 	})
-}
-
-/* 
- Render User Action menu for actions and slider (for raising)
-*/
-const makeActionMenu = (highBet, players, activePlayerIndex, phase, changeSliderInputFn) => {
-	const min = calculateMinBet(highBet, players[activePlayerIndex].chips, players[activePlayerIndex].bet)
-	const max = players[activePlayerIndex].chips + players[activePlayerIndex].bet
-	return (
-		(phase === 'first round' || phase === 'second round' || phase === 'third round' || phase === 'fourth round') ? (players[activePlayerIndex].agent) ? (<h4 className="current-move-head"> {`Current Move: ${players[activePlayerIndex].name}`}</h4>) : (
-			<React.Fragment>
-				<Slider
-					domain={[min, max]}
-					values={[min]}
-					step={1}
-					onChange={changeSliderInputFn}
-					mode={2}
-				>
-					<Rail>
-						{
-							({ getRailProps }) => (
-								<div {...getRailProps()} />
-							)
-						}
-					</Rail>
-					<Handles>
-						{
-							({ handles, getHandleProps }) => (
-								<div className='slider-handles'>
-									{
-										handles.map(handle => (
-											<Handle
-												key={handle.id}
-												handle={handle}
-												getHandleProps={getHandleProps}
-											/>
-										))
-									}
-								</div>
-							)
-						}
-					</Handles>
-					<Tracks right={false}>
-						{
-							({ tracks, getTrackProps }) => (
-								<div className='slider-tracks'>
-									{
-										tracks.map(
-											({ id, source, target }) => (
-												<Track
-													key={id}
-													source={source}
-													target={target}
-													getTrackProps={getTrackProps}
-												/>
-											)
-										)
-									}
-								</div>
-							)
-						}
-					</Tracks>
-				</Slider>
-			</React.Fragment>
-		) : null
-	)
 }
 
 export {
