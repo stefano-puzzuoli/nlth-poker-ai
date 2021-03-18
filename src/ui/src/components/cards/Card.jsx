@@ -9,7 +9,7 @@ const Card = (props) => {
     cardData: {
       suit,
       cardFace,
-      stallAnimation
+      animationDelay
     },
     setFoldedClassName
   } = props;
@@ -22,7 +22,7 @@ const Card = (props) => {
     <div 
       className={`poker-card cardIn ${determineName(setFoldedClassName)}`}
       style={
-        {stallAnimation: `${determineStall(setFoldedClassName, stallAnimation)}ms` }
+        {animationDelay: `${determineStall(setFoldedClassName, animationDelay)}ms` }
         }>
       <img src={`${process.env.PUBLIC_URL}/assets/cardFaces/${cardFace}${suitOfCard}.svg`}></img>
     </div>

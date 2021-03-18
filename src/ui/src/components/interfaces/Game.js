@@ -76,7 +76,7 @@ class Game extends Component {
   }
 
   // animation delay for cards which gives real dealer effect
-  cardStallAnimation = 0;
+  cardanimationDelay = 0;
 
   /*
    On component load create game with table, players, etc.
@@ -379,7 +379,7 @@ class Game extends Component {
     return this.state.communityCards.map((card, index) => {
       let cardData = { ...card };
       if (purgeAnimation) {
-        cardData.stallAnimation = 0;
+        cardData.animationDelay = 0;
       }
       // render card according to its value and suit
       return (
@@ -441,7 +441,7 @@ class Game extends Component {
 
   makeCards = (cards) => {
     return cards.map((card, index) => {
-      const cardData = { ...card, stallAnimation: 0 }
+      const cardData = { ...card, animationDelay: 0 }
       return <Card key={index} cardData={cardData} />
     })
   }
@@ -483,7 +483,7 @@ class Game extends Component {
                 {
                   bestHand.map((card, index) => {
                     // reset animation delay for next round
-                    const cardData = { ...card, stallAnimation: 0 }
+                    const cardData = { ...card, animationDelay: 0 }
                     return <Card key={index} cardData={cardData} />
                   })
                 }
