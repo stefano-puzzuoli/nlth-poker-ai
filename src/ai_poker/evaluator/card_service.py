@@ -11,15 +11,14 @@ class CardService(object):
     
     The specific meaning of the bits is: 
 
-                          bitrank     suit rank   prime
-                    +--------+--------+--------+--------+
-                    |xxxbbbbb|bbbbbbbb|cdhsrrrr|xxpppppp|
-                    +--------+--------+--------+--------+
-        1) p = prime number of rank 
-        2) r = rank of card
-        3) cdhs = suit of card 
-        4) b = bit turned on depending on rank of card
-        5) x = unused
+                    -------------------------------------
+                    |uuubbbbb bbbbbbbb ssssrrrr uupppppp|
+                    -------------------------------------
+                u = unused bit
+                b = bit turned on depending on rank of card
+                s = bit turned on depending on suit of card
+                r = rank of card (deuce = 0, trey = 1, four = 2, …, ace = 12)
+                p = prime number value of rank (deuce = 2, trey = 3, four = 5, …, ace = 41)
         
     """
 
