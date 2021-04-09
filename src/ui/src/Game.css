@@ -898,9 +898,67 @@ h4 {
 		left: 26.5%
 	}
 
+	.p0 {
+		bottom: 57%;
+		left: 33.5%;
+	}
 
-	.current-move-head {
-		font-size: 16px;
+	.p1 {
+		bottom: 60%;
+		left: 2%;
+	}
+
+	.p2 {
+		bottom: 78.5%;
+		left: -5%;
+	}
+
+	.p3 {
+		bottom: 57%;
+		right: 33.5%;
+	}
+
+	.p4 {
+		bottom: 60%;
+		right: 2%;
+	}
+
+	.p5 {
+		bottom: 78.5%;
+		right: -5%;
+	}
+
+	.title-logo {
+		margin-left: 10%;
+		width: 0;
+	}
+
+	.title-logo h3 {
+		font-size: 0rem;
+	}
+
+	#dropdown-basic-button {
+		width: 200%;
+	}
+
+	.game-bar {
+		margin-bottom: 90px;
+	}
+
+	.player-data-stash-div h4 {
+		font-size: 80%
+	}
+
+	.player-data-bet-div h4 {
+		font-size: 85%
+	}
+
+	.player-data-bet-div {
+		left: 55px;
+	}
+
+	.player-data-bet-image {
+		width: 85%;
 	}
 
   }
