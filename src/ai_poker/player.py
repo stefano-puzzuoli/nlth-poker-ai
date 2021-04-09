@@ -62,7 +62,7 @@ class Player(object):
         self.stacks = []
         self.train = True
 
-        # caluclate raise choices that players have (depend on blinds and previous raise)
+        # calculate raise choices that players have (depend on blinds and previous raise)
         self.r_choices = [1]
         for i in range(raise_choices - 1):
             self.r_choices = [self.r_choices[0]
@@ -74,7 +74,7 @@ class Player(object):
         These are features from which the Agent Players learn (in combination with the labels).
         """
 
-        # initialise the 43 features with 0
+        # initialise the features with 0
         game_features = 43 * [0]
 
         # sort cards for feature generation (order is necessary for storing in features list)
@@ -100,6 +100,7 @@ class Player(object):
         # player stack size
         game_features[42] = self.stack
 
+        print(game_features)
         return game_features
 
     def gen_action_features(self, action, table_state):
@@ -224,7 +225,8 @@ class Player(object):
         Discards features/labels older than Player memory (self.memory) and updates features/labels with 
         the new updated strategies from end of hand.
 
-        Allows player to continuously improve by forgetting 'weaker' strategies.
+        Allows Agents to adapt to human strategies but forbids them of learning too much in order
+        to restrict lower level Agents from improving too much.
         """
 
         for i in range(len(self.labels), len(self.features)):
