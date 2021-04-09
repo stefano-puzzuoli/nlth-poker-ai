@@ -880,4 +880,27 @@ h4 {
 		width: 30px;
 	}
 
+	.abscard {
+		top: -90%;
+	}
+
+	.poker-card {
+		width: 45px;
+		height: 55px;
+	}
+
+	.player-wrapper {
+		width: 20px;
+	}
+
+	.community-hand-div {
+		top: 12%;
+		left: 26.5%
+	}
+
+
+	.current-move-head {
+		font-size: 16px;
+	}
+
   }
