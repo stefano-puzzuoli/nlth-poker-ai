@@ -961,4 +961,42 @@ h4 {
 		width: 85%;
 	}
 
+	.game-bar {
+		position: absolute;
+		width: 90%;
+		height: 15%;
+		margin-bottom: -10%;
+		margin-left: 3%;
+		margin-top: -390px;
+	}
+
+	.game-buttons > button {
+		height: 30px;
+		width: 60px;
+		font-size: 15px;
+	}
+
+	.slider-handles>div>div {
+		font-size: 15px;
+	}
+
+	#dropdown-basic-button {
+
+		width: 90px;
+		font-size: 15px;
+	}
+
+	.dropdown {
+		float: none;
+		height: 1000px;
+		width: 100p0x;
+		margin-left: 160px;
+		margin-right: 0;
+		
+	}
+
+	.current-move-head {
+		font-size: 16px;
+	}
+
   }
