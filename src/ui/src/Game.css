@@ -855,6 +855,8 @@ h4 {
         transform-origin: right top;
         width: 100vh;
         height: 100vw;
+        overflow-x: hidden;
+        position: absolute;
         top: 100%;
         right: 0;
       }
