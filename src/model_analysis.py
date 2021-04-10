@@ -78,7 +78,7 @@ if __name__ == '__main__':
     plt.legend(loc='upper left')
     plt.show()
 
-     #simulate 1,000 hands, cashing out/buying in every 10 hands, without training or narrating
+    #simulate 20000 hands
     simulate(pokerTable, num_hands=20000, hands_between_buyin=100, hands_between_training=0, narrate_hands=False)
 
     features = []
