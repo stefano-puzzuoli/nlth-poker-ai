@@ -852,6 +852,11 @@ h4 {
 	html {
         /* Rotate the content container */
         transform: rotate(90deg);
+        transform-origin: right top;
+        width: 100vh;
+        height: 100vw;
+        top: 100%;
+        right: 0;
       }
   }
 
