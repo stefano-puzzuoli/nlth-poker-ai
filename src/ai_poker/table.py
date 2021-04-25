@@ -25,7 +25,7 @@ class Table(object):
     dealer : int
         position of dealer chip (decided who pays blinds)
     eval : Evaluator
-        hand evaluator (used by AI Agents to decide best action - through feautures/labels)
+        hand evaluator (used by AI Agents to decide best action - through features/labels)
     small_bind : int
         small blind to pay
     big_blind : int
